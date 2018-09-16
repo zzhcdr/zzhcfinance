@@ -1,0 +1,97 @@
+<view class="page">
+    <view class="page__hd">
+        <view class="page__title">凭据详细</view>
+    </view>
+    <view class="page__bd">
+
+<view class="weui-cells weui-cells_after-title">
+<view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">标题</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" placeholder="请输入名称" bindinput='titleinput' value='{{title}}' />
+                </view>
+         </view>
+
+        <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">借方</view>
+                </view>
+
+                <view class="weui-cell__bd">
+                    <picker mode="multiSelector" bindchange='bindDebitMultiPickerChange' bindcolumnchange="bindDebitMultiPickerColumnChange" value="{{debitMultiIndex}}" range-key='name' range="{{objectMultiArray}}">
+    <text class="weui-input">{{seldebitsubject.name}} -- {{seldebitaccount.name}}</text>
+  </picker>
+                </view>
+
+         </view>
+         <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">贷方</view>
+                </view>
+
+                <view class="weui-cell__bd">
+                    <picker mode="multiSelector" bindchange='bindCreditMultiPickerChange' bindcolumnchange="bindCreditMultiPickerColumnChange" value="{{creditMultiIndex}}" range-key='name' range="{{objectMultiArray}}">
+     <text class="weui-input">{{selcreditsubject.name}} -- {{selcreditaccount.name}}</text>
+  </picker>
+                </view>
+
+         </view>
+
+        <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">金额</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" placeholder="请输入金额" bindinput='balanceinput' value='{{balance}}'/>
+                </view>
+         </view>
+         <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">日期</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <picker mode="date" bindchange="datePickerChange" value="{{index}}" >
+                      <text class="weui-input">{{date}}</text>
+                    </picker>
+                </view>
+         </view>
+ </view>
+        <view class="weui-cells">
+            <view class="weui-cell">
+                <view class="weui-cell__bd">
+                    <view class="weui-uploader">
+                        <view class="weui-uploader__bd">
+                            <view class="weui-uploader__files" id="uploaderFiles">
+                                <block wx:for="{{uploadedfiles}}" wx:key="*this">
+                                    <view class="weui-uploader__file" bindtap="previewNetworkImage" bindlongpress='onDeleteVoucher' id="{{item}}" data-type='network'>
+                                        <image class="weui-uploader__img" src="{{item}}" mode="aspectFill" />
+                                    </view>
+                                </block>
+                                <block wx:for="{{files}}" wx:key="*this">
+                                    <view class="weui-uploader__file" bindtap="previewImage" bindlongpress='onDeleteVoucher' id="{{item}}"  data-type='local'>
+                                        <image class="weui-uploader__img" src="{{item}}" mode="aspectFill" />
+                                    </view>
+                                </block>
+                            </view>
+                            <view class="weui-uploader__input-box">
+                                <view class="weui-uploader__input" bindtap="chooseImage"></view>
+                            </view>
+                        </view>
+                    </view>
+                </view>
+            </view>
+        </view>
+    </view>
+    <view class="page__bd">
+      <view class='weui-flex'>
+        <view class="weui-flex__item">
+          <button  type='primary' bindtap='onupdate' >更新</button>
+        </view>
+        <view class="weui-flex__item">
+          <button  type='primary' bindtap='ondelete' >删除</button>
+        </view>
+      </view>
+    </view>
+</view>

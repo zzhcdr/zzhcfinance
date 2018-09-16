@@ -1,0 +1,35 @@
+{
+  "pages": [
+    "pages/login/login",
+    "pages/report/report",
+    "pages/account/account_add",
+    "pages/account/account",
+    "pages/record/record_add",
+    "pages/voucher/voucherlist",
+    "pages/voucher/voucherdetail",
+    "pages/subject/subject_add"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "小金库记账本",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "list": [
+      {
+        "pagePath": "pages/report/report",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/account/account",
+        "text": "账户"
+      },
+      {
+        "pagePath": "pages/voucher/voucherlist",
+        "text": "记录"
+      }
+    ]
+  },
+  "debug": false
+}

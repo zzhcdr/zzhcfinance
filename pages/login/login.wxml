@@ -1,0 +1,34 @@
+<view class="container">
+
+ <view  >
+    <text >{{motto}}</text>
+  </view>
+
+  <view  class="userinfo" >
+    <view class="userinfo-avatar">
+      <open-data type="userAvatarUrl" ></open-data>
+    </view>
+    <open-data type="userNickName"class="userinfo-nickname" ></open-data>
+  </view>
+
+  <view style='margin-top:20px'>
+      <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">账号</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" placeholder="请输入账号" bindinput='nameinput'/>
+                </view>
+            </view>
+
+            <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">密码</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" password='true' placeholder="请输入密码" bindinput='passwordinput'/>
+                </view>
+            </view>
+      <button style='margin-top:20px' type='primary' bindtap='login' >登录</button>
+  </view>
+</view>
