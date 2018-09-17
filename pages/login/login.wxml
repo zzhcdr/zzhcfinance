@@ -12,7 +12,7 @@
   </view>
 
   <view style='margin-top:20px'>
-      <view class="weui-cell weui-cell_input">
+            <view class="weui-cell weui-cell_input">
                 <view class="weui-cell__hd">
                     <view class="weui-label">账号</view>
                 </view>
@@ -29,6 +29,7 @@
                     <input class="weui-input" password='true' placeholder="请输入密码" bindinput='passwordinput'/>
                 </view>
             </view>
-      <button style='margin-top:20px' type='primary' bindtap='login' >登录</button>
+            <button style='margin-top:20px' type='primary' bindtap='login' >登录</button>
   </view>
+  
 </view>

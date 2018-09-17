@@ -1,17 +1,23 @@
         <view class="weui-cells weui-cells_after-title">
             <view class="weui-cell weui-cell_input">
                 <view class="weui-cell__hd">
-                    <view class="weui-label">所属科目</view>
+                    <view class="weui-label">科目编号</view>
                 </view>
                 <view class="weui-cell__bd">
-                    <picker mode="selector" bindchange="bindPickerChange"  range="{{subjects}}" range-key='name'>
-                    <text class="weui-input">{{selsubject.name}}</text>
-            </picker>
+                    <input class="weui-input" placeholder="请输入名称" bindinput='nameinput'/>
                 </view>
             </view>
             <view class="weui-cell weui-cell_input">
                 <view class="weui-cell__hd">
                     <view class="weui-label">科目名称</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" placeholder="请输入名称" bindinput='nameinput'/>
+                </view>
+            </view>
+            <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">借贷方向</view>
                 </view>
                 <view class="weui-cell__bd">
                     <input class="weui-input" placeholder="请输入名称" bindinput='nameinput'/>

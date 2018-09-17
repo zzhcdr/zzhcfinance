@@ -1,7 +1,6 @@
 <!--
 <button  type='primary' bindtap='addsubject'  >添加科目</button>
 -->
-
 <button  type='primary' bindtap='addaccount' style='margin-top:10px'>添加账户</button>
 
 <button  type='primary' bindtap='addrecord' style='margin-top:10px' >添加记录</button>
