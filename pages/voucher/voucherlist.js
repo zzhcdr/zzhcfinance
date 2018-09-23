@@ -7,16 +7,18 @@ Page({
    * 页面的初始数据
    */
   data: {
-    voucherlist: []
+    voucherlist: [],
+    accountid:0
   },
 
   loadVouche:function()
   {
     var that = this;
+    that.data.accountid = app.globalData.curraccountid;
     wx.request({
       url: app.globalData.host + '/getaccountvoucherserv',
       data: {
-        accountid: app.globalData.curraccountid
+        accountid: that.data.accountid
       },
       success: function (res) {
         var vouchers = [];

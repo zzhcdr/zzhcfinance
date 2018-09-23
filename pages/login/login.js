@@ -15,12 +15,12 @@ Page({
   login:function()
   {
     var that = this;
-    /*
+    
     that.setData({
       inputname:"lvch",
       inputpassword: "880216"
     })
-    */
+    
     if (that.data.inputname == "")
     {
       wx.showToast({
