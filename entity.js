@@ -111,7 +111,7 @@ accountentity.prototype.init = function(data)
       propdata.forEach(function (recorddata){
         var record = new recordentity();
         record.init(recorddata)
-        console.log("accountentity.init: name: "+that.name+" id:" +record.id+ " record.title:"+record.title + " - "+ record.money)
+        //console.log("accountentity.init: name: "+that.name+" id:" +record.id+ " record.title:"+record.title + " - "+ record.money)
         that.capitalRecordsById.push(record);
       });
     } else if (prop == "accountSubjectBySubjectid")
