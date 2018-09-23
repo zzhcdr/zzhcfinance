@@ -1,5 +1,0 @@
-/* pages/record/record_add.wxss */
-.picker{
-    padding: 13px;
-    background-color: #FFFFFF;
-}

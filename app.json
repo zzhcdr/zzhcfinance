@@ -4,7 +4,7 @@
     "pages/report/report",
     "pages/account/account_add",
     "pages/account/account",
-    "pages/record/record_add",
+    "pages/voucher/voucheradd",
     "pages/voucher/voucherlist",
     "pages/voucher/voucherdetail",
     "pages/subject/subject_add"

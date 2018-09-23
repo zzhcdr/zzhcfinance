@@ -113,7 +113,7 @@ Page({
   addrecord:function()
   {
       wx.navigateTo({
-        url: '../record/record_add',
+        url: '../voucher/voucher_add',
       })
   }
 })
