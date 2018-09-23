@@ -12,7 +12,7 @@
               </view>
 <navigator  url="voucherdetail?id={{item.id}}" hover-class="weui-cell_active">
                     <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
-                        <view class="weui-media-box__title">{{item.title}} ¥ {{item.money}}</view>
+                        <view class="weui-media-box__title">{{item.title}} ¥ {{curraccountid == item.capitalAccountByDebitid.id ?item.money:-item.money}}</view>
                         <view class="weui-media-box__desc">
                         借方:{{item.capitalAccountByDebitid.name}}
                         贷方:{{item.capitalAccountByCreditid.name}}
@@ -21,12 +21,8 @@
                           {{item.createdate}}
                         </view>
                     </view>
-
-
                 </navigator>
 </view>
-
-
 </view>
 </view>
 </view>

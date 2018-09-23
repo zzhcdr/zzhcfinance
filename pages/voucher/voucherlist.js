@@ -8,17 +8,17 @@ Page({
    */
   data: {
     voucherlist: [],
-    accountid:0
+    curraccountid:0
   },
 
   loadVouche:function()
   {
     var that = this;
-    that.data.accountid = app.globalData.curraccountid;
+    var curraccountid = app.globalData.curraccountid;
     wx.request({
       url: app.globalData.host + '/getaccountvoucherserv',
       data: {
-        accountid: that.data.accountid
+        accountid: curraccountid
       },
       success: function (res) {
         var vouchers = [];
@@ -31,7 +31,8 @@ Page({
         });
         that.setData(
           {
-            voucherlist: vouchers
+            voucherlist: vouchers,
+            curraccountid: curraccountid
           }
         );
       },
