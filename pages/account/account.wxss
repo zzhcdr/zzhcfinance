@@ -14,7 +14,7 @@
 .weui-cell_access{color:inherit}
 
 .weui-cell__balance{text-align:right;color:#999}
-.weui-cell__balance_in-access{padding-right:20px;position:relative}
+.weui-cell__balance_in-access{padding-right:13px;position:relative}
 
 .weui-cell__ft{text-align:right;color:#999}
 .weui-cell__ft_in-access{padding-right:13px;position:relative}

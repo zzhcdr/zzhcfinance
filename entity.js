@@ -111,6 +111,7 @@ accountentity.prototype.init = function(data)
       propdata.forEach(function (recorddata){
         var record = new recordentity();
         record.init(recorddata)
+        console.log("accountentity.init: name: "+that.name+" id:" +record.id+ " record.title:"+record.title + " - "+ record.money)
         that.capitalRecordsById.push(record);
       });
     } else if (prop == "accountSubjectBySubjectid")
@@ -140,8 +141,8 @@ function recordentity() {
   this.voucherid = '';
   this.accountid = 0;
   this.isincome = false;
-  this.title = false;
-  this.money = false;
+  this.title = "";
+  this.money = 0;
   this.recorddate = {};
   this.accountVoucherByVoucherid = {};
   this.capitalAccountByAccountid = {};
