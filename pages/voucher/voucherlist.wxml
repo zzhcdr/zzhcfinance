@@ -1,6 +1,6 @@
 <view class="page">
 <view class="page__bd">
-<view class="weui-panel__hd">凭据列表</view>
+<view class="weui-cells weui-cells_after-title">
 <view class="weui-panel__bd">
       <view wx:for='{{voucherlist}}' wx:key='{{item.id}}' data-id='{{item.id}}' class="weui-media-box weui-media-box_appmsg" >
               <view class="weui-media-box__hd weui-media-box__hd_in-appmsg" bindtap="previewNetworkImage" id="{{item.id}}" data-pics='{{item.attachmentPics}}'>
@@ -22,6 +22,7 @@
                         </view>
                     </view>
                 </navigator>
+</view>
 </view>
 </view>
 </view>
