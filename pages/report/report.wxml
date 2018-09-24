@@ -1,8 +1,20 @@
+<view class='topTabSwiper'>
+    <view class='tab  {{currentData == 0 ? "tabBorer" : ""}}'  data-current = "0" bindtap='checkCurrent'>收支日报表</view>
+    <view class='tab  {{currentData == 1 ? "tabBorer" : ""}}'  data-current = "1" bindtap='checkCurrent'>收支月报表</view>
+    <view class='tab  {{currentData == 2 ? "tabBorer" : ""}}'  data-current = "2" bindtap='checkCurrent'>资产负债表</view>
+</view>
+<swiper current="{{currentData}}" class='swiper' style="height:600px;" duration="300" bindchange="bindchange">
+  <swiper-item><view class='swiper_con'>收支日报表</view></swiper-item> 
+  <swiper-item><view class='swiper_con'>收支月报表</view></swiper-item>
+  <swiper-item><view class='swiper_con'>资产负债表</view></swiper-item>  
+</swiper>
+
+
 <!--
 <button  type='primary' bindtap='addsubject'  >添加科目</button>
--->
+
 <button  type='primary' bindtap='addaccount' style='margin-top:10px'>添加账户</button>
 
 <button  type='primary' bindtap='addrecord' style='margin-top:10px' >添加记录</button>
-
+-->
 
