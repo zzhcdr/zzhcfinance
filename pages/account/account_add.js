@@ -101,6 +101,10 @@ Page({
       })
       return;
     }
+    wx.showLoading({
+      title: '正在请求服务器...',
+      mask:true
+    });
     wx.request({
       url: app.globalData.host + '/addcapitalaccountserv',
       header:util.getheader(),
@@ -126,6 +130,10 @@ Page({
       fail:function(res)
       {
          console.error(res);
+      },
+      complete:function(res)
+      {
+        wx.hideLoading();
       }
     })
   },

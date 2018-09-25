@@ -140,6 +140,10 @@ Page({
       })
       return;
     }
+    wx.showLoading({
+      title: '正在请求服务器...',
+      mask:true
+    });
     wx.request({
       url: app.globalData.host + '/addcapitalrecordserv',
       header: util.getheader(),
@@ -167,6 +171,10 @@ Page({
           duration:2000,
           title: '添加记录失败',
         })
+      },
+      complete:function(res)
+      {
+        wx.hideLoading();
       }
     })
 
