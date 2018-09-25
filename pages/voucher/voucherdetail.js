@@ -19,6 +19,7 @@ Page({
     title: "",
     balance: 0,
     date: '',
+    attachment:'',
     debitMultiIndex: [0, 0],
     creditMultiIndex: [4, 0],
     objectMultiArray: [[]],
@@ -43,11 +44,11 @@ Page({
         serverdata.init(res.data)
         var voucherEntity = new entity.voucherentity();
         voucherEntity.init(serverdata.data);
-
         var data = {
           title: voucherEntity.title,
           balance: voucherEntity.money,
           date: voucherEntity.createdate,
+          attachment: voucherEntity.attachment,
           uploadedfiles: voucherEntity.attachmentPics,
           seldebitaccount: voucherEntity.capitalAccountByDebitid,
           selcreditaccount: voucherEntity.capitalAccountByCreditid,
@@ -248,6 +249,7 @@ Page({
         title: that.data.title,
         balance: that.data.balance,
         date: that.data.date,
+        attachment: that.data.attachment,
         debitid: that.data.seldebitaccount.id,
         creditid: that.data.selcreditaccount.id,
       },

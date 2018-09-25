@@ -181,6 +181,7 @@ voucherentity.prototype.init = function(data)
   var that = this;
   for (var prop in data) {
     var propData = data[prop];
+    //console.log("voucherentity.prototype.init:" + prop + " - " + propData)
     if (prop == "capitalRecordsById")
     {
       propData.forEach(function (recorddata) {
@@ -199,6 +200,7 @@ voucherentity.prototype.init = function(data)
     } else if (prop == "attachment")
     {
       propData = propData == null?"":propData;
+      this.attachment = propData;
       if (propData != "")
       {
         if (propData.indexOf(",") == -1) {
@@ -208,7 +210,6 @@ voucherentity.prototype.init = function(data)
           this.attachmentPics = propData.split(",");
         }
       }
-      //console.log("voucher.prop:" + this.attachmentPics)
     }
     else
     {
