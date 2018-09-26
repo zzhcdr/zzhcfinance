@@ -3,16 +3,17 @@
 <view class="weui-cells weui-cells_after-title">
 <view class="weui-panel__bd">
       <view wx:for='{{voucherlist}}' wx:key='{{item.id}}' data-id='{{item.id}}' class="weui-media-box weui-media-box_appmsg" >
-              <view class="weui-media-box__hd weui-media-box__hd_in-appmsg" bindtap="previewNetworkImage" id="{{item.id}}" data-pics='{{item.attachmentPics}}'>
+              <view class="weui-media-box__hd_in-appmsg" bindtap="previewNetworkImage" id="{{item.id}}" data-pics='{{item.attachmentPics}}'>
                     <image class="weui-media-box__thumb"  src="{{item.attachmentPics[0]}}" />
 
                     <view wx:if="{{item.attachmentPics.length>0}}" class="weui-cell__hd" style="position: relative;margin-right: -5px;margin-top:-75px;"  >
                       <view class="weui-badge" >{{item.attachmentPics.length}}</view>
                     </view>
               </view>
-<navigator  url="voucherdetail?id={{item.id}}" hover-class="weui-cell_active">
-                    <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
-                        <view class="weui-media-box__title">{{item.title}} ¥ {{curraccountid == item.capitalAccountByDebitid.id ?item.money:-item.money}}</view>
+              
+                <navigator class="weui-media-box__bd_in-appmsg"  url="voucherdetail?id={{item.id}}" hover-class="weui-cell_active">
+                    
+                    <view class="weui-media-box__title">{{item.title}}</view>
                         <view class="weui-media-box__desc">
                         借方:{{item.capitalAccountByDebitid.name}}
                         贷方:{{item.capitalAccountByCreditid.name}}
@@ -20,8 +21,14 @@
                         <view class="weui-media-box__desc">
                           {{item.createdate}}
                         </view>
-                    </view>
+                   
                 </navigator>
+                
+
+            <view class='voucherlist_money' >
+              {{(curraccountid == item.capitalAccountByDebitid.id || curraccountid == 0) ?item.money:-item.money}}
+            </view>
+
 </view>
 </view>
 </view>
