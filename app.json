@@ -7,7 +7,8 @@
     "pages/voucher/voucheradd",
     "pages/voucher/voucherlist",
     "pages/voucher/voucherdetail",
-    "pages/subject/subject_add"
+    "pages/subject/subject_add",
+    "pages/stat/monthstat"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -19,7 +20,11 @@
     "list": [
       {
         "pagePath": "pages/report/report",
-        "text": "首页"
+        "text": "报表"
+      },
+      {
+        "pagePath": "pages/stat/monthstat",
+        "text": "统计"
       },
       {
         "pagePath": "pages/account/account",
@@ -27,7 +32,7 @@
       },
       {
         "pagePath": "pages/voucher/voucherlist",
-        "text": "记录"
+        "text": "账单"
       }
     ]
   },
