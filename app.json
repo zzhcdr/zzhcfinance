@@ -8,7 +8,7 @@
     "pages/voucher/voucherlist",
     "pages/voucher/voucherdetail",
     "pages/subject/subject_add",
-    "pages/stat/monthstat"
+    "pages/stat/stat"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -23,7 +23,7 @@
         "text": "报表"
       },
       {
-        "pagePath": "pages/stat/monthstat",
+        "pagePath": "pages/stat/stat",
         "text": "统计"
       },
       {
