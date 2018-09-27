@@ -31,7 +31,6 @@ Page({
         app.globalData.subjects = [];
         for (var prop in serverdata) {
           var subjectdata = serverdata[prop];
-
           var subject = new entity.subjectentity();
           subject.init(subjectdata);
           app.globalData.subjects.push(subject);
@@ -101,8 +100,36 @@ Page({
   onStatusChange:function(e)
   {
     var subjectid = e.currentTarget.id;
-    console.log("subject.id:"+subjectid)
-    
-  }
+    wx.showLoading({
+      title: '正在修改中...',
+      mask:true
+    })
+    wx.request({
+      url: app.globalData.host + '/modifysubjectstatusserv',
+      header: util.getheader(),
+      data:{
+        id: subjectid
+      },
+      method:"GET",
+      success:function()
+      {
+        var subject = app.getSubject(subjectid);
+        subject.isopen = !subject.isopen;
+        wx.showToast({
+          title: '修改成功',
+        })
+      },
+      fail:function()
+      {
+        wx.showToast({
+          title: '修改失败',
+        })
+      },
+      complete:function()
+      {
+          wx.hideLoading();
+      }
+    })
 
+  }
 })

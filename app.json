@@ -11,7 +11,8 @@
     "pages/config/config",
     "pages/subject/subjectlist",
     "pages/transaction/translist",
-    "pages/subject/subjectadd"
+    "pages/subject/subjectadd",
+    "pages/account/account_detail"
   ],
   "window": {
     "backgroundTextStyle": "light",

@@ -7,18 +7,16 @@ Page({
    * 页面的初始数据
    */
   data: {
-    voucherlist: [],
-    curraccountid:0
+    voucherlist: []
   },
 
   loadVouche:function()
   {
     var that = this;
-    var curraccountid = app.globalData.curraccountid;
     wx.request({
       url: app.globalData.host + '/getaccountvoucherserv',
       data: {
-        accountid: curraccountid
+        accountid: 0
       },
       success: function (res) {
         var vouchers = [];
@@ -31,8 +29,7 @@ Page({
         });
         that.setData(
           {
-            voucherlist: vouchers,
-            curraccountid: curraccountid
+            voucherlist: vouchers
           }
         );
       },
@@ -79,7 +76,6 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-    app.globalData.curraccountid = 0;
     wx.showNavigationBarLoading();
     wx.setNavigationBarTitle({
       title: '加载中...',
@@ -120,8 +116,7 @@ Page({
   toClearData:function()
   {
     this.setData({
-      voucherlist: [],
-      curraccountid: 0
+      voucherlist: []
     })
   }
 

@@ -101,10 +101,8 @@ Page({
   jumpToRecord:function(event)
   {
     var data = event.currentTarget.dataset;
-    app.globalData.curraccountid = data.id;
-    wx.switchTab({
-      url: '../voucher/voucherlist'
+    wx.navigateTo({
+      url: 'account_detail?id=' + data.id+"&name="+data.name+"&balance="+data.balance,
     })
   }
-
 })

@@ -1,0 +1,73 @@
+<view class="page">
+<view class="page__bd">
+<view class="weui-cells weui-cells_after-title">
+<view class="weui-panel__bd">
+
+  <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">编号</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input"  disabled='true'  value='{{accountid}}' />
+               </view>
+         </view>
+
+         <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">名称</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input"  placeholder="请输入名称" bindinput='nameinput' value='{{accountname}}' />
+                </view>
+         </view>
+
+         <view class="weui-cell weui-cell_input" style='border-bottom:1rpx solid #e5e5e5'>
+                <view class="weui-cell__hd">
+                    <view class="weui-label">余额</view>
+                </view>
+                <view class="weui-cell__bd">
+                <input class="weui-input"  disabled='true'  value='{{accountbalance}}' />
+                </view>
+         </view>
+      <view class='weui-flex'>
+        <view class="weui-flex__item">
+          <button  type='primary' bindtap='onupdate' >更新</button>
+        </view>
+        <view class="weui-flex__item">
+          <button   bindtap='ondelete' >删除</button>
+        </view>
+      </view>
+
+
+      <view wx:for='{{voucherlist}}' wx:key='{{item.id}}' data-id='{{item.id}}' class="weui-media-box weui-media-box_appmsg" >
+              <view class="weui-media-box__hd_in-appmsg" bindtap="previewNetworkImage" id="{{item.id}}" data-pics='{{item.attachmentPics}}'>
+                    <image class="weui-media-box__thumb"  src="{{item.attachmentPics[0]}}" />
+
+                    <view wx:if="{{item.attachmentPics.length>0}}" class="weui-cell__hd" style="position: relative;margin-right: -5px;margin-top:-75px;"  >
+                      <view class="weui-badge" >{{item.attachmentPics.length}}</view>
+                    </view>
+              </view>
+              
+                <navigator class="weui-media-box__bd_in-appmsg"  url="../voucher/voucherdetail?id={{item.id}}" hover-class="weui-cell_active">
+                    
+                    <view class="weui-media-box__title">{{item.title}}</view>
+                        <view class="weui-media-box__desc">
+                        借方:{{item.capitalAccountByDebitid.name}}
+                        贷方:{{item.capitalAccountByCreditid.name}}
+                        </view>
+                        <view class="weui-media-box__desc">
+                          {{item.createdate}}
+                        </view>
+                   
+                </navigator>
+                
+
+            <view class='voucherlist_money' >
+              {{(curraccountid == item.capitalAccountByDebitid.id || curraccountid == 0) ?item.money:-item.money}}
+            </view>
+
+</view>
+</view>
+</view>
+</view>
+</view>
