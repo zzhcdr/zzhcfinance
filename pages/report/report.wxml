@@ -5,8 +5,18 @@
 </view>
 <swiper current="{{currentData}}" class='swiper' style="height:500px;" duration="300" bindchange="bindchange">
   <swiper-item>
-  <view class='swiper_con'>
-  收支日报表
+  <view class='swiper_con' >
+
+            <view class="weui-cell weui-cell_input weui-cells weui-cells_after-title">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">日期选择:</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <picker mode="date" bindchange="datePickerChange" value="{{index}}" >
+                      <text class="weui-input">{{todaydate}}</text>
+                    </picker>
+                </view>
+            </view>
   </view>
   </swiper-item> 
   <swiper-item>

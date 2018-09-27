@@ -96,5 +96,13 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+
+  onStatusChange:function(e)
+  {
+    var subjectid = e.currentTarget.id;
+    console.log("subject.id:"+subjectid)
+    
   }
+
 })

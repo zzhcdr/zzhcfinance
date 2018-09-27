@@ -1,4 +1,4 @@
-// pages/config/config.js
+// pages/subject/subjectadd.js
 Page({
 
   /**
@@ -62,27 +62,5 @@ Page({
    */
   onShareAppMessage: function () {
 
-  },
-  configsubject: function () {
-    wx.navigateTo({
-      url: '../subject/subjectlist',
-    })
-  },
-  addsubject: function () {
-    wx.navigateTo({
-      url: '../subject/subjectadd',
-    })
-  },
-
-  addaccount: function () {
-    wx.navigateTo({
-      url: '../account/account_add',
-    })
-  },
-
-  addrecord: function () {
-    wx.navigateTo({
-      url: '../voucher/voucheradd',
-    })
-  },
+  }
 })

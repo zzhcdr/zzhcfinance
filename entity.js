@@ -53,6 +53,7 @@ function subjectentity() {
   this.id = 0;
   this.name = '';
   this.debit = false;
+  this.isopen = true;
   this.capitalAccountsById = [];
   this.balance = 0;
 }

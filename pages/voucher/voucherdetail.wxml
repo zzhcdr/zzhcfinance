@@ -87,7 +87,7 @@
           <button  type='primary' bindtap='onupdate' >更新</button>
         </view>
         <view class="weui-flex__item">
-          <button  type='primary' bindtap='ondelete' >删除</button>
+          <button   bindtap='ondelete' >删除</button>
         </view>
       </view>
     </view>
