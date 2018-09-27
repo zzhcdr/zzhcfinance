@@ -1,18 +1,52 @@
 // pages/subject/subjectlist.js
+var util = require("../../utils/util.js")
+var entity = require("../../entity.js")
+var app = getApp();
+
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-
+    subjects: []
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var that = this;
+    wx.showLoading({
+      title: '获取数据中...',
+    })
+    wx.request({
+      url: app.globalData.host + '/getaccountsubjectserv',
+      method: 'GET',
+      header: util.getheader(),
+      success: function (res) {
+        var result = new entity.resultentity();
+        result.init(res.data)
+        var serverdata = result.data;
+        app.globalData.subjects = [];
+        for (var prop in serverdata) {
+          var subjectdata = serverdata[prop];
 
+          var subject = new entity.subjectentity();
+          subject.init(subjectdata);
+          app.globalData.subjects.push(subject);
+        }
+        that.setData({
+          subjects: app.globalData.subjects
+        });
+      },
+      fail: function (res) {
+        console.log(res);
+      },
+      complete: function (res) {
+        wx.hideLoading();
+      }
+    })
   },
 
   /**

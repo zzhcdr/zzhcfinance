@@ -1,6 +1,5 @@
-
-<view class="weui-cells weui-cells_after-title">
-</view>
+<view class="weui-cells weui-cells_after-title"></view>
+<view class='stat_title'>月运营支出统计</view>
 <view class="container">
    <ec-canvas id="mychart-dom-pie" canvas-id="mychart-pie" ec="{{ ec }}" bind:init="echartInit"></ec-canvas>
 </view>

@@ -9,7 +9,8 @@
     "pages/voucher/voucherdetail",
     "pages/stat/stat",
     "pages/config/config",
-    "pages/subject/subjectlist"
+    "pages/subject/subjectlist",
+    "pages/transaction/translist"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -20,12 +21,12 @@
   "tabBar": {
     "list": [
       {
-        "pagePath": "pages/report/report",
-        "text": "报表"
+        "pagePath": "pages/transaction/translist",
+        "text": "业务"
       },
       {
-        "pagePath": "pages/voucher/voucherlist",
-        "text": "账单"
+        "pagePath": "pages/report/report",
+        "text": "报表"
       },
       {
         "pagePath": "pages/config/config",

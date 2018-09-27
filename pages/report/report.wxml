@@ -11,10 +11,7 @@
   </swiper-item> 
   <swiper-item>
   <view class='swiper_con'>
-
   收支月报表
-
-
   </view>
   </swiper-item>
   <swiper-item><view class='swiper_con'>资产负债表</view></swiper-item>  

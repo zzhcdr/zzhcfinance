@@ -1,1 +1,21 @@
 <view class="weui-cells weui-cells_after-title"></view>
+
+<view class="weui-cell weui-cell_access weui-cells weui-cells_after-title" style='font-size:18px;'>
+  <view class="weui-cell__bd" >科目编号</view>
+  <view class="weui-cell__bd" style='margin-left:-50px;'>科目名称</view>
+  <view class="weui-cell__balance weui-cell__balance_in-access" style='color:inherit'>
+    是否开放
+  </view>
+</view>
+
+<view wx:for="{{subjects}}" wx:key="{{item.id}}" class="weui-cells weui-cells_after-title">
+<view class="weui-cell weui-cell_access" style='font-size:18px;'>
+  <view class="weui-cell__bd" style='margin-left:15px;'>{{item.id}}</view>
+  <view class="weui-cell__bd" style='margin-left:-80px;' >{{item.name}}</view>
+  <view class="weui-cell__balance weui-cell__balance_in-access" style='color:inherit'>
+    <switch  checked='true'></switch>
+  </view>
+</view>
+</view>
+
+

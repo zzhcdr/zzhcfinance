@@ -58,7 +58,7 @@ Page({
           if (loginresult == "")
           {
             wx.reLaunch({
-              url: '../report/report',
+              url: '../transaction/translist',
             })
           } else 
           {
