@@ -149,25 +149,7 @@ Page({
   
   },
 
-  addsubject: function () {
-    wx.navigateTo({
-      url: '../subject/subject_add',
-    })
-  },
 
-  addaccount:function()
-  {
-      wx.navigateTo({
-        url: '../account/account_add',
-      })
-  },
-
-  addrecord:function()
-  {
-      wx.navigateTo({
-        url: '../voucher/voucheradd',
-      })
-  },
 
   //获取当前滑块的index
   bindchange: function (e) {

@@ -30,6 +30,9 @@
                 </view>
             </view>
             <button style='margin-top:20px' type='primary' bindtap='login' >登录</button>
+
+            <button wx:if="{{canIUse}}" style='margin-top:20px'  open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">授权登录</button>
+
   </view>
   
 </view>

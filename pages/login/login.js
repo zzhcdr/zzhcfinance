@@ -9,7 +9,8 @@ Page({
   data: {
     motto: '欢迎登录',
     inputname:"",
-    inputpassword:""
+    inputpassword:"",
+    canIUse: wx.canIUse('button.open-type.getUserInfo')
   },
 
   login:function()
@@ -81,7 +82,6 @@ Page({
    */
   onLoad: function (options) {
     var that = this
-    //调用应用实例的方法获取全局数据
   },
 
   /**
@@ -144,5 +144,12 @@ Page({
     this.setData({
       inputpassword: e.detail.value
     })
+  },
+  bindGetUserInfo(e) {
+    console.log("userInfo:"+e.detail.userInfo)
+    console.log("rawData:" +e.detail.rawData)
+    console.log("signature:" +e.detail.signature)
+    console.log("encryptedData:" +e.detail.encryptedData)
+    console.log("iv:" +e.detail.iv)
   }
 })

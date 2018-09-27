@@ -7,9 +7,6 @@
   <swiper-item>
   <view class='swiper_con'>
   收支日报表
- 
-    <button  type='primary' bindtap='addaccount' style='margin-top:10px'>添加账户</button>
-    <button  type='primary' bindtap='addrecord' style='margin-top:10px' >添加记录</button>
   </view>
   </swiper-item> 
   <swiper-item>

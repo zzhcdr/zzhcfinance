@@ -1,0 +1,4 @@
+<view class="weui-cells weui-cells_after-title"></view>
+<button  type='primary' bindtap='addsubject' style='margin-top:10px'>科目配置</button>
+<button  type='primary' bindtap='addaccount' style='margin-top:10px'>添加账户</button>
+<button  type='primary' bindtap='addrecord' style='margin-top:10px' >添加记录</button>

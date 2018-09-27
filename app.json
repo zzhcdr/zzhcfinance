@@ -1,14 +1,15 @@
 {
   "pages": [
     "pages/login/login",
+    "pages/voucher/voucherlist",
     "pages/report/report",
     "pages/account/account_add",
     "pages/account/account",
     "pages/voucher/voucheradd",
-    "pages/voucher/voucherlist",
     "pages/voucher/voucherdetail",
-    "pages/subject/subject_add",
-    "pages/stat/stat"
+    "pages/stat/stat",
+    "pages/config/config",
+    "pages/subject/subjectlist"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -23,16 +24,20 @@
         "text": "报表"
       },
       {
-        "pagePath": "pages/stat/stat",
-        "text": "统计"
+        "pagePath": "pages/voucher/voucherlist",
+        "text": "账单"
+      },
+      {
+        "pagePath": "pages/config/config",
+        "text": "配置"
       },
       {
         "pagePath": "pages/account/account",
         "text": "账户"
       },
       {
-        "pagePath": "pages/voucher/voucherlist",
-        "text": "账单"
+        "pagePath": "pages/stat/stat",
+        "text": "统计"
       }
     ]
   },
