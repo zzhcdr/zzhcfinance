@@ -3,9 +3,20 @@
 <view class="weui-cells weui-cells_after-title">
 <view class="weui-panel__bd">
 
+<view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">账户类型</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <picker mode="selector" bindchange="bindSubjectChange"  range="{{subjects}}" range-key='name'>
+                    <text class="weui-input">{{selsubject.name}}</text>
+            </picker>
+                </view>
+            </view>
+
   <view class="weui-cell weui-cell_input">
                 <view class="weui-cell__hd">
-                    <view class="weui-label">编号</view>
+                    <view class="weui-label">账户编号</view>
                 </view>
                 <view class="weui-cell__bd">
                     <input class="weui-input"  disabled='true'  value='{{accountid}}' />
@@ -14,16 +25,25 @@
 
          <view class="weui-cell weui-cell_input">
                 <view class="weui-cell__hd">
-                    <view class="weui-label">名称</view>
+                    <view class="weui-label">账户名称</view>
                 </view>
                 <view class="weui-cell__bd">
                     <input class="weui-input"  placeholder="请输入名称" bindinput='nameinput' value='{{accountname}}' />
                 </view>
          </view>
 
+         <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">初始余额</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" placeholder="请输入余额" bindinput='initbalanceinput' value='{{accountinitbalance}}'/>
+                </view>
+           </view>
+
          <view class="weui-cell weui-cell_input" style='border-bottom:1rpx solid #e5e5e5'>
                 <view class="weui-cell__hd">
-                    <view class="weui-label">余额</view>
+                    <view class="weui-label">当前余额</view>
                 </view>
                 <view class="weui-cell__bd">
                 <input class="weui-input"  disabled='true'  value='{{accountbalance}}' />

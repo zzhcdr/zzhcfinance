@@ -8,9 +8,13 @@ Page({
    * 页面的初始数据
    */
   data: {
+    subjects: [],
+    selsubject: {},
     voucherlist: [],
+    accountsubjectid:0,
     accountid: 0,
     accountname:"",
+    accountinitbalance:0,
     accountbalance:0
   },
 
@@ -44,10 +48,16 @@ Page({
    */
   onLoad: function (options) {
     console.log("account_detail:"+options.id);
+    var subjectid = options.subjectid;
+    var selsubject = app.getSubject(subjectid);
     this.setData({
+      subjects: app.globalData.subjects,
+      selsubject: selsubject,
       voucherlist: [],
+      accountsubjectid: subjectid,
       accountid:options.id,
       accountname:options.name,
+      accountinitbalance: options.initbalance,
       accountbalance:options.balance
     })
   },
@@ -134,6 +144,19 @@ Page({
     });
   },
 
+  bindSubjectChange: function (e) {
+    var that = this;
+    this.setData({
+      selsubject: that.data.subjects[e.detail.value]
+    })
+  },
+
+  initbalanceinput: function (e) {
+    this.setData({
+      accountinitbalance: e.detail.value
+    });
+  },
+
   onupdate: function () {
     var that = this;
     wx.showLoading({
@@ -146,6 +169,8 @@ Page({
       data: {
         id: that.data.accountid,
         name: that.data.accountname,
+        subjectid: that.data.selsubject.id,
+        initbalance: that.data.accountinitbalance
       },
       success: function (res) {
         wx.showToast({

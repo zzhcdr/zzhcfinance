@@ -12,8 +12,8 @@ App({
     userInfo: null,
     currUser:{},
     subjects:[],
-    //host: "http://127.0.0.1:8080"
-    host: "https://erp.zzhcdr.com"
+    host: "http://127.0.0.1:8080"
+    //host: "https://erp.zzhcdr.com"
   },
 
   getvoucherlist:function()

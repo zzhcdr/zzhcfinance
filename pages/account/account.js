@@ -101,8 +101,14 @@ Page({
   jumpToRecord:function(event)
   {
     var data = event.currentTarget.dataset;
+    var params = ""
+    for(var prop in data)
+    {
+      var propdata = data[prop]
+      params += "&"+prop + "=" + propdata
+    }
     wx.navigateTo({
-      url: 'account_detail?id=' + data.id+"&name="+data.name+"&balance="+data.balance,
+      url: 'account_detail?'+params,
     })
   }
 })
