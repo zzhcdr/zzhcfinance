@@ -24,6 +24,9 @@ Page({
       url: app.globalData.host + '/getaccountsubjectserv',
       method: 'GET',
       header: util.getheader(),
+      data:{
+        all:"1"
+      },
       success: function (res) {
         var result = new entity.resultentity();
         result.init(res.data)
