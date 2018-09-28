@@ -21,7 +21,7 @@ Page({
       title: '获取数据中...',
     })
     wx.request({
-      url: app.globalData.host + '/getaccountsubjectserv',
+      url: app.globalData.host + '/getaccountsubjectserv?all=1',
       method: 'GET',
       header: util.getheader(),
       data:{

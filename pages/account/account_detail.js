@@ -20,6 +20,10 @@ Page({
 
   loadVouche: function () {
     var that = this;
+    wx.showLoading({
+      title: '数据请求中...',
+      mask:true
+    })
     wx.request({
       url: app.globalData.host + '/getaccountvoucherserv',
       data: {
@@ -40,6 +44,10 @@ Page({
           }
         );
       },
+      complete:function()
+      {
+        wx.hideLoading();
+      }
     })
   },
 
@@ -47,7 +55,6 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log("account_detail:"+options.id);
     var subjectid = options.subjectid;
     var selsubject = app.getSubject(subjectid);
     this.setData({

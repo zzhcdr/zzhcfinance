@@ -13,6 +13,10 @@ Page({
   loadVouche:function()
   {
     var that = this;
+    wx.showLoading({
+      title: '数据请求中...',
+      mask:true
+    })
     wx.request({
       url: app.globalData.host + '/getaccountvoucherserv',
       data: {
@@ -33,6 +37,10 @@ Page({
           }
         );
       },
+      complete:function()
+      {
+        wx.hideLoading();
+      }
     })
   },
 
@@ -55,6 +63,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    //console.log("voucherlist.onShow")
     this.loadVouche();
   },
 
@@ -62,13 +71,14 @@ Page({
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-    this.toClearData();
+    //console.log("voucherlist.onHide")
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
+    //console.log("voucherlist.onUnload")
     this.toClearData();
   },
 

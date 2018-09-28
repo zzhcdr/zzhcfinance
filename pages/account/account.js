@@ -33,6 +33,7 @@ Page({
     var that = this;
     wx.showLoading({
       title: '获取数据中...',
+      mask:true
     })
     wx.request({
       url: app.globalData.host + '/getaccountsubjectserv',

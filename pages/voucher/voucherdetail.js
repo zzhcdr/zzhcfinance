@@ -32,6 +32,10 @@ Page({
     var that = this;
     var voucherid = options.id;
     that.data.id = voucherid;
+    wx.showLoading({
+      title: '数据请求中...',
+      mask:true
+    })
     wx.request({
       url: app.globalData.host + '/getvoucherserv',
       data:{
@@ -56,6 +60,10 @@ Page({
           selcreditsubject: app.getSubject(voucherEntity.capitalAccountByCreditid.subjectid),
         }
         that.setData(data);
+      },
+      complete:function()
+      {
+        wx.hideLoading();
       }
     });
     that.showAccount();
