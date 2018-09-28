@@ -10,7 +10,8 @@ Page({
    */
   data: {
     todaydate: '',
-    
+    subjects:[],
+    vouchers:[]
   },
 
   /**
@@ -49,7 +50,6 @@ Page({
         app.globalData.subjects = [];
         for (var prop in serverdata) {
           var subjectdata = serverdata[prop];
-
           var subject = new entity.subjectentity();
           subject.init(subjectdata);
           app.globalData.subjects.push(subject);

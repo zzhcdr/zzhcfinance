@@ -1,4 +1,5 @@
 var util = require("utils/util.js")
+var conf = require("conf.js")
 var app = getApp();
 
 function resultentity() {
@@ -219,7 +220,7 @@ voucherentity.prototype.init = function(data)
   }
     var fileList = [];
     this.attachmentPics.forEach(function (item) {
-      fileList.push(app.globalData.host + "/voucher/" + that.id + '/' + item);
+      fileList.push(conf.AppConf.host + "/voucher/" + that.id + '/' + item);
     })
     this.attachmentPics = fileList;
 }
