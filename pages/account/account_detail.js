@@ -1,6 +1,7 @@
 // pages/voucher/voucherlist.js
 var entity = require("../../entity.js")
 var util = require("../../utils/util.js")
+var dao = require("../../dao.js")
 var app = getApp();
 Page({
 
@@ -20,33 +21,17 @@ Page({
 
   loadVouche: function () {
     var that = this;
-    wx.showLoading({
-      title: '数据请求中...',
-      mask:true
-    })
-    wx.request({
-      url: app.globalData.host + '/getaccountvoucherserv',
-      data: {
-        accountid: that.data.accountid
-      },
-      success: function (res) {
-        var vouchers = [];
-        var result = new entity.resultentity();
-        result.init(res.data);
-        result.data.forEach(function (voucherdata) {
-          var voucher = new entity.voucherentity();
-          voucher.init(voucherdata);
-          vouchers.push(voucher);
-        });
+    var appDao = new dao.AppDao();
+
+    appDao.queryVoucher({
+      accountid: that.data.accountid,
+      callFun:function()
+      {
         that.setData(
           {
-            voucherlist: vouchers
+            voucherlist: appDao.getVouchers()
           }
         );
-      },
-      complete:function()
-      {
-        wx.hideLoading();
       }
     })
   },
@@ -55,10 +40,12 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var appDao = new dao.AppDao();
+    var subjects = appDao.getSubjects();
     var subjectid = options.subjectid;
-    var selsubject = app.getSubject(subjectid);
+    var selsubject = appDao.getSubject(subjectid);
     this.setData({
-      subjects: app.globalData.subjects,
+      subjects: subjects,
       selsubject: selsubject,
       voucherlist: [],
       accountsubjectid: subjectid,

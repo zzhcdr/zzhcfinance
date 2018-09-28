@@ -1,6 +1,7 @@
 // pages/report/report.js
-var entity = require("../../entity")
+
 var util = require("../../utils/util.js")
+var dao = require("../../dao.js")
 var app = getApp();
 
 Page({
@@ -36,33 +37,13 @@ Page({
    */
   onShow: function () {
     var that = this;
-    wx.showLoading({
-      title: '获取数据中...',
-    })
-    wx.request({
-      url: app.globalData.host + '/getaccountsubjectserv',
-      method: 'GET',
-      header: util.getheader(),
-      success: function (res) {
-        var result = new entity.resultentity();
-        result.init(res.data)
-        var serverdata = result.data;
-        app.globalData.subjects = [];
-        for (var prop in serverdata) {
-          var subjectdata = serverdata[prop];
-          var subject = new entity.subjectentity();
-          subject.init(subjectdata);
-          app.globalData.subjects.push(subject);
-        }
+    var appdao = new dao.AppDao();
+    appdao.querySubject({
+      callFun:function()
+      {
         that.setData({
-          subjects: app.globalData.subjects
+          subjects: wx.getStorageSync("subjects")
         });
-      },
-      fail: function (res) {
-        console.log(res);
-      },
-      complete: function (res) {
-        wx.hideLoading();
       }
     })
   },

@@ -1,6 +1,4 @@
 
-var util = require("../utils/util.js")
-
 function HttpClient() 
 {
   //this.host = "http://127.0.0.1:8080";
@@ -10,10 +8,12 @@ function HttpClient()
   this.serverCode = 0;
   this.responseData = {},
   this.loginserv = "/loginserv"
+  
 }
 
 HttpClient.prototype.request = function (metaData) 
 {
+  var util = require("../utils/util.js")
   var that = this;
   wx.showLoading({
     title: '数据请求中...',

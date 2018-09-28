@@ -1,5 +1,5 @@
 var util = require("utils/util.js")
-var conf = require("conf.js")
+var http = require("network/httpclient.js")
 var app = getApp();
 
 function resultentity() {
@@ -181,6 +181,7 @@ function voucherentity() {
 voucherentity.prototype.init = function(data)
 {
   var that = this;
+  var httpClient = new http.HttpClient();
   for (var prop in data) {
     var propData = data[prop];
     //console.log("voucherentity.prototype.init:" + prop + " - " + propData)
@@ -220,7 +221,7 @@ voucherentity.prototype.init = function(data)
   }
     var fileList = [];
     this.attachmentPics.forEach(function (item) {
-      fileList.push(conf.AppConf.host + "/voucher/" + that.id + '/' + item);
+      fileList.push(httpClient.host + "/voucher/" + that.id + '/' + item);
     })
     this.attachmentPics = fileList;
 }

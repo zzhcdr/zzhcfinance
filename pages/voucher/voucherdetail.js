@@ -1,6 +1,7 @@
 // pages/voucher/uploadvoucher.js
 var util = require("../../utils/util.js")
 var entity = require("../../entity.js")
+var dao = require("../../dao.js")
 var app = getApp();
 Page({
 
@@ -30,24 +31,16 @@ Page({
    */
   onLoad: function (options) {
     var that = this;
+    var appDao = new dao.AppDao();
     var voucherid = options.id;
     that.data.id = voucherid;
-    wx.showLoading({
-      title: '数据请求中...',
-      mask:true
-    })
-    wx.request({
-      url: app.globalData.host + '/getvoucherserv',
-      data:{
-        id: voucherid
-      },
-      header: util.getheader(),
-      success:function(res)
+
+    appDao.queryVoucherById({
+      id:voucherid,
+      callFun:function(voucherdata)
       {
-        var serverdata = new entity.resultentity();
-        serverdata.init(res.data)
         var voucherEntity = new entity.voucherentity();
-        voucherEntity.init(serverdata.data);
+        voucherEntity.init(voucherdata);
         var data = {
           title: voucherEntity.title,
           balance: voucherEntity.money,
@@ -56,27 +49,25 @@ Page({
           uploadedfiles: voucherEntity.attachmentPics,
           seldebitaccount: voucherEntity.capitalAccountByDebitid,
           selcreditaccount: voucherEntity.capitalAccountByCreditid,
-          seldebitsubject: app.getSubject(voucherEntity.capitalAccountByDebitid.subjectid),
-          selcreditsubject: app.getSubject(voucherEntity.capitalAccountByCreditid.subjectid),
+          seldebitsubject: appDao.getSubject(voucherEntity.capitalAccountByDebitid.subjectid),
+          selcreditsubject: appDao.getSubject(voucherEntity.capitalAccountByCreditid.subjectid),
         }
         that.setData(data);
-      },
-      complete:function()
-      {
-        wx.hideLoading();
       }
-    });
+    })
     that.showAccount();
-
   },
 
   showAccount:function()
   {
+    var appDao = new dao.AppDao();
+    var subjects = appDao.getSubjects();
     var data = {
       objectMultiArray: [[]]
     };
-    data.objectMultiArray[0] = app.globalData.subjects;
-    data.objectMultiArray[1] = app.globalData.subjects[0].capitalAccountsById;
+    
+    data.objectMultiArray[0] = subjects
+    data.objectMultiArray[1] = subjects[0].capitalAccountsById;
     this.setData(data);
   },
 

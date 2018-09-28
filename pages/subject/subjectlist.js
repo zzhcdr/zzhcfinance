@@ -1,6 +1,7 @@
 // pages/subject/subjectlist.js
 var util = require("../../utils/util.js")
 var entity = require("../../entity.js")
+var dao = require("../../dao.js")
 var app = getApp();
 
 Page({
@@ -17,40 +18,17 @@ Page({
    */
   onLoad: function (options) {
     var that = this;
-    wx.showLoading({
-      title: '获取数据中...',
-    })
-    wx.request({
-      url: app.globalData.host + '/getaccountsubjectserv?all=1',
-      method: 'GET',
-      header: util.getheader(),
-      data:{
-        all:"1"
-      },
-      success: function (res) {
-        var result = new entity.resultentity();
-        result.init(res.data)
-        var serverdata = result.data;
-        app.globalData.subjects = [];
-        for (var prop in serverdata) {
-          var subjectdata = serverdata[prop];
-          var subject = new entity.subjectentity();
-          subject.init(subjectdata);
-          app.globalData.subjects.push(subject);
-        }
+    var appDao = new dao.AppDao();
+    appDao.querySubject({
+      all:"1",
+      callFun:function()
+      {
         that.setData({
-          subjects: app.globalData.subjects
+          subjects: wx.getStorageSync("subjects")
         });
-      },
-      fail: function (res) {
-        console.log(res);
-      },
-      complete: function (res) {
-        wx.hideLoading();
       }
-    })
+      })
   },
-
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

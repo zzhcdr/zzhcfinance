@@ -12,45 +12,8 @@ App({
     userInfo: null,
     currUser:{},
     subjects:[],
-    
   },
 
-  getrecordlist:function(accountid)
-  {
-      var recordlist = [];
-      this.globalData.subjects.forEach(function(subject){
-        subject.capitalAccountsById.forEach(function(account){
-          account.capitalRecordsById.forEach(function(record){
-            recordlist.push(record)
-          })
-        })
-      })
-      return recordlist;
-  },
-
-  getRecordByVoucher:function(voucherid)
-  {
-    var recordlist = [];
-    this.globalData.subjects.forEach(function (subject) {
-      subject.capitalAccountsById.forEach(function (account) {
-        account.capitalRecordsById.forEach(function (record) {
-          recordlist.push(record)
-        })
-      })
-    })
-    return recordlist;
-  },
-
-  getSubject:function(id)
-  {
-    var subject = {};
-    this.globalData.subjects.forEach(function(item){
-      if(item.id == id)
-      {
-        subject = item;
-      }
-    });
-    return subject;
-  }
+  
 
 })

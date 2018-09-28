@@ -1,5 +1,6 @@
 // pages/voucher/voucherlist.js
 var entity = require("../../entity.js")
+var dao  = require("../../dao.js")
 var app = getApp();
 Page({
 
@@ -13,33 +14,14 @@ Page({
   loadVouche:function()
   {
     var that = this;
-    wx.showLoading({
-      title: '数据请求中...',
-      mask:true
-    })
-    wx.request({
-      url: app.globalData.host + '/getaccountvoucherserv',
-      data: {
-        accountid: 0
-      },
-      success: function (res) {
-        var vouchers = [];
-        var result = new entity.resultentity();
-        result.init(res.data);
-        result.data.forEach(function (voucherdata) {
-          var voucher = new entity.voucherentity();
-          voucher.init(voucherdata);
-          vouchers.push(voucher);
-        });
+    var appDao = new dao.AppDao();
+    appDao.queryVoucher({
+      callFun:function(){
         that.setData(
           {
-            voucherlist: vouchers
+            voucherlist: appDao.getVouchers()
           }
         );
-      },
-      complete:function()
-      {
-        wx.hideLoading();
       }
     })
   },
