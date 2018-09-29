@@ -3,6 +3,7 @@ var entity = require("../../entity.js")
 var util = require("../../utils/util.js")
 var dao = require("../../dao.js")
 var app = getApp();
+var appDao = new dao.AppDao();
 Page({
 
   /**
@@ -21,7 +22,7 @@ Page({
 
   loadVouche: function () {
     var that = this;
-    var appDao = new dao.AppDao();
+    
 
     appDao.queryVoucher({
       accountid: that.data.accountid,
@@ -40,7 +41,6 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var appDao = new dao.AppDao();
     var subjects = appDao.getSubjects();
     var subjectid = options.subjectid;
     var selsubject = appDao.getSubject(subjectid);
@@ -194,33 +194,21 @@ Page({
               title: '删除中...',
               mask:true
             })
-            wx.request({
-              url: app.globalData.host + '/removecapitalaccountserv',
-              header: util.getheader(),
-              data: {
-                id: that.data.accountid,
-              },
-              success: function (e) {
-                wx.showToast({
-                  title: '删除成功',
-                  complete:function()
-                  {
-                    setTimeout(function () {
-                      wx.navigateBack({});
-                    }, 1000);
-                  }
-                })
-              },
-              fail: function (e) {
-                wx.showToast({
-                  title: '删除失败',
-                })
-              },
-              complete:function()
-              {
-                wx.hideLoading();
-              }
-            })
+
+          appDao.removeAccount({
+            id: that.data.accountid,
+            callFun:function()
+            {
+              wx.showToast({
+                title: '删除成功',
+                complete: function () {
+                  setTimeout(function () {
+                    wx.navigateBack({});
+                  }, 1000);
+                }
+              })
+            }
+          })
           }
       }
     })

@@ -2,7 +2,9 @@
 var util = require("../../utils/util.js")
 var entity = require("../../entity.js")
 var dao = require("../../dao.js")
+var http = require("../../network/httpclient.js")
 var app = getApp();
+var appDao = new dao.AppDao();
 Page({
 
   /**
@@ -31,10 +33,8 @@ Page({
    */
   onLoad: function (options) {
     var that = this;
-    var appDao = new dao.AppDao();
     var voucherid = options.id;
     that.data.id = voucherid;
-
     appDao.queryVoucherById({
       id:voucherid,
       callFun:function(voucherdata)
@@ -60,7 +60,6 @@ Page({
 
   showAccount:function()
   {
-    var appDao = new dao.AppDao();
     var subjects = appDao.getSubjects();
     var data = {
       objectMultiArray: [[]]
@@ -72,25 +71,27 @@ Page({
   },
 
   showDebitAccount: function () {
+    var subjects = appDao.getSubjects();
     var data = {
       seldebitsubject: {},
       seldebitaccount: {}
     }
     var subjectIndex = this.data.debitMultiIndex[0];
     var accountIndex = this.data.debitMultiIndex[1];
-    data.seldebitsubject = app.globalData.subjects[subjectIndex];
+    data.seldebitsubject = subjects[subjectIndex];
     data.seldebitaccount = data.seldebitsubject.capitalAccountsById[accountIndex];
     this.setData(data);
   },
 
   showCreditAccount: function () {
+    var subjects = appDao.getSubjects();
     var data = {
       selcreditsubject: {},
       selcreditaccount: {}
     }
     var subjectIndex = this.data.creditMultiIndex[0];
     var accountIndex = this.data.creditMultiIndex[1];
-    data.selcreditsubject = app.globalData.subjects[subjectIndex];
+    data.selcreditsubject = subjects[subjectIndex];
     data.selcreditaccount = data.selcreditsubject.capitalAccountsById[accountIndex];
     this.setData(data);
   },
@@ -114,7 +115,7 @@ Page({
   },
 
   bindDebitMultiPickerChange: function (e) {
-    console.log('picker发送选择改变，携带值为', e.detail.value)
+    //console.log('picker发送选择改变，携带值为', e.detail.value)
     this.setData({
       debitMultiIndex: e.detail.value
     })
@@ -122,22 +123,23 @@ Page({
   },
 
   bindDebitMultiPickerColumnChange: function (e) {
+    var subjects = appDao.getSubjects();
     var column = e.detail.column;
     var columnVal = e.detail.value;
-    console.log('修改的列为', column, '，值为', columnVal);
+    //console.log('修改的列为', column, '，值为', columnVal);
     var data = {
       debitMultiIndex: this.data.debitMultiIndex,
       objectMultiArray: this.data.objectMultiArray,
     };
     data.debitMultiIndex[column] = columnVal;
     if (column == 0) {
-      data.objectMultiArray[1] = app.globalData.subjects[data.debitMultiIndex[0]].capitalAccountsById;
+      data.objectMultiArray[1] = subjects[data.debitMultiIndex[0]].capitalAccountsById;
     }
     this.setData(data);
   },
 
   bindCreditMultiPickerChange: function (e) {
-    console.log('picker发送选择改变，携带值为', e.detail.value)
+    //console.log('picker发送选择改变，携带值为', e.detail.value)
     this.setData({
       creditMultiIndex: e.detail.value
     })
@@ -145,16 +147,17 @@ Page({
   },
 
   bindCreditMultiPickerColumnChange: function (e) {
+    var subjects = appDao.getSubjects();
     var column = e.detail.column;
     var columnVal = e.detail.value;
-    console.log('修改的列为', column, '，值为', columnVal);
+    //console.log('修改的列为', column, '，值为', columnVal);
     var data = {
       creditMultiIndex: this.data.creditMultiIndex,
       objectMultiArray: this.data.objectMultiArray
     };
     data.creditMultiIndex[column] = columnVal;
     if (column == 0) {
-      data.objectMultiArray[1] = app.globalData.subjects[data.creditMultiIndex[0]].capitalAccountsById;
+      data.objectMultiArray[1] = subjects[data.creditMultiIndex[0]].capitalAccountsById;
     }
     this.setData(data);
   },
@@ -239,39 +242,31 @@ Page({
     wx.showLoading({
       title: '更新凭据信息中...',
     })
-    wx.request({
-      url: app.globalData.host +'/modifyvoucherserv',
-      data:{
-        id:that.data.id,
-        title: that.data.title,
-        balance: that.data.balance,
-        date: that.data.date,
-        attachment: that.data.attachment,
-        debitid: that.data.seldebitaccount.id,
-        creditid: that.data.selcreditaccount.id,
-      },
-      success:function(res)
-      {
-        if(that.data.files.length>0)
-        {
-          that.onupload();
-        }else
-        {
-          wx.hideLoading();
-          wx.showToast({
-            title: '更新凭据信息成功',
-            icon:'none'
-          })
-        }
 
-      },
-      fail:function(res)
+    appDao.modifyVoucher(
       {
-        wx.showToast({
-          title: '更新凭据信息失败',
-        })
+        data:{
+          id: that.data.id,
+          title: that.data.title,
+          balance: that.data.balance,
+          date: that.data.date,
+          attachment: that.data.attachment,
+          debitid: that.data.seldebitaccount.id,
+          creditid: that.data.selcreditaccount.id,
+        },
+        callFun:function()
+        {
+          if (that.data.files.length > 0) {
+            that.onupload();
+          } else {
+            wx.showToast({
+              title: '更新凭据信息成功',
+              icon: 'none'
+            })
+          }
+        }
       }
-    })
+    )
   },
 
   onDeleteVoucher:function(e)
@@ -344,6 +339,7 @@ Page({
   {
 
     var that = this;
+    var httpClient = new http.HttpClient();
     if (that.data.uploadindex < that.data.files.length)
     {
       var tipTitle = '上传附件中 ' + (that.data.uploadindex + 1) + "/" + that.data.files.length
@@ -352,7 +348,7 @@ Page({
       })
       var file = that.data.files[that.data.uploadindex]
       const uploadTask = wx.uploadFile({
-        url: app.globalData.host + '/uploadvoucherserv', //仅为示例，非真实的接口地址
+        url: httpClient.host + '/uploadvoucherserv', //仅为示例，非真实的接口地址
         filePath: file,
         header: util.getheader(),
         name: that.data.id,
@@ -384,7 +380,6 @@ Page({
       wx.hideLoading();
       wx.showToast({
         title: '更新凭据信息成功',
-        icon: 'none'
       })
     }
   },
@@ -392,31 +387,30 @@ Page({
   ondelete:function()
   {
     var voucherid = this.data.id;
-    wx.request({
-      url: app.globalData.host + '/removevoucherserv',
-      data:{
-        id: voucherid
-      },
-      success:function(res)
-      {
-        wx.showToast({
-          title: '删除成功',
-          icon:"success",
-          complete:function()
-          {
-            setTimeout(function(){
-              wx.navigateBack({});
-            },1000);
-          }
-        })
-      },
-      fail:function(res)
-      {
-        wx.showToast({
-          title: '删除失败',
-        })
+    wx.showModal({
+      title: '系统提醒',
+      content: '是否删除凭据',
+      success: function (res) {
+        if (res.confirm) {
+          appDao.removeVoucher({
+            id: voucherid,
+            callFun: function () {
+              wx.showToast({
+                title: '删除成功',
+                icon: "success",
+                complete: function () {
+                  setTimeout(function () {
+                    wx.navigateBack({});
+                  }, 1000);
+                }
+              })
+            }
+          })
+        }
       }
     })
-  },
 
+
+
+  },
 })

@@ -1,6 +1,8 @@
 // pages/account/account_add.js
 var util = require("../../utils/util.js")
+var dao = require("../../dao.js")
 var app = getApp();
+var appDao = new dao.AppDao();
 Page({
 
   /**
@@ -17,9 +19,11 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    
+    var subjects = appDao.getSubjects();
     this.setData({
-      subjects: app.globalData.subjects,
-      selsubject: app.globalData.subjects[0]
+      subjects: subjects,
+      selsubject: subjects[0]
     })
   },
 
@@ -105,38 +109,24 @@ Page({
       title: '正在请求服务器...',
       mask:true
     });
-    wx.request({
-      url: app.globalData.host + '/addcapitalaccountserv',
-      header:util.getheader(),
-      data: {
+
+    appDao.addAccount({
+      data:{
         subjectid: that.data.selsubject.id,
         txtName: that.data.name,
         initbalance: that.data.balance
       },
-      method:"GET",
-      success:function(res)
+      callFun:function()
       {
         wx.showToast({
-          title: "添加成功",
-          duration: 2000,
-          icon: "none"
+          title: "添加成功"
         })
-        setTimeout(function(){
+        setTimeout(function () {
           wx.reLaunch({
             url: '../account/account',
           })
-        },1000);
-      },
-      fail:function(res)
-      {
-         console.error(res);
-      },
-      complete:function(res)
-      {
-        wx.hideLoading();
+        }, 1000);
       }
     })
   },
-
-  
 })

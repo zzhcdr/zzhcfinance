@@ -1,6 +1,8 @@
 // pages/record/record_add.js
 var util = require("../../utils/util.js")
+var dao = require("../../dao.js")
 var app = getApp();
+var appDao = new dao.AppDao();
 Page({
 
   /**
@@ -24,6 +26,7 @@ Page({
    */
   onLoad: function (options) {
     var that = this;
+    var subjects = appDao.getSubjects();
     var today = new Date();
     this.setData({
       date: util.formatDate(today)
@@ -32,33 +35,35 @@ Page({
     var data = {
       objectMultiArray:[[]]
     };
-    data.objectMultiArray[0] = app.globalData.subjects;
-    data.objectMultiArray[1] = app.globalData.subjects[0].capitalAccountsById;
+    data.objectMultiArray[0] = subjects;
+    data.objectMultiArray[1] = subjects[0].capitalAccountsById;
     this.setData(data);
     this.showDebitAccount();
     this.showCreditAccount();
   },
 
   showDebitAccount: function () {
+    var subjects = appDao.getSubjects();
     var data = {
       seldebitsubject: {},
       seldebitaccount: {}
     }
     var subjectIndex = this.data.debitMultiIndex[0];
     var accountIndex = this.data.debitMultiIndex[1];
-    data.seldebitsubject = app.globalData.subjects[subjectIndex];
+    data.seldebitsubject = subjects[subjectIndex];
     data.seldebitaccount = data.seldebitsubject.capitalAccountsById[accountIndex];
     this.setData(data);
   },
 
   showCreditAccount: function () {
+    var subjects = appDao.getSubjects();
     var data = {
       selcreditsubject: {},
       selcreditaccount: {}
     }
     var subjectIndex = this.data.creditMultiIndex[0];
     var accountIndex = this.data.creditMultiIndex[1];
-    data.selcreditsubject = app.globalData.subjects[subjectIndex];
+    data.selcreditsubject = subjects[subjectIndex];
     data.selcreditaccount = data.selcreditsubject.capitalAccountsById[accountIndex];
     this.setData(data);
   },
@@ -144,44 +149,30 @@ Page({
       title: '正在请求服务器...',
       mask:true
     });
-    wx.request({
-      url: app.globalData.host + '/addcapitalrecordserv',
-      header: util.getheader(),
+
+    appDao.addRecord({
       data:{
         debitid: that.data.seldebitaccount.id,
         creditid: that.data.selcreditaccount.id,
-        txtName:that.data.name,
-        txtAmount:that.data.balance,
-        txtDate:that.data.date,
+        txtName: that.data.name,
+        txtAmount: that.data.balance,
+        txtDate: that.data.date,
       },
-      method:"GET",
-      success:function(res)
+      callFun:function()
       {
         wx.showToast({
           title: '添加记录成功',
-          icon:'success'
+          icon: 'success'
         });
         setTimeout(function () {
           wx.navigateBack();
         }, 1000);
-      },
-      fail:function(res)
-      {
-        wx.showToast({
-          duration:2000,
-          title: '添加记录失败',
-        })
-      },
-      complete:function(res)
-      {
-        wx.hideLoading();
       }
     })
-
   },
 
   bindDebitMultiPickerChange: function (e) {
-    console.log('picker发送选择改变，携带值为', e.detail.value)
+    //console.log('picker发送选择改变，携带值为', e.detail.value)
     this.setData({
       debitMultiIndex: e.detail.value
     })
@@ -189,22 +180,23 @@ Page({
   },
 
   bindDebitMultiPickerColumnChange: function (e) {
+    var subjects = appDao.getSubjects();
     var column = e.detail.column;
     var columnVal = e.detail.value;
-    console.log('修改的列为', column, '，值为', columnVal);
+    //console.log('修改的列为', column, '，值为', columnVal);
     var data = {
       debitMultiIndex: this.data.debitMultiIndex,
       objectMultiArray: this.data.objectMultiArray,
     };
     data.debitMultiIndex[column] = columnVal;
     if (column == 0) {
-      data.objectMultiArray[1] = app.globalData.subjects[data.debitMultiIndex[0]].capitalAccountsById;
+      data.objectMultiArray[1] = subjects[data.debitMultiIndex[0]].capitalAccountsById;
     }
     this.setData(data);
   },
 
   bindCreditMultiPickerChange: function (e) {
-    console.log('picker发送选择改变，携带值为', e.detail.value)
+    //console.log('picker发送选择改变，携带值为', e.detail.value)
     this.setData({
       creditMultiIndex: e.detail.value
     })
@@ -212,9 +204,10 @@ Page({
   },
 
   bindCreditMultiPickerColumnChange: function (e) {
+    var subjects = appDao.getSubjects();
     var column = e.detail.column;
     var columnVal = e.detail.value;
-    console.log('修改的列为', column, '，值为', columnVal);
+    //console.log('修改的列为', column, '，值为', columnVal);
     var data = {
       creditMultiIndex: this.data.creditMultiIndex,
       objectMultiArray: this.data.objectMultiArray
@@ -222,7 +215,7 @@ Page({
     data.creditMultiIndex[column] = columnVal;
     if (column == 0)
     {
-      data.objectMultiArray[1] = app.globalData.subjects[data.creditMultiIndex[0]].capitalAccountsById;
+      data.objectMultiArray[1] = subjects[data.creditMultiIndex[0]].capitalAccountsById;
     }
     this.setData(data);
   }

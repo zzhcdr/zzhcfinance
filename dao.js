@@ -5,6 +5,11 @@ var httpClient = new http.HttpClient();
 var getaccountsubjectserv = "/getaccountsubjectserv"
 var getaccountvoucherserv = "/getaccountvoucherserv"
 var getvoucherserv = "/getvoucherserv"
+var addcapitalaccountserv = "/addcapitalaccountserv"
+var removecapitalaccountserv = "/removecapitalaccountserv"
+var addcapitalrecordserv = "/addcapitalrecordserv"
+var removevoucherserv = "/removevoucherserv"
+var modifyvoucherserv = "/modifyvoucherserv"
 
 function AppDao() {}
 
@@ -131,6 +136,83 @@ AppDao.prototype.queryVoucherById = function (params) {
     },
     successFun: function () {
       params.callFun(httpClient.responseData);
+    },
+    failFun: function (res) {
+      console.log(res);
+    },
+  })
+}
+
+AppDao.prototype.addAccount = function (params) {
+  var that = this;
+  httpClient.request({
+    requestUrl: addcapitalaccountserv,
+    method: httpClient.method_get,
+    params: params.data,
+    successFun: function () {
+      params.callFun(httpClient.responseData);
+    },
+    failFun: function (res) {
+      console.log(res);
+    },
+  })
+}
+
+AppDao.prototype.removeAccount = function (params) {
+  var that = this;
+  httpClient.request({
+    requestUrl: removecapitalaccountserv,
+    method: httpClient.method_get,
+    params: {
+      id:params.id
+    },
+    successFun: function () {
+      params.callFun();
+    },
+    failFun: function (res) {
+      console.log(res);
+    },
+  })
+}
+
+AppDao.prototype.addRecord = function (params) {
+  var that = this;
+  httpClient.request({
+    requestUrl: addcapitalrecordserv,
+    method: httpClient.method_get,
+    params:params.data,
+    successFun: function () {
+      params.callFun();
+    },
+    failFun: function (res) {
+      console.log(res);
+    },
+  })
+}
+
+AppDao.prototype.removeVoucher = function (params) {
+  var that = this;
+  httpClient.request({
+    requestUrl: removevoucherserv,
+    method: httpClient.method_get,
+    params: params.id,
+    successFun: function () {
+      params.callFun();
+    },
+    failFun: function (res) {
+      console.log(res);
+    },
+  })
+}
+
+AppDao.prototype.modifyVoucher = function (params) {
+  var that = this;
+  httpClient.request({
+    requestUrl: modifyvoucherserv,
+    method: httpClient.method_get,
+    params: params.data,
+    successFun: function () {
+      params.callFun();
     },
     failFun: function (res) {
       console.log(res);
