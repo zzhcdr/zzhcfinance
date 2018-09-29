@@ -292,32 +292,26 @@ Page({
               wx.showLoading({
                 title: '删除中...',
               })
-              wx.request({
-                url: app.globalData.host + '/deletevoucherattachmentserv',
-                data:{
-                  id:that.data.id,
-                  fileName: fileName
-                },
-                success:function(e)
+
+              appDao.deleteVoucherAttachment(
                 {
-                  wx.hideLoading();
-                  wx.showToast({
-                    title: '删除成功',
-                  })
-                  deleteIndex = that.data.uploadedfiles.indexOf(itemid);
-                  that.data.uploadedfiles.splice(deleteIndex, 1);
-                  that.setData({
-                    uploadedfiles: that.data.uploadedfiles
-                  });
-                },
-                fail:function(e)
-                {
-                  wx.hideLoading();
-                  wx.showToast({
-                    title: '删除失败',
-                  })
+                  data:{
+                    id: that.data.id,
+                    fileName: fileName
+                  },
+                  callFun:function()
+                  {
+                    wx.showToast({
+                      title: '删除成功',
+                    })
+                    deleteIndex = that.data.uploadedfiles.indexOf(itemid);
+                    that.data.uploadedfiles.splice(deleteIndex, 1);
+                    that.setData({
+                      uploadedfiles: that.data.uploadedfiles
+                    });
+                  }
                 }
-              })
+              )
           }
           else
           {
@@ -409,8 +403,5 @@ Page({
         }
       }
     })
-
-
-
   },
 })

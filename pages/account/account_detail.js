@@ -153,33 +153,13 @@ Page({
 
   onupdate: function () {
     var that = this;
-    wx.showLoading({
-      title: '更新账户信息中...',
-      mask:true
-    })
-    wx.request({
-      url: app.globalData.host + '/modifycapitalaccountserv',
-      header: util.getheader(),
-      data: {
+    appDao.modifyAccount({
+      data:{
         id: that.data.accountid,
         name: that.data.accountname,
         subjectid: that.data.selsubject.id,
         initbalance: that.data.accountinitbalance
-      },
-      success: function (res) {
-        wx.showToast({
-          title: '更新账户成功',
-        })
-      },
-      fail: function (res) {
-        wx.showToast({
-          title: '更新账户失败',
-        })
-      },
-      complete:function()
-      {
-        wx.hideLoading();
-      }
+      }      
     })
   },
 
@@ -195,20 +175,7 @@ Page({
               mask:true
             })
 
-          appDao.removeAccount({
-            id: that.data.accountid,
-            callFun:function()
-            {
-              wx.showToast({
-                title: '删除成功',
-                complete: function () {
-                  setTimeout(function () {
-                    wx.navigateBack({});
-                  }, 1000);
-                }
-              })
-            }
-          })
+          appDao.removeAccount(that.data.accountid)
           }
       }
     })

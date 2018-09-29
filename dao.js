@@ -7,9 +7,11 @@ var getaccountvoucherserv = "/getaccountvoucherserv"
 var getvoucherserv = "/getvoucherserv"
 var addcapitalaccountserv = "/addcapitalaccountserv"
 var removecapitalaccountserv = "/removecapitalaccountserv"
+var modifycapitalaccountserv = "/modifycapitalaccountserv"
 var addcapitalrecordserv = "/addcapitalrecordserv"
 var removevoucherserv = "/removevoucherserv"
 var modifyvoucherserv = "/modifyvoucherserv"
+var deletevoucherattachmentserv = "/deletevoucherattachmentserv"
 
 function AppDao() {}
 
@@ -158,19 +160,48 @@ AppDao.prototype.addAccount = function (params) {
   })
 }
 
-AppDao.prototype.removeAccount = function (params) {
+AppDao.prototype.modifyAccount = function(params)
+{
+  var that = this;
+  httpClient.request({
+    requestUrl: modifycapitalaccountserv,
+    method: httpClient.method_get,
+    params: params.data,
+    successFun: function () {
+      wx.showToast({
+        title: '更新账户成功',
+      })
+    },
+    failFun: function (res) {
+      wx.showToast({
+        title: '更新账户失败',
+      })
+    },
+  })
+}
+
+AppDao.prototype.removeAccount = function (accountid) {
   var that = this;
   httpClient.request({
     requestUrl: removecapitalaccountserv,
     method: httpClient.method_get,
     params: {
-      id:params.id
+      id: accountid
     },
     successFun: function () {
-      params.callFun();
+      wx.showToast({
+        title: '删除成功',
+        complete: function () {
+          setTimeout(function () {
+            wx.navigateBack({});
+          }, 1000);
+        }
+      })
     },
     failFun: function (res) {
-      console.log(res);
+      wx.showToast({
+        title: '删除账户失败',
+      })
     },
   })
 }
@@ -209,6 +240,22 @@ AppDao.prototype.modifyVoucher = function (params) {
   var that = this;
   httpClient.request({
     requestUrl: modifyvoucherserv,
+    method: httpClient.method_get,
+    params: params.data,
+    successFun: function () {
+      params.callFun();
+    },
+    failFun: function (res) {
+      console.log(res);
+    },
+  })
+}
+
+AppDao.prototype.deleteVoucherAttachment = function (params)
+{
+  var that = this;
+  httpClient.request({
+    requestUrl: deletevoucherattachmentserv,
     method: httpClient.method_get,
     params: params.data,
     successFun: function () {
