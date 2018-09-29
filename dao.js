@@ -222,7 +222,6 @@ AppDao.prototype.addRecord = function (params) {
 }
 
 AppDao.prototype.removeVoucher = function (params) {
-  console.log("appdao.removeVoucher.id:"+params.id)
   var that = this;
   httpClient.request({
     requestUrl: removevoucherserv,

@@ -1,8 +1,8 @@
 
 function HttpClient() 
 {
-  this.host = "http://127.0.0.1:8080";
-  //this.host = "https://erp.zzhcdr.com";
+  //this.host = "http://127.0.0.1:8080";
+  this.host = "https://erp.zzhcdr.com";
   this.method_get = "GET";
   this.method_post = "POST";
   this.serverCode = 0;
@@ -35,6 +35,9 @@ HttpClient.prototype.request = function (metaData)
       metaData.successFun();
     },
     fail: function (ex) {
+      wx.showToast({
+        title: '请求服务器失败',
+      })
       metaData.failFun(ex);
     },
     complete: function () {
