@@ -226,7 +226,9 @@ AppDao.prototype.removeVoucher = function (params) {
   httpClient.request({
     requestUrl: removevoucherserv,
     method: httpClient.method_get,
-    params: params.id,
+    params: {
+      id: params.id
+    },
     successFun: function () {
       params.callFun();
     },

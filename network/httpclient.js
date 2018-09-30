@@ -35,6 +35,9 @@ HttpClient.prototype.request = function (metaData)
       metaData.successFun();
     },
     fail: function (ex) {
+      wx.showToast({
+        title: '请求服务器失败',
+      })
       metaData.failFun(ex);
     },
     complete: function () {
