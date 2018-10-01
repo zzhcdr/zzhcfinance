@@ -2,6 +2,7 @@ var http = require("network/httpclient")
 var entity = require("entity")
 var httpClient = new http.HttpClient();
 
+var getsubjecttypeserv = "/getsubjecttypeserv"
 var getaccountsubjectserv = "/getaccountsubjectserv"
 var getaccountvoucherserv = "/getaccountvoucherserv"
 var getvoucherserv = "/getvoucherserv"
@@ -14,6 +15,15 @@ var modifyvoucherserv = "/modifyvoucherserv"
 var deletevoucherattachmentserv = "/deletevoucherattachmentserv"
 
 function AppDao() {}
+
+AppDao.prototype.setSubjectTypes = function(subjectTypes)
+{
+  wx.setStorageSync("subjectTypes", subjectTypes);
+}
+
+AppDao.prototype.getSubjectTypes = function () {
+  return wx.getStorageSync("subjectTypes");
+}
 
 AppDao.prototype.setSubjects = function (subjects) {
   wx.setStorageSync("subjects", subjects);
@@ -69,7 +79,36 @@ AppDao.prototype.getSubject = function (id) {
   return subject;
 }
 
+AppDao.prototype.querySubjectType = function (params)
+{
+  var that = this;
+  httpClient.request({
+    requestUrl: getsubjecttypeserv,
+    method: httpClient.method_get,
+    params: {},
+    successFun: function () {
+      var serverdata = httpClient.responseData;
+      console.log(serverdata)
+      var subjectTypes = [];
+      serverdata.forEach(function (typeData) {
+        var subjectType = new entity.SubjectTypeEntity();
+        subjectType.init(typeData);
+        subjectTypes.push(subjectType);
+      })
+      that.setSubjectTypes(subjectTypes);
+      params.callFun();
+    },
+    failFun: function (res) {
+      console.log(res);
+    },
+  })
+}
+
 AppDao.prototype.querySubject = function (params) {
+  this.querySubjectType(params);
+}
+
+AppDao.prototype.querySubject2 = function (params) {
   var that = this;
   if(params.all == undefined)
   {

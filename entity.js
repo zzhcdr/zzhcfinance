@@ -50,6 +50,43 @@ userentity.prototype.getloginresult = function () {
   return result;
 }
 
+
+function SubjectTypeEntity() {
+  this.id = 0;
+  this.name = '';
+  this.accountSubjectsById = [];
+  this.balance = 0;
+}
+
+SubjectTypeEntity.prototype.init = function (data) {
+  var that  = this;
+  this.accountSubjectsById = [];
+  for(var prop in data)
+  {
+    var propData = data[prop];
+    if (prop == "accountSubjectsById")
+    {
+      propData.forEach(function(subjectData){
+        var subject = new subjectentity();
+        subject.init(subjectData)
+        that.accountSubjectsById.push(subject);
+      })
+    }else
+    {
+      this[prop] = propData;
+    }
+  }
+  this.balance = this.getbalacne();
+}
+
+SubjectTypeEntity.prototype.getbalacne = function () {
+  var balance = 0;
+  this.accountSubjectsById.forEach(function (subject) {
+    balance += subject.balance;
+  });
+  return balance;
+}
+
 function subjectentity() {
   this.id = 0;
   this.name = '';
@@ -85,7 +122,6 @@ subjectentity.prototype.init = function (data)
 
 subjectentity.prototype.getbalacne = function () {
   var balance = 0;
-
   this.capitalAccountsById.forEach(function(account)
   {
     balance += account.getbalacne();
@@ -229,6 +265,7 @@ voucherentity.prototype.init = function(data)
 
 module.exports.resultentity = resultentity;
 module.exports.userentity = userentity;
+module.exports.SubjectTypeEntity = SubjectTypeEntity
 module.exports.subjectentity = subjectentity
 module.exports.accountentity = accountentity
 module.exports.recordentity = recordentity
