@@ -77,17 +77,16 @@ Page({
   
   },
 
-  jumpToRecord:function(event)
-  {
+  jumpToAccount: function (event) {
     var data = event.currentTarget.dataset;
     var params = ""
-    for(var prop in data)
-    {
+    for (var prop in data) {
       var propdata = data[prop]
-      params += "&"+prop + "=" + propdata
+      params += "&" + prop + "=" + propdata
     }
     wx.navigateTo({
-      url: 'account_detail?'+params,
+      url: 'accountlist?' + params,
     })
-  }
+  },
+
 })

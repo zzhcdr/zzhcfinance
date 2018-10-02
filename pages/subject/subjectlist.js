@@ -10,7 +10,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    subjects: []
+    subjectTypes: []
   },
 
   /**
@@ -24,7 +24,7 @@ Page({
       callFun:function()
       {
         that.setData({
-          subjects: wx.getStorageSync("subjects")
+          subjectTypes: wx.getStorageSync("subjectTypes")
         });
       }
       })

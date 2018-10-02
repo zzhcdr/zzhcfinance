@@ -58,6 +58,20 @@ function SubjectTypeEntity() {
   this.balance = 0;
 }
 
+SubjectTypeEntity.prototype.compare = function(itemA,itemB)
+{
+  if(itemA.id > itemB.id)
+  {
+    return 1;
+  } else if (itemA.id < itemB.id)
+  {
+    return -1;
+  }else
+  {
+    return 0;
+  }
+}
+
 SubjectTypeEntity.prototype.init = function (data) {
   var that  = this;
   this.accountSubjectsById = [];
@@ -76,6 +90,7 @@ SubjectTypeEntity.prototype.init = function (data) {
       this[prop] = propData;
     }
   }
+  this.accountSubjectsById.sort(this.compare);
   this.balance = this.getbalacne();
 }
 

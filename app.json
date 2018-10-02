@@ -12,7 +12,8 @@
     "pages/subject/subjectlist",
     "pages/transaction/translist",
     "pages/subject/subjectadd",
-    "pages/account/account_detail"
+    "pages/account/account_detail",
+    "pages/account/accountlist"
   ],
   "window": {
     "backgroundTextStyle": "light",
