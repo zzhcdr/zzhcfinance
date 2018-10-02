@@ -1,18 +1,23 @@
 // pages/account/accountlist.js
+var dao = require("../../dao.js")
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-
+    accounts:[]
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log("id:"+options.id)
+    var appDao = new dao.AppDao();
+    var subject = appDao.getSubject(options.id);
+    this.setData({
+      accounts: subject.capitalAccountsById
+    })
   },
 
   /**
@@ -62,5 +67,18 @@ Page({
    */
   onShareAppMessage: function () {
 
-  }
+  },
+
+  jumpToDetail: function (event) {
+    var data = event.currentTarget.dataset;
+    var params = ""
+    for (var prop in data) {
+      var propdata = data[prop]
+      params += "&" + prop + "=" + propdata
+    }
+    wx.navigateTo({
+      url: 'account_detail?' + params,
+    })
+  },
+
 })

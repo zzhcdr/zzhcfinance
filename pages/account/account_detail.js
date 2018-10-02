@@ -23,7 +23,6 @@ Page({
   loadVouche: function () {
     var that = this;
     
-
     appDao.queryVoucher({
       accountid: that.data.accountid,
       callFun:function()

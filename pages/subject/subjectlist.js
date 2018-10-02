@@ -3,7 +3,7 @@ var util = require("../../utils/util.js")
 var entity = require("../../entity.js")
 var dao = require("../../dao.js")
 var app = getApp();
-
+var appDao = new dao.AppDao();
 Page({
 
   /**
@@ -18,7 +18,7 @@ Page({
    */
   onLoad: function (options) {
     var that = this;
-    var appDao = new dao.AppDao();
+    
     appDao.querySubject({
       all:"1",
       callFun:function()
@@ -81,36 +81,15 @@ Page({
   onStatusChange:function(e)
   {
     var subjectid = e.currentTarget.id;
-    wx.showLoading({
-      title: '正在修改中...',
-      mask:true
-    })
-    wx.request({
-      url: app.globalData.host + '/modifysubjectstatusserv',
-      header: util.getheader(),
-      data:{
-        id: subjectid
-      },
-      method:"GET",
-      success:function()
+    appDao.modifySubjectStatus({
+      id: subjectid,
+      callFun:function()
       {
-        var subject = app.getSubject(subjectid);
-        subject.isopen = !subject.isopen;
+        
         wx.showToast({
-          title: '修改成功',
+          title: '修改成功'
         })
-      },
-      fail:function()
-      {
-        wx.showToast({
-          title: '修改失败',
-        })
-      },
-      complete:function()
-      {
-          wx.hideLoading();
       }
     })
-
   }
 })

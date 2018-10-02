@@ -3,7 +3,6 @@ var entity = require("entity")
 var httpClient = new http.HttpClient();
 
 var getsubjecttypeserv = "/getsubjecttypeserv"
-var getaccountsubjectserv = "/getaccountsubjectserv"
 var getaccountvoucherserv = "/getaccountvoucherserv"
 var getvoucherserv = "/getvoucherserv"
 var addcapitalaccountserv = "/addcapitalaccountserv"
@@ -13,6 +12,7 @@ var addcapitalrecordserv = "/addcapitalrecordserv"
 var removevoucherserv = "/removevoucherserv"
 var modifyvoucherserv = "/modifyvoucherserv"
 var deletevoucherattachmentserv = "/deletevoucherattachmentserv"
+var modifysubjectstatusserv = "/modifysubjectstatusserv"
 
 function AppDao() {}
 
@@ -25,13 +25,14 @@ AppDao.prototype.getSubjectTypes = function () {
   return wx.getStorageSync("subjectTypes");
 }
 
-AppDao.prototype.setSubjects = function (subjects) {
-  wx.setStorageSync("subjects", subjects);
-}
-
 AppDao.prototype.getSubjects = function()
 {
-  return wx.getStorageSync("subjects");
+  var subjects = []
+  var subjectTypes = this.getSubjectTypes();
+  subjectTypes.forEach(function(typeData){
+    subjects = subjects.concat(typeData.accountSubjectsById);
+  })
+  return subjects;
 }
 
 AppDao.prototype.setVouchers = function (vouchers) {
@@ -88,7 +89,6 @@ AppDao.prototype.querySubjectType = function (params)
     params: {},
     successFun: function () {
       var serverdata = httpClient.responseData;
-      console.log(serverdata)
       var subjectTypes = [];
       serverdata.forEach(function (typeData) {
         var subjectType = new entity.SubjectTypeEntity();
@@ -106,36 +106,6 @@ AppDao.prototype.querySubjectType = function (params)
 
 AppDao.prototype.querySubject = function (params) {
   this.querySubjectType(params);
-}
-
-AppDao.prototype.querySubject2 = function (params) {
-  var that = this;
-  if(params.all == undefined)
-  {
-    params.all = "0"
-  }
-  httpClient.request({
-    requestUrl: getaccountsubjectserv,
-    method: httpClient.method_get,
-    params: { 
-      all: params.all
-    },
-    successFun: function () {
-      var serverdata = httpClient.responseData;
-      var subjects = [];
-      serverdata.forEach(function(subjectData)
-      {
-        var subject = new entity.subjectentity();
-        subject.init(subjectData);
-        subjects.push(subject);
-      })
-      that.setSubjects(subjects);
-      params.callFun();
-    },
-    failFun: function (res) {
-      console.log(res);
-    },
-  })
 }
 
 AppDao.prototype.queryVoucher = function (params) {
@@ -308,6 +278,24 @@ AppDao.prototype.deleteVoucherAttachment = function (params)
   })
 }
 
-
+AppDao.prototype.modifySubjectStatus = function(params)
+{
+  var that = this;
+  httpClient.request({
+    requestUrl: modifysubjectstatusserv,
+    method: httpClient.method_get,
+    params: {
+      id: params.id
+    },
+    successFun: function () {
+      var subject = that.getSubject(params.id);
+      subject.isopen = !subject.isopen;
+      params.callFun();
+    },
+    failFun: function (res) {
+      console.log(res);
+    },
+  })
+}
 
 module.exports.AppDao = AppDao;
