@@ -9,7 +9,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-    subjects: [],
+    subjectMultiIndex: [0, 0],
+    subjectMultiArray: [[]],
     selsubject:{},
     name: "",
     balance: 0
@@ -19,12 +20,29 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var subjectTypes = appDao.getSubjectTypes();
+    var data = {
+      subjectMultiArray: [[]]
+    };
+    data.subjectMultiArray[0] = subjectTypes;
+    data.subjectMultiArray[1] = subjectTypes[0].accountSubjectsById;
+    data.selsubject = data.subjectMultiArray[1][0]
+    this.setData(data);
+    this.showSubject();
+  },
+
+  showSubject: function () {
+    var subjectTypes = appDao.getSubjectTypes();
+    var data = {
+      seldebitsubject: {},
+      seldebitaccount: {}
+    }
+    var typeIndex = this.data.subjectMultiIndex[0];
+    var subjectIndex = this.data.subjectMultiIndex[1];
     
-    var subjects = appDao.getSubjects();
-    this.setData({
-      subjects: subjects,
-      selsubject: subjects[0]
-    })
+    data.seldebitsubject = subjects[subjectIndex];
+    data.seldebitaccount = data.seldebitsubject.capitalAccountsById[accountIndex];
+    this.setData(data);
   },
 
   /**
@@ -76,12 +94,39 @@ Page({
   
   },
 
-  bindPickerChange: function (e) {
+  bindSubjectChange: function (e) {
     var that = this;
+    
     this.setData({
-      selsubject: that.data.subjects[e.detail.value]
+      debitMultiIndex: e.detail.value
     })
+
+    this.showDebitAccount();
+
   },
+
+  bindDebitMultiPickerChange: function (e) {
+    //console.log('picker发送选择改变，携带值为', e.detail.value)
+    
+  },
+
+  bindSubjectColumnChange: function (e) {
+    var subjects = appDao.getSubjects();
+    var column = e.detail.column;
+    var columnVal = e.detail.value;
+    //console.log('修改的列为', column, '，值为', columnVal);
+    var data = {
+      debitMultiIndex: this.data.debitMultiIndex,
+      objectMultiArray: this.data.objectMultiArray,
+    };
+    data.debitMultiIndex[column] = columnVal;
+    if (column == 0) {
+      data.objectMultiArray[1] = subjects[data.debitMultiIndex[0]].capitalAccountsById;
+    }
+    this.setData(data);
+  },
+
+
 
   nameinput: function (e) {
     this.setData({

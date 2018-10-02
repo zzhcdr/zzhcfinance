@@ -4,7 +4,7 @@
                     <view class="weui-label">类型</view>
                 </view>
                 <view class="weui-cell__bd">
-                    <picker mode="selector" bindchange="bindPickerChange"  range="{{subjects}}" range-key='name'>
+                    <picker mode="multiSelector" range="{{subjectMultiArray}}" range-key='name' bindchange="bindSubjectChange" bindcolumnchange="bindSubjectColumnChange" value="{{subjectMultiIndex}}" >
                     <text class="weui-input">{{selsubject.name}}</text>
             </picker>
                 </view>
