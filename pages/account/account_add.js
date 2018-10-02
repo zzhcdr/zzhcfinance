@@ -3,6 +3,7 @@ var util = require("../../utils/util.js")
 var dao = require("../../dao.js")
 var app = getApp();
 var appDao = new dao.AppDao();
+var subjectTypes = appDao.getSubjectTypes();
 Page({
 
   /**
@@ -20,7 +21,6 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var subjectTypes = appDao.getSubjectTypes();
     var data = {
       subjectMultiArray: [[]]
     };
@@ -32,16 +32,12 @@ Page({
   },
 
   showSubject: function () {
-    var subjectTypes = appDao.getSubjectTypes();
     var data = {
-      seldebitsubject: {},
-      seldebitaccount: {}
+      selsubject: {}
     }
     var typeIndex = this.data.subjectMultiIndex[0];
     var subjectIndex = this.data.subjectMultiIndex[1];
-    
-    data.seldebitsubject = subjects[subjectIndex];
-    data.seldebitaccount = data.seldebitsubject.capitalAccountsById[accountIndex];
+    data.selsubject = subjectTypes[typeIndex].accountSubjectsById[subjectIndex];
     this.setData(data);
   },
 
@@ -96,37 +92,26 @@ Page({
 
   bindSubjectChange: function (e) {
     var that = this;
-    
     this.setData({
-      debitMultiIndex: e.detail.value
+      subjectMultiIndex: e.detail.value
     })
-
-    this.showDebitAccount();
-
-  },
-
-  bindDebitMultiPickerChange: function (e) {
-    //console.log('picker发送选择改变，携带值为', e.detail.value)
-    
+    this.showSubject();
   },
 
   bindSubjectColumnChange: function (e) {
-    var subjects = appDao.getSubjects();
     var column = e.detail.column;
     var columnVal = e.detail.value;
     //console.log('修改的列为', column, '，值为', columnVal);
     var data = {
-      debitMultiIndex: this.data.debitMultiIndex,
-      objectMultiArray: this.data.objectMultiArray,
+      subjectMultiIndex: this.data.subjectMultiIndex,
+      subjectMultiArray: this.data.subjectMultiArray,
     };
-    data.debitMultiIndex[column] = columnVal;
+    data.subjectMultiIndex[column] = columnVal;
     if (column == 0) {
-      data.objectMultiArray[1] = subjects[data.debitMultiIndex[0]].capitalAccountsById;
+      data.subjectMultiArray[1] = subjectTypes[data.subjectMultiIndex[0]].accountSubjectsById;
     }
     this.setData(data);
   },
-
-
 
   nameinput: function (e) {
     this.setData({
