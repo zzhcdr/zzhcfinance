@@ -116,7 +116,6 @@ subjectentity.prototype.init = function (data)
   var that = this;
   this.capitalAccountsById = [];
   for (var prop in data) {
-    console.log("prop:"+prop)
     if (prop =="capitalAccountsById")
     {
       var accountsdata = data[prop];
