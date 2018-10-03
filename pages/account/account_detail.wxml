@@ -77,9 +77,9 @@
                           {{item.createdate}}
                         </view>
                         <view wx:if="{{item.capitalAccountByCreditid.subjectid == 2241}}" class="weui-media-box__desc">
-                          <!--
-                          <text  style='color:green'>[已报销]  </text>
-  -->
+                          
+                          <text wx:if="{{item.isreimbursed}}" style='color:green'>[已报销]  </text>
+                          <text wx:if="{{!item.isreimbursed}}" style='color:red'>[未报销]  </text>
                         </view>
 
                 </navigator>

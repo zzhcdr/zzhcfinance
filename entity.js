@@ -226,6 +226,7 @@ function voucherentity() {
   this.capitalAccountByDebitid = {};
   this.capitalAccountByCreditid = {};
   this.attachmentPics = [];
+  this.isreimbursed = true;
 }
 
 voucherentity.prototype.init = function(data)
