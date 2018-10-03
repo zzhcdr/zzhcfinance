@@ -169,13 +169,13 @@ AppDao.prototype.addAccount = function (params) {
   })
 }
 
-AppDao.prototype.modifyAccount = function(params)
+AppDao.prototype.modifyAccount = function(param)
 {
   var that = this;
   httpClient.request({
     requestUrl: modifycapitalaccountserv,
     method: httpClient.method_get,
-    params: params.data,
+    params: param,
     successFun: function () {
       wx.showToast({
         title: '更新账户成功',

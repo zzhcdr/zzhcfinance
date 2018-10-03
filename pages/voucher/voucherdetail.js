@@ -252,7 +252,7 @@ Page({
           date: that.data.date,
           attachment: that.data.attachment,
           debitid: that.data.seldebitaccount.id,
-          creditid: that.data.selcreditaccount.id,
+          creditid: that.data.selcreditaccount.id
         },
         callFun:function()
         {
@@ -260,8 +260,7 @@ Page({
             that.onupload();
           } else {
             wx.showToast({
-              title: '更新凭据信息成功',
-              icon: 'none'
+              title: '更新凭据信息成功'
             })
           }
         }

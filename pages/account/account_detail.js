@@ -153,12 +153,10 @@ Page({
   onupdate: function () {
     var that = this;
     appDao.modifyAccount({
-      data:{
-        id: that.data.accountid,
-        name: that.data.accountname,
-        subjectid: that.data.selsubject.id,
-        initbalance: that.data.accountinitbalance
-      }      
+      id: that.data.accountid,
+      name: that.data.accountname,
+      subjectid: that.data.selsubject.id,
+      initbalance: that.data.accountinitbalance     
     })
   },
 
@@ -173,7 +171,6 @@ Page({
               title: '删除中...',
               mask:true
             })
-
           appDao.removeAccount(that.data.accountid)
           }
       }
