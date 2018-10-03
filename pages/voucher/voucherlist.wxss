@@ -16,7 +16,7 @@
     }
   
 .weui-media-box__info{
-  margin-top:15px;padding-bottom:5px;font-size:13px;color:#cecece;line-height:1em;list-style:none;overflow:hidden
+  margin-top:15px;padding-bottom:5px;font-size:13px;color:#cecece;line-height:1em;list-style:none;overflow:hidden;
   }
 
 .weui-media-box__info__meta{float:left;padding-right:1em}
