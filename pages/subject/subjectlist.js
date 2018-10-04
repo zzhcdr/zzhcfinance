@@ -19,12 +19,12 @@ Page({
   onLoad: function (options) {
     var that = this;
     
-    appDao.querySubject({
+    appDao.querySubjectType({
       all:"1",
       callFun:function()
       {
         that.setData({
-          subjectTypes: wx.getStorageSync("subjectTypes")
+          subjectTypes: appDao.getSubjectTypes()
         });
       }
       })

@@ -11,9 +11,7 @@ App({
     appname:"小金库记账本",
     userInfo: null,
     currUser:{},
-    subjects:[],
+    subjectTypes:[],
+    vouchers:[]
   },
-
-  
-
 })

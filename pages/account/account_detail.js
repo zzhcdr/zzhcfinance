@@ -26,9 +26,14 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var accountid = options.id;
+    this.data.accountid = options.id;
+    this.showAccount();    
+  },
+
+  showAccount:function()
+  {
+    var account = appDao.getAccount(this.data.accountid);
     var subjects = appDao.getSubjects();
-    var account = appDao.getAccount(accountid);
     var subjectid = account.subjectid;
     var selsubject = appDao.getSubject(subjectid);
 
@@ -154,24 +159,9 @@ Page({
 
   initbalanceinput: function (e) {
     this.setData({
-      accountinitbalance: e.detail.value
+      accountinitbalance: Number.parseInt(e.detail.value) 
     });
   },
-
-  /**
-   var selsubject = appDao.getSubject(subjectid);
-    this.setData({
-      subjects: subjects,
-      selsubject: selsubject,
-      voucherlist: [],
-      accountsubjectid: subjectid,
-      accountid:options.id,
-      accountname:options.name,
-      accountinitbalance: options.initbalance,
-      accountbalance:options.balance
-    })
-   
-   */
 
   onupdate: function () {
     var that = this;
@@ -183,10 +173,7 @@ Page({
         subjectid: paramData.selsubject.id,
         initbalance: paramData.accountinitbalance   
       },
-      callFunc:function()
-      {
-       
-      }
+      callFunc: that.showAccount
     })
   },
 

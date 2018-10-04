@@ -25,6 +25,16 @@ Page({
     });
   },
 
+  clearData : function()
+  {
+    var data = {
+      todaydate: '',
+      subjects: [],
+      vouchers: []
+    };
+    this.setData(data);
+  },
+
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
@@ -38,11 +48,11 @@ Page({
   onShow: function () {
     var that = this;
     var appdao = new dao.AppDao();
-    appdao.querySubject({
+    appdao.querySubjectType({
       callFun:function()
       {
         that.setData({
-          subjects: wx.getStorageSync("subjects")
+          subjects: appdao.getSubjects()
         });
       }
     })
@@ -52,14 +62,14 @@ Page({
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-  
+    this.clearData();
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-  
+    this.clearData();
   },
 
   /**

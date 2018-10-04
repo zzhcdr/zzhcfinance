@@ -1,6 +1,7 @@
 var http = require("network/httpclient")
 var entity = require("entity")
 var httpClient = new http.HttpClient();
+var app = getApp();
 
 var getsubjecttypeserv = "/getsubjecttypeserv"
 var getaccountvoucherserv = "/getaccountvoucherserv"
@@ -18,11 +19,19 @@ function AppDao() {}
 
 AppDao.prototype.setSubjectTypes = function(subjectTypes)
 {
-  wx.setStorageSync("subjectTypes", subjectTypes);
+  app.globalData.subjectTypes = subjectTypes;
 }
 
 AppDao.prototype.getSubjectTypes = function () {
-  return wx.getStorageSync("subjectTypes");
+  return app.globalData.subjectTypes;
+}
+
+AppDao.prototype.setVouchers = function (vouchers) {
+  app.globalData.vouchers = vouchers;
+}
+
+AppDao.prototype.getVouchers = function () {
+  return app.globalData.vouchers;
 }
 
 AppDao.prototype.getSubjects = function()
@@ -58,14 +67,6 @@ AppDao.prototype.getAccount = function(id)
     });
   })
   return account;
-}
-
-AppDao.prototype.setVouchers = function (vouchers) {
-  wx.setStorageSync("vouchers", vouchers);
-}
-
-AppDao.prototype.getVouchers = function (vouchers) {
-  return wx.getStorageSync("vouchers");
 }
 
 AppDao.prototype.getrecordlist = function (accountid) {
@@ -110,29 +111,32 @@ AppDao.prototype.getVoucherByAccount = function(accountid)
 AppDao.prototype.querySubjectType = function (params)
 {
   var that = this;
-  httpClient.request({
-    requestUrl: getsubjecttypeserv,
-    method: httpClient.method_get,
-    params: {},
-    successFun: function () {
-      var serverdata = httpClient.responseData;
-      var subjectTypes = [];
-      serverdata.forEach(function (typeData) {
-        var subjectType = new entity.SubjectTypeEntity();
-        subjectType.init(typeData);
-        subjectTypes.push(subjectType);
-      })
-      that.setSubjectTypes(subjectTypes);
-      params.callFun();
-    },
-    failFun: function (res) {
-      console.log(res);
-    },
-  })
-}
-
-AppDao.prototype.querySubject = function (params) {
-  this.querySubjectType(params);
+  var subjectTypes = this.getSubjectTypes()
+  if (subjectTypes == "")
+  {
+    httpClient.request({
+      requestUrl: getsubjecttypeserv,
+      method: httpClient.method_get,
+      params: {},
+      successFun: function () {
+        var serverdata = httpClient.responseData;
+        var subjectTypes = [];
+        serverdata.forEach(function (typeData) {
+          var subjectType = new entity.SubjectTypeEntity();
+          subjectType.init(typeData);
+          subjectTypes.push(subjectType);
+        })
+        that.setSubjectTypes(subjectTypes);
+        params.callFun();
+      },
+      failFun: function (res) {
+        console.log(res);
+      },
+    })
+  }else
+  {
+    params.callFun();
+  }
 }
 
 AppDao.prototype.queryVoucher = function (params) {
@@ -214,7 +218,7 @@ AppDao.prototype.modifyAccount = function(param)
       var account = that.getAccount(paramData.id);
       account.name = paramData.name;
       account.subjectid = paramData.subjectid;
-      account.initbalance = paramData.initbalance;
+      account.setInitbalacne(paramData.initbalance);
       wx.showToast({
         title: '更新账户成功',
       })

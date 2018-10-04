@@ -1,6 +1,5 @@
 var util = require("utils/util.js")
 var http = require("network/httpclient.js")
-var app = getApp();
 
 function resultentity() {
   this.servercode = '';
@@ -55,7 +54,22 @@ function SubjectTypeEntity() {
   this.id = 0;
   this.name = '';
   this.accountSubjectsById = [];
-  this.balance = 0;
+  this._balance = 0;
+}
+
+SubjectTypeEntity.prototype = {
+  set balance(val) {
+    this._balance = val;
+   },
+  get balance()
+  {
+    var balance = 0;
+    this.accountSubjectsById.forEach(function (subject) {
+      balance += subject.balance;
+    });
+    this._balance = balance;
+    return this._balance;
+  }
 }
 
 SubjectTypeEntity.prototype.compare = function(itemA,itemB)
@@ -91,9 +105,10 @@ SubjectTypeEntity.prototype.init = function (data) {
     }
   }
   this.accountSubjectsById.sort(this.compare);
-  this.balance = this.getbalacne();
+  //this.balance = this.getbalacne();
+  //console.log("type.balance:",this.balance)
 }
-
+/*
 SubjectTypeEntity.prototype.getbalacne = function () {
   var balance = 0;
   this.accountSubjectsById.forEach(function (subject) {
@@ -101,6 +116,7 @@ SubjectTypeEntity.prototype.getbalacne = function () {
   });
   return balance;
 }
+*/
 
 function subjectentity() {
   this.id = 0;
@@ -108,7 +124,24 @@ function subjectentity() {
   this.debit = false;
   this.isopen = true;
   this.capitalAccountsById = [];
-  this.balance = 0;
+  //this._balance = 0;
+}
+
+subjectentity.prototype = {
+  set balance(val)
+  {
+    //this._balance = val;
+  },
+  get balance()
+  {
+    var balance = 0;
+    
+    this.capitalAccountsById.forEach(function (account) {
+      balance += account.getbalacne();
+    });
+    //console.log("subject.balance:"+balance)
+    return balance;
+  }
 }
 
 subjectentity.prototype.init = function (data)
@@ -130,18 +163,8 @@ subjectentity.prototype.init = function (data)
       this[prop] = data[prop];
     }
   }
-
-  this.balance = this.getbalacne();
 }
 
-subjectentity.prototype.getbalacne = function () {
-  var balance = 0;
-  this.capitalAccountsById.forEach(function(account)
-  {
-    balance += account.getbalacne();
-  });
-  return balance;
-}
 
 function accountentity() {
   this.id = 0;
@@ -158,12 +181,10 @@ accountentity.prototype.init = function(data)
   var that = this;
   for (var prop in data) {
     var propdata = data[prop];
-    //console.log("accountentity.init:"+prop + " - " + propdata);
     if (prop == "capitalRecordsById") {
       propdata.forEach(function (recorddata){
         var record = new recordentity();
         record.init(recorddata)
-        //console.log("accountentity.init: name: "+that.name+" id:" +record.id+ " record.title:"+record.title + " - "+ record.money)
         that.capitalRecordsById.push(record);
       });
     } else if (prop == "accountSubjectBySubjectid")
@@ -177,6 +198,11 @@ accountentity.prototype.init = function(data)
       this[prop] = propdata;
     }
   }
+  this.balance = this.getbalacne();
+}
+
+accountentity.prototype.setInitbalacne = function (balance) {
+  this.initbalance = balance;
   this.balance = this.getbalacne();
 }
 
@@ -276,7 +302,6 @@ voucherentity.prototype.init = function(data)
     })
     this.attachmentPics = fileList;
 }
-
 
 module.exports.resultentity = resultentity;
 module.exports.userentity = userentity;

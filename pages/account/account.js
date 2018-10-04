@@ -30,14 +30,24 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
     var that = this;
     var appdao = new dao.AppDao();
-    appdao.querySubject({
+    appdao.querySubjectType({
       callFun: function () {
+        var types = appdao.getSubjectTypes();
+        types.forEach(function (typeItem) {
+          console.log("account.balance1:" + typeItem.balance)
+          console.log(typeItem)
+        })
         that.setData({
-          subjectTypes: appdao.getSubjectTypes()
+          subjectTypes: types
         });
+
+        that.data.subjectTypes.forEach(function (typeItem) {
+          console.log("account.balance2:" + typeItem.balance)
+          console.log(typeItem)
+        })
+
       }
     })
   },
