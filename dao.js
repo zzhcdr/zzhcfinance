@@ -17,8 +17,18 @@ var modifysubjectstatusserv = "/modifysubjectstatusserv"
 
 function AppDao() {}
 
+AppDao.prototype.clearData = function()
+{
+  this.setSubjectTypes();
+  this.setVouchers();
+}
+
 AppDao.prototype.setSubjectTypes = function(subjectTypes)
 {
+  if (subjectTypes == undefined)
+  {
+    subjectTypes = [];
+  }
   app.globalData.subjectTypes = subjectTypes;
 }
 
@@ -30,6 +40,9 @@ AppDao.prototype.getSubjectTypes = function () {
 }
 
 AppDao.prototype.setVouchers = function (vouchers) {
+  if (vouchers == undefined) {
+    vouchers = [];
+  }
   app.globalData.vouchers = vouchers;
 }
 
@@ -111,16 +124,28 @@ AppDao.prototype.getVoucherByAccount = function(accountid)
   return voucherList;
 }
 
+AppDao.prototype.getVoucherById = function (id) {
+  var that = this;
+  var voucher = {}
+  var vouchers = this.getVouchers();
+  vouchers.forEach(function (item) {
+    if(item.id == id)
+    {
+      voucher = item;
+    }
+  });
+  return voucher;
+}
+
 AppDao.prototype.querySubjectType = function (params)
 {
   var that = this;
   var subjectTypes = this.getSubjectTypes()
-  if (subjectTypes == "")
+  if (subjectTypes.length == 0)
   {
     httpClient.request({
       requestUrl: getsubjecttypeserv,
       method: httpClient.method_get,
-      params: {},
       successFun: function () {
         var serverdata = httpClient.responseData;
         var subjectTypes = [];
@@ -145,17 +170,11 @@ AppDao.prototype.querySubjectType = function (params)
 AppDao.prototype.queryVoucher = function (params) {
   var that = this;
   var vouchers = this.getVouchers();
-  if(vouchers == "")
+  if(vouchers.length == 0)
   {
-    if (params.accountid == undefined) {
-      params.accountid = 0;
-    }
     httpClient.request({
       requestUrl: getaccountvoucherserv,
       method: httpClient.method_get,
-      params: {
-        accountid: params.accountid
-      },
       successFun: function () {
         var serverdata = httpClient.responseData;
         var vouchers = [];
@@ -177,23 +196,6 @@ AppDao.prototype.queryVoucher = function (params) {
   }
 }
 
-AppDao.prototype.queryVoucherById = function (params) {
-  var that = this;
-  httpClient.request({
-    requestUrl: getvoucherserv,
-    method: httpClient.method_get,
-    params: {
-      id: params.id
-    },
-    successFun: function () {
-      params.callFun(httpClient.responseData);
-    },
-    failFun: function (res) {
-      console.log(res);
-    },
-  })
-}
-
 AppDao.prototype.addAccount = function (params) {
   var that = this;
   httpClient.request({
@@ -201,6 +203,7 @@ AppDao.prototype.addAccount = function (params) {
     method: httpClient.method_get,
     params: params.data,
     successFun: function () {
+      that.clearData();
       params.callFun(httpClient.responseData);
     },
     failFun: function (res) {
@@ -244,6 +247,7 @@ AppDao.prototype.removeAccount = function (accountid) {
       id: accountid
     },
     successFun: function () {
+      that.clearData();
       wx.showToast({
         title: '删除成功',
         complete: function () {
@@ -268,6 +272,7 @@ AppDao.prototype.addRecord = function (params) {
     method: httpClient.method_get,
     params:params.data,
     successFun: function () {
+      that.clearData();
       params.callFun();
     },
     failFun: function (res) {
@@ -285,6 +290,7 @@ AppDao.prototype.removeVoucher = function (params) {
       id: params.id
     },
     successFun: function () {
+      that.clearData();
       params.callFun();
     },
     failFun: function (res) {
@@ -300,6 +306,7 @@ AppDao.prototype.modifyVoucher = function (params) {
     method: httpClient.method_get,
     params: params.data,
     successFun: function () {
+      that.clearData();
       params.callFun();
     },
     failFun: function (res) {
@@ -316,6 +323,7 @@ AppDao.prototype.deleteVoucherAttachment = function (params)
     method: httpClient.method_get,
     params: params.data,
     successFun: function () {
+      that.clearData();
       params.callFun();
     },
     failFun: function (res) {

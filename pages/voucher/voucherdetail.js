@@ -32,30 +32,22 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var that = this;
     var voucherid = options.id;
-    that.data.id = voucherid;
-    appDao.queryVoucherById({
-      id:voucherid,
-      callFun:function(voucherdata)
-      {
-        var voucherEntity = new entity.voucherentity();
-        voucherEntity.init(voucherdata);
-        var data = {
-          title: voucherEntity.title,
-          balance: voucherEntity.money,
-          date: voucherEntity.createdate,
-          attachment: voucherEntity.attachment,
-          uploadedfiles: voucherEntity.attachmentPics,
-          seldebitaccount: voucherEntity.capitalAccountByDebitid,
-          selcreditaccount: voucherEntity.capitalAccountByCreditid,
-          seldebitsubject: appDao.getSubject(voucherEntity.capitalAccountByDebitid.subjectid),
-          selcreditsubject: appDao.getSubject(voucherEntity.capitalAccountByCreditid.subjectid),
-        }
-        that.setData(data);
-      }
-    })
-    that.showAccount();
+    this.data.id = voucherid;
+    var voucherEntity = appDao.getVoucherById(voucherid);
+    var data = {
+      title: voucherEntity.title,
+      balance: voucherEntity.money,
+      date: voucherEntity.createdate,
+      attachment: voucherEntity.attachment,
+      uploadedfiles: voucherEntity.attachmentPics,
+      seldebitaccount: voucherEntity.capitalAccountByDebitid,
+      selcreditaccount: voucherEntity.capitalAccountByCreditid,
+      seldebitsubject: appDao.getSubject(voucherEntity.capitalAccountByDebitid.subjectid),
+      selcreditsubject: appDao.getSubject(voucherEntity.capitalAccountByCreditid.subjectid),
+    }
+    this.setData(data);
+    this.showAccount();
   },
 
   showAccount:function()

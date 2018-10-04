@@ -9,9 +9,7 @@ function resultentity() {
 resultentity.prototype.init = function (data) {
   for (var prop in data) {
     this[prop] = data[prop];
-    //console.log("prop:" + prop + " - " + this[prop]);
   }
-  //console.log(this.uname);
 }
 
 function userentity() {
@@ -29,9 +27,7 @@ function userentity() {
 userentity.prototype.init = function (data) {
   for (var prop in data) {
     this[prop] = data[prop];
-    //console.log("prop:" + prop + " - " + this[prop]);
   }
-  //console.log(this.uname);
 }
 
 userentity.prototype.getloginresult = function () {
@@ -141,7 +137,6 @@ subjectentity.prototype = {
   }
 }
 
-
 function accountentity() {
   this.id = 0;
   this.name = '';
@@ -175,7 +170,6 @@ accountentity.prototype = {
       record.init(recorddata)
       that._capitalRecordsById.push(record);
     });
-
     this.calculateBalance();
   },
   get capitalRecordsById() {
@@ -246,7 +240,6 @@ voucherentity.prototype.init = function(data)
   var httpClient = new http.HttpClient();
   for (var prop in data) {
     var propData = data[prop];
-    //console.log("voucherentity.prototype.init:" + prop + " - " + propData)
     if (prop == "capitalRecordsById")
     {
       propData.forEach(function (recorddata) {

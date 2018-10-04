@@ -8,7 +8,6 @@ function HttpClient()
   this.serverCode = 0;
   this.responseData = {},
   this.loginserv = "/loginserv"
-  
 }
 
 HttpClient.prototype.request = function (metaData) 
@@ -19,6 +18,10 @@ HttpClient.prototype.request = function (metaData)
     title: '数据请求中...',
     mask: true
   })
+  if (metaData.params == undefined)
+  {
+    metaData.params = {};
+  }
   wx.request({
     url: that.host + metaData.requestUrl,
     header: util.getheader(),
