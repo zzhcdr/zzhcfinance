@@ -20,39 +20,48 @@ Page({
     accountbalance:0
   },
 
-  loadVouche: function () {
-    var that = this;
-    
-    appDao.queryVoucher({
-      accountid: that.data.accountid,
-      callFun:function()
-      {
-        that.setData(
-          {
-            voucherlist: appDao.getVouchers()
-          }
-        );
-      }
-    })
-  },
+  
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var accountid = options.id;
     var subjects = appDao.getSubjects();
-    var subjectid = options.subjectid;
+    var account = appDao.getAccount(accountid);
+    var subjectid = account.subjectid;
     var selsubject = appDao.getSubject(subjectid);
+
     this.setData({
       subjects: subjects,
       selsubject: selsubject,
       voucherlist: [],
       accountsubjectid: subjectid,
-      accountid:options.id,
-      accountname:options.name,
-      accountinitbalance: options.initbalance,
-      accountbalance:options.balance
+      accountid: account.id,
+      accountname: account.name,
+      accountinitbalance: account.initbalance,
+      accountbalance: account.balance
     })
+  },
+
+  loadVouche: function () {
+    var that = this;
+    var id = that.data.accountid;
+    appDao.queryVoucher(
+      {
+        accountid: id,
+        callFun:function()
+        {
+          that.setData(
+            {
+              voucherlist: appDao.getVoucherByAccount(id)
+            }
+          )
+        }
+      }
+    )
+
+    
   },
 
   /**
@@ -78,7 +87,6 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-    console.log("account.detail.onUnload")
     this.toClearData();
   },
 
@@ -150,13 +158,35 @@ Page({
     });
   },
 
+  /**
+   var selsubject = appDao.getSubject(subjectid);
+    this.setData({
+      subjects: subjects,
+      selsubject: selsubject,
+      voucherlist: [],
+      accountsubjectid: subjectid,
+      accountid:options.id,
+      accountname:options.name,
+      accountinitbalance: options.initbalance,
+      accountbalance:options.balance
+    })
+   
+   */
+
   onupdate: function () {
     var that = this;
+    var paramData = this.data;
     appDao.modifyAccount({
-      id: that.data.accountid,
-      name: that.data.accountname,
-      subjectid: that.data.selsubject.id,
-      initbalance: that.data.accountinitbalance     
+      data:{
+        id: paramData.accountid,
+        name: paramData.accountname,
+        subjectid: paramData.selsubject.id,
+        initbalance: paramData.accountinitbalance   
+      },
+      callFunc:function()
+      {
+       
+      }
     })
   },
 

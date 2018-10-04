@@ -35,11 +35,36 @@ AppDao.prototype.getSubjects = function()
   return subjects;
 }
 
+AppDao.prototype.getSubject = function (id) {
+  var subjects = this.getSubjects();
+  var subject = {};
+  subjects.forEach(function (item) {
+    if (item.id == id) {
+      subject = item;
+    }
+  });
+  return subject;
+}
+
+AppDao.prototype.getAccount = function(id)
+{
+  var subjects = this.getSubjects();
+  var account = {};
+  subjects.forEach(function(subject){
+    subject.capitalAccountsById.forEach(function (item) {
+      if (item.id == id) {
+        account = item;
+      }
+    });
+  })
+  return account;
+}
+
 AppDao.prototype.setVouchers = function (vouchers) {
   wx.setStorageSync("vouchers", vouchers);
 }
 
-AppDao.prototype.getVouchers = function () {
+AppDao.prototype.getVouchers = function (vouchers) {
   return wx.getStorageSync("vouchers");
 }
 
@@ -69,15 +94,17 @@ AppDao.prototype.getRecordByVoucher = function (voucherid) {
   return recordlist;
 }
 
-AppDao.prototype.getSubject = function (id) {
-  var subjects = this.getSubjects();
-  var subject = {};
-  subjects.forEach(function (item) {
-    if (item.id == id) {
-      subject = item;
+AppDao.prototype.getVoucherByAccount = function(accountid)
+{
+  var voucherList = [];
+  var vouchers = this.getVouchers();
+  vouchers.forEach(function(voucher){
+    if (voucher.capitalAccountByDebitid.id == accountid || voucher.capitalAccountByCreditid.id == accountid)
+    {
+      voucherList.push(voucher);
     }
   });
-  return subject;
+  return voucherList;
 }
 
 AppDao.prototype.querySubjectType = function (params)
@@ -110,31 +137,37 @@ AppDao.prototype.querySubject = function (params) {
 
 AppDao.prototype.queryVoucher = function (params) {
   var that = this;
-  if (params.accountid == undefined)
+  var vouchers = this.getVouchers();
+  if(vouchers == "")
   {
-    params.accountid = 0;
+    if (params.accountid == undefined) {
+      params.accountid = 0;
+    }
+    httpClient.request({
+      requestUrl: getaccountvoucherserv,
+      method: httpClient.method_get,
+      params: {
+        accountid: params.accountid
+      },
+      successFun: function () {
+        var serverdata = httpClient.responseData;
+        var vouchers = [];
+        serverdata.forEach(function (voucherdata) {
+          var voucher = new entity.voucherentity();
+          voucher.init(voucherdata);
+          vouchers.push(voucher);
+        });
+        that.setVouchers(vouchers);
+        params.callFun();
+      },
+      failFun: function (res) {
+        console.log(res);
+      },
+    })
+  }else
+  {
+    params.callFun();
   }
-  httpClient.request({
-    requestUrl: getaccountvoucherserv,
-    method: httpClient.method_get,
-    params: {
-      accountid: params.accountid
-    },
-    successFun: function () {
-      var serverdata = httpClient.responseData;
-      var vouchers = [];
-      serverdata.forEach(function (voucherdata) {
-        var voucher = new entity.voucherentity();
-        voucher.init(voucherdata);
-        vouchers.push(voucher);
-      });
-      that.setVouchers(vouchers);
-      params.callFun();
-    },
-    failFun: function (res) {
-      console.log(res);
-    },
-  })
 }
 
 AppDao.prototype.queryVoucherById = function (params) {
@@ -171,15 +204,21 @@ AppDao.prototype.addAccount = function (params) {
 
 AppDao.prototype.modifyAccount = function(param)
 {
+  var paramData = param.data;
   var that = this;
   httpClient.request({
     requestUrl: modifycapitalaccountserv,
     method: httpClient.method_get,
-    params: param,
+    params: paramData,
     successFun: function () {
+      var account = that.getAccount(paramData.id);
+      account.name = paramData.name;
+      account.subjectid = paramData.subjectid;
+      account.initbalance = paramData.initbalance;
       wx.showToast({
         title: '更新账户成功',
       })
+    param.callFunc();
     },
     failFun: function (res) {
       wx.showToast({

@@ -6,18 +6,16 @@ Page({
    * 页面的初始数据
    */
   data: {
-    accounts:[]
+    subjectid:"",
+    accounts:[],
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var appDao = new dao.AppDao();
-    var subject = appDao.getSubject(options.id);
-    this.setData({
-      accounts: subject.capitalAccountsById
-    })
+    this.data.subjectid = options.id;
+    this.onShow();
   },
 
   /**
@@ -31,7 +29,11 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    var appDao = new dao.AppDao();
+    var subject = appDao.getSubject(this.data.subjectid);
+    this.setData({
+      accounts: subject.capitalAccountsById
+    })
   },
 
   /**

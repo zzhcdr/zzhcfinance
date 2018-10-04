@@ -185,7 +185,7 @@ accountentity.prototype.getbalacne = function () {
   this.capitalRecordsById.forEach(function(record){
     balance += record.money;
   });
-  return balance;
+  return balance + this.initbalance;
 }
 
 function recordentity() {
