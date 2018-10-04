@@ -52,58 +52,53 @@ userentity.prototype.getloginresult = function () {
 function SubjectTypeEntity() {
   this.id = 0;
   this.name = '';
-  this.accountSubjectsById = [];
-  this._balance = 0;
+  this._accountSubjectsById = [];
+  this.balance = 0;
 }
 
 SubjectTypeEntity.prototype = {
-  set balance(val) {
-    this._balance = val;
-   },
-  get balance()
+  set accountSubjectsById(val)
   {
-    var balance = 0;
-    this.accountSubjectsById.forEach(function (subject) {
-      balance += subject.balance;
-    });
-    this._balance = balance;
-    return this._balance;
-  }
-}
-
-SubjectTypeEntity.prototype.compare = function(itemA,itemB)
-{
-  if(itemA.id > itemB.id)
+    var that = this;
+    that._accountSubjectsById = [];
+    val.forEach(function (subjectData) {
+      var subject = new subjectentity();
+      subject.init(subjectData)
+      that._accountSubjectsById.push(subject);
+    })
+    this._accountSubjectsById.sort(this.compare);
+  },
+  get accountSubjectsById()
   {
-    return 1;
-  } else if (itemA.id < itemB.id)
+    return this._accountSubjectsById;
+  },
+  compare:function(itemA,itemB)
   {
-    return -1;
-  }else
+    if (itemA.id > itemB.id) {
+      return 1;
+    } else if (itemA.id < itemB.id) {
+      return -1;
+    } else {
+      return 0;
+    }
+  },
+  init:function(data)
   {
-    return 0;
-  }
-}
-
-SubjectTypeEntity.prototype.init = function (data) {
-  var that  = this;
-  this.accountSubjectsById = [];
-  for(var prop in data)
-  {
-    var propData = data[prop];
-    if (prop == "accountSubjectsById")
-    {
-      propData.forEach(function(subjectData){
-        var subject = new subjectentity();
-        subject.init(subjectData)
-        that.accountSubjectsById.push(subject);
-      })
-    }else
-    {
+    for (var prop in data) {
+      var propData = data[prop];
       this[prop] = propData;
     }
+    this.refresh();
+  },
+  refresh:function()
+  {
+    var that = this;
+    that.balance = 0;
+    this._accountSubjectsById.forEach(function (subject) {
+      subject.refresh();
+      that.balance += subject.balance;
+    })
   }
-  this.accountSubjectsById.sort(this.compare);
 }
 
 function subjectentity() {
@@ -111,46 +106,41 @@ function subjectentity() {
   this.name = '';
   this.debit = false;
   this.isopen = true;
-  this.capitalAccountsById = [];
-  this.totalBalance = 0;
+  this._capitalAccountsById = [];
+  this.balance = 0;
 }
 
 subjectentity.prototype = {
-  set balance(val)
-  {
-    //this._balance = val;
+  set capitalAccountsById(val){
+    var that = this;
+    this._capitalAccountsById = [];
+    val.forEach(function (accountdata) {
+      var account = new accountentity();
+      account.init(accountdata)
+      that._capitalAccountsById.push(account);
+    })
   },
-  get balance()
+  get capitalAccountsById()
   {
-    var balance = 0;
-    this.capitalAccountsById.forEach(function (account) {
-      balance += account.getbalacne();
-    });
-    this.totalBalance = balance;
-    return this.totalBalance;
+    return this._capitalAccountsById;
+  },
+  init:function(data)
+  {
+    var that = this;
+    for (var prop in data) {
+      this[prop] = data[prop];
+    }
+    this.refresh();
+  },
+  refresh: function () {
+    var that = this;
+    that.balance = 0;
+    this._capitalAccountsById.forEach(function (account) {
+      that.balance += account.balance;
+    })
   }
 }
 
-subjectentity.prototype.init = function (data)
-{
-  var that = this;
-  this.capitalAccountsById = [];
-  for (var prop in data) {
-    if (prop =="capitalAccountsById")
-    {
-      var accountsdata = data[prop];
-      accountsdata.forEach(function (accountdata)
-      {
-        var account = new accountentity();
-        account.init(accountdata)
-        that.capitalAccountsById.push(account);
-      })
-    }else
-    {
-      this[prop] = data[prop];
-    }
-  }
-}
 
 function accountentity() {
   this.id = 0;

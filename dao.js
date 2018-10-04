@@ -23,6 +23,9 @@ AppDao.prototype.setSubjectTypes = function(subjectTypes)
 }
 
 AppDao.prototype.getSubjectTypes = function () {
+  app.globalData.subjectTypes.forEach(function(subjectType){
+    subjectType.refresh();
+  });
   return app.globalData.subjectTypes;
 }
 

@@ -3,7 +3,7 @@ var util = require("../../utils/util.js")
 var dao = require("../../dao.js")
 var app = getApp();
 var appDao = new dao.AppDao();
-var subjectTypes = appDao.getSubjectTypes();
+
 Page({
 
   /**
@@ -21,6 +21,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var subjectTypes = appDao.getSubjectTypes();
     var data = {
       subjectMultiArray: [[]]
     };
@@ -32,6 +33,7 @@ Page({
   },
 
   showSubject: function () {
+    var subjectTypes = appDao.getSubjectTypes();
     var data = {
       selsubject: {}
     }
@@ -99,6 +101,7 @@ Page({
   },
 
   bindSubjectColumnChange: function (e) {
+    var subjectTypes = appDao.getSubjectTypes();
     var column = e.detail.column;
     var columnVal = e.detail.value;
     //console.log('修改的列为', column, '，值为', columnVal);
