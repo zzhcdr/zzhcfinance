@@ -49,7 +49,6 @@ userentity.prototype.getloginresult = function () {
   return result;
 }
 
-
 function SubjectTypeEntity() {
   this.id = 0;
   this.name = '';
@@ -105,18 +104,7 @@ SubjectTypeEntity.prototype.init = function (data) {
     }
   }
   this.accountSubjectsById.sort(this.compare);
-  //this.balance = this.getbalacne();
-  //console.log("type.balance:",this.balance)
 }
-/*
-SubjectTypeEntity.prototype.getbalacne = function () {
-  var balance = 0;
-  this.accountSubjectsById.forEach(function (subject) {
-    balance += subject.balance;
-  });
-  return balance;
-}
-*/
 
 function subjectentity() {
   this.id = 0;
@@ -124,7 +112,7 @@ function subjectentity() {
   this.debit = false;
   this.isopen = true;
   this.capitalAccountsById = [];
-  //this._balance = 0;
+  this.totalBalance = 0;
 }
 
 subjectentity.prototype = {
@@ -135,12 +123,11 @@ subjectentity.prototype = {
   get balance()
   {
     var balance = 0;
-    
     this.capitalAccountsById.forEach(function (account) {
       balance += account.getbalacne();
     });
-    //console.log("subject.balance:"+balance)
-    return balance;
+    this.totalBalance = balance;
+    return this.totalBalance;
   }
 }
 
@@ -165,53 +152,61 @@ subjectentity.prototype.init = function (data)
   }
 }
 
-
 function accountentity() {
   this.id = 0;
   this.name = '';
   this.subjectid = 0;
-  this.initbalance = 0;
-  this.capitalRecordsById = [];
+  this._capitalRecordsById = [];
   this.accountSubjectBySubjectid = {};
+  this._initbalance = 0;
   this.balance = 0;
 }
 
-accountentity.prototype.init = function(data)
-{
-  var that = this;
-  for (var prop in data) {
-    var propdata = data[prop];
-    if (prop == "capitalRecordsById") {
-      propdata.forEach(function (recorddata){
-        var record = new recordentity();
-        record.init(recorddata)
-        that.capitalRecordsById.push(record);
-      });
-    } else if (prop == "accountSubjectBySubjectid")
-    {
-      var subject = new subjectentity();
-      subject.init(propdata);
-      this.accountSubjectBySubjectid = subject;
-    }
-    else
-    {
-      this[prop] = propdata;
+accountentity.prototype = {
+  calculateBalance: function () {
+    var balance = 0;
+    this.capitalRecordsById.forEach(function (record) {
+      balance += record.money;
+    });
+    this.balance = balance + this._initbalance;
+  },
+  set initbalance(val) {
+    this._initbalance = val;
+    this.calculateBalance();
+  },
+  get initbalance() {
+    return this._initbalance;
+  },
+
+  set capitalRecordsById(val) {
+    var that = this;
+    val.forEach(function (recorddata) {
+      var record = new recordentity();
+      record.init(recorddata)
+      that._capitalRecordsById.push(record);
+    });
+
+    this.calculateBalance();
+  },
+  get capitalRecordsById() {
+    return this._capitalRecordsById;
+  },
+
+  init:function(data)
+  {
+    var that = this;
+    for (var prop in data) {
+      var propdata = data[prop];
+      if (prop == "accountSubjectBySubjectid") {
+        var subject = new subjectentity();
+        subject.init(propdata);
+        this.accountSubjectBySubjectid = subject;
+      }
+      else {
+        this[prop] = propdata;
+      }
     }
   }
-  this.balance = this.getbalacne();
-}
-
-accountentity.prototype.setInitbalacne = function (balance) {
-  this.initbalance = balance;
-  this.balance = this.getbalacne();
-}
-
-accountentity.prototype.getbalacne = function () {
-  var balance = 0;
-  this.capitalRecordsById.forEach(function(record){
-    balance += record.money;
-  });
-  return balance + this.initbalance;
 }
 
 function recordentity() {

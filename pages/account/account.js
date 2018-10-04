@@ -35,19 +35,9 @@ Page({
     appdao.querySubjectType({
       callFun: function () {
         var types = appdao.getSubjectTypes();
-        types.forEach(function (typeItem) {
-          console.log("account.balance1:" + typeItem.balance)
-          console.log(typeItem)
-        })
         that.setData({
           subjectTypes: types
         });
-
-        that.data.subjectTypes.forEach(function (typeItem) {
-          console.log("account.balance2:" + typeItem.balance)
-          console.log(typeItem)
-        })
-
       }
     })
   },

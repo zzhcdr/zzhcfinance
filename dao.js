@@ -218,7 +218,7 @@ AppDao.prototype.modifyAccount = function(param)
       var account = that.getAccount(paramData.id);
       account.name = paramData.name;
       account.subjectid = paramData.subjectid;
-      account.setInitbalacne(paramData.initbalance);
+      account.initbalance = paramData.initbalance;
       wx.showToast({
         title: '更新账户成功',
       })
