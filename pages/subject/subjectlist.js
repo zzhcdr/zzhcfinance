@@ -18,9 +18,7 @@ Page({
    */
   onLoad: function (options) {
     var that = this;
-    
     appDao.querySubjectType({
-      all:"1",
       callFun:function()
       {
         that.setData({

@@ -10,7 +10,7 @@
 
 <view wx:for="{{subjectTypes}}" wx:key="{{subjectType.id}}" wx:for-item="subjectType">
 
-  <view wx:for="{{subjectType.accountSubjectsById}}" wx:key="{{item.id}}" >
+  <view wx:for="{{subjectType._accountSubjectsById}}" wx:key="{{item.id}}" >
 <view class="weui-cell weui-cell_access weui-cells weui-cells_after-title" style='font-size:18px;'>
   <view class="weui-cell__bd" style='margin-left:5px;'>{{ index == 0? subjectType.name:""}}</view>
   <view class="weui-cell__bd" style='margin-left:-70px;'>{{item.id}}-{{item.name}}</view>
