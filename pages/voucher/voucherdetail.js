@@ -5,6 +5,7 @@ var dao = require("../../dao.js")
 var http = require("../../network/httpclient.js")
 var app = getApp();
 var appDao = new dao.AppDao();
+var subjectTypes = [];
 Page({
 
   /**
@@ -23,8 +24,8 @@ Page({
     balance: 0,
     date: '',
     attachment:'',
-    debitMultiIndex: [0, 0],
-    creditMultiIndex: [4, 0],
+    debitMultiIndex: [0,0,0],
+    creditMultiIndex: [4,0,0],
     objectMultiArray: [[]],
   },
 
@@ -32,59 +33,62 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var that = this;
     var voucherid = options.id;
-    this.data.id = voucherid;
-    var voucherEntity = appDao.getVoucherById(voucherid);
-    var data = {
-      title: voucherEntity.title,
-      balance: voucherEntity.money,
-      date: voucherEntity.createdate,
-      attachment: voucherEntity.attachment,
-      uploadedfiles: voucherEntity.attachmentPics,
-      seldebitaccount: voucherEntity.capitalAccountByDebitid,
-      selcreditaccount: voucherEntity.capitalAccountByCreditid,
-      seldebitsubject: appDao.getSubject(voucherEntity.capitalAccountByDebitid.subjectid),
-      selcreditsubject: appDao.getSubject(voucherEntity.capitalAccountByCreditid.subjectid),
-    }
-    this.setData(data);
-    this.showAccount();
-  },
+    appDao.querySubjectType({
+      callFun:function()
+      {
+        subjectTypes = appDao.getSubjectTypes();
+        that.data.id = voucherid;
+        var voucherEntity = appDao.getVoucherById(voucherid);
+        var data = {
+          title: voucherEntity.title,
+          balance: voucherEntity.money,
+          date: voucherEntity.createdate,
+          attachment: voucherEntity.attachment,
+          uploadedfiles: voucherEntity.attachmentPics,
+          seldebitaccount: voucherEntity.capitalAccountByDebitid,
+          selcreditaccount: voucherEntity.capitalAccountByCreditid,
+          seldebitsubject: appDao.getSubject(voucherEntity.capitalAccountByDebitid.subjectid),
+          selcreditsubject: appDao.getSubject(voucherEntity.capitalAccountByCreditid.subjectid),
+          objectMultiArray: [[]]
+        }
 
-  showAccount:function()
-  {
-    var subjects = appDao.getSubjects();
-    var data = {
-      objectMultiArray: [[]]
-    };
-    
-    data.objectMultiArray[0] = subjects
-    data.objectMultiArray[1] = subjects[0].capitalAccountsById;
-    this.setData(data);
+        data.objectMultiArray[0] = subjectTypes;
+        data.objectMultiArray[1] = subjectTypes[0].accountSubjectsById;
+        data.objectMultiArray[2] = subjectTypes[0].accountSubjectsById[0].capitalAccountsById;
+
+        that.setData(data);
+      }
+    })
   },
 
   showDebitAccount: function () {
-    var subjects = appDao.getSubjects();
     var data = {
       seldebitsubject: {},
       seldebitaccount: {}
     }
-    var subjectIndex = this.data.debitMultiIndex[0];
-    var accountIndex = this.data.debitMultiIndex[1];
-    data.seldebitsubject = subjects[subjectIndex];
+    var typeIndex = this.data.debitMultiIndex[0];
+    var subjectIndex = this.data.debitMultiIndex[1];
+    var accountIndex = this.data.debitMultiIndex[2];
+    data.seldebitsubject = subjectTypes[typeIndex].accountSubjectsById[subjectIndex];
     data.seldebitaccount = data.seldebitsubject.capitalAccountsById[accountIndex];
     this.setData(data);
   },
 
   showCreditAccount: function () {
-    var subjects = appDao.getSubjects();
     var data = {
       selcreditsubject: {},
       selcreditaccount: {}
     }
-    var subjectIndex = this.data.creditMultiIndex[0];
-    var accountIndex = this.data.creditMultiIndex[1];
-    data.selcreditsubject = subjects[subjectIndex];
+
+    var typeIndex = this.data.creditMultiIndex[0];
+    var subjectIndex = this.data.creditMultiIndex[1];
+    var accountIndex = this.data.creditMultiIndex[2];
+
+    data.selcreditsubject = subjectTypes[typeIndex].accountSubjectsById[subjectIndex];
     data.selcreditaccount = data.selcreditsubject.capitalAccountsById[accountIndex];
+
     this.setData(data);
   },
 
@@ -124,8 +128,15 @@ Page({
       objectMultiArray: this.data.objectMultiArray,
     };
     data.debitMultiIndex[column] = columnVal;
-    if (column == 0) {
-      data.objectMultiArray[1] = subjects[data.debitMultiIndex[0]].capitalAccountsById;
+
+    switch (column) {
+      case 0:
+        data.objectMultiArray[1] = subjectTypes[data.debitMultiIndex[0]].accountSubjectsById;
+        data.objectMultiArray[2] = data.objectMultiArray[1][data.debitMultiIndex[1]]._capitalAccountsById;
+        break;
+      case 1:
+        data.objectMultiArray[2] = data.objectMultiArray[1][data.debitMultiIndex[1]]._capitalAccountsById;
+        break;
     }
     this.setData(data);
   },
@@ -148,9 +159,17 @@ Page({
       objectMultiArray: this.data.objectMultiArray
     };
     data.creditMultiIndex[column] = columnVal;
-    if (column == 0) {
-      data.objectMultiArray[1] = subjects[data.creditMultiIndex[0]].capitalAccountsById;
+
+    switch (column) {
+      case 0:
+        data.objectMultiArray[1] = subjectTypes[data.creditMultiIndex[0]].accountSubjectsById;
+        data.objectMultiArray[2] = data.objectMultiArray[1][data.creditMultiIndex[1]]._capitalAccountsById;
+        break;
+      case 1:
+        data.objectMultiArray[2] = data.objectMultiArray[1][data.creditMultiIndex[1]]._capitalAccountsById;
+        break;
     }
+
     this.setData(data);
   },
 
@@ -364,7 +383,7 @@ Page({
       });
       wx.hideLoading();
       wx.showToast({
-        title: '更新凭据信息成功',
+        title: '更新凭据成功',
       })
     }
   },

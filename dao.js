@@ -50,12 +50,19 @@ AppDao.prototype.getVouchers = function () {
   return app.globalData.vouchers;
 }
 
-AppDao.prototype.getSubjects = function()
+AppDao.prototype.getSubjects = function(onlyOpened)
 {
   var subjects = []
   var subjectTypes = this.getSubjectTypes();
   subjectTypes.forEach(function(typeData){
-    subjects = subjects.concat(typeData.accountSubjectsById);
+    typeData.accountSubjectsById.forEach(function(subject)
+    {
+      var isAdd = onlyOpened == undefined ? true : subject.isopen;
+      if(isAdd)
+      {
+        subjects.push(subject);
+      }
+    })
   })
   return subjects;
 }
