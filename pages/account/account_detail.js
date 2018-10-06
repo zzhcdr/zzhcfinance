@@ -16,6 +16,7 @@ Page({
     accountsubjectid:0,
     accountid: 0,
     accountname:"",
+    initBalanceVal:"",
     accountinitbalance:0,
     accountbalance:0
   },
@@ -40,7 +41,6 @@ Page({
     this.setData({
       subjects: subjects,
       selsubject: selsubject,
-      voucherlist: [],
       accountsubjectid: subjectid,
       accountid: account.id,
       accountname: account.name,
@@ -158,14 +158,13 @@ Page({
   },
 
   initbalanceinput: function (e) {
-    this.setData({
-      accountinitbalance: Number.parseInt(e.detail.value) 
-    });
+    this.data.initBalanceVal = e.detail.value;
   },
 
   onupdate: function () {
     var that = this;
-    var paramData = this.data;
+    var paramData = that.data;
+    paramData.accountinitbalance = Number.parseInt(paramData.initBalanceVal);
     appDao.modifyAccount({
       data:{
         id: paramData.accountid,
