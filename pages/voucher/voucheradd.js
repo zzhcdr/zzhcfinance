@@ -25,21 +25,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var that = this;
-    var subjects = appDao.getSubjects();
-    var today = new Date();
-    this.setData({
-      date: util.formatDate(today)
-    });
-
-    var data = {
-      objectMultiArray:[[]]
-    };
-    data.objectMultiArray[0] = subjects;
-    data.objectMultiArray[1] = subjects[0].capitalAccountsById;
-    this.setData(data);
-    this.showDebitAccount();
-    this.showCreditAccount();
+    this.onShow();
   },
 
   showDebitAccount: function () {
@@ -79,7 +65,24 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-  
+    var that = this;
+    appDao.querySubjectType({
+      callFun: function () {
+        var subjects = appDao.getSubjects();
+        var today = new Date();
+        that.setData({
+          date: util.formatDate(today)
+        });
+        var data = {
+          objectMultiArray: [[]]
+        };
+        data.objectMultiArray[0] = subjects;
+        data.objectMultiArray[1] = subjects[0].capitalAccountsById;
+        that.setData(data);
+        that.showDebitAccount();
+        that.showCreditAccount();
+      }
+    })
   },
 
   /**
