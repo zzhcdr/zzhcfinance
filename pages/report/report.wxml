@@ -1,7 +1,7 @@
 <view class='topTabSwiper'>
     <view class='tab  {{currentData == 0 ? "tabBorer" : ""}}'  data-current = "0" bindtap='checkCurrent'>收支日报表</view>
     <view class='tab  {{currentData == 1 ? "tabBorer" : ""}}'  data-current = "1" bindtap='checkCurrent'>收支月报表</view>
-    <view class='tab  {{currentData == 2 ? "tabBorer" : ""}}'  data-current = "2" bindtap='checkCurrent'>资产负债表</view>
+    
 </view>
 <swiper current="{{currentData}}" class='swiper' style="height:500px;" duration="300" bindchange="bindchange">
   <swiper-item>
@@ -24,6 +24,5 @@
   收支月报表
   </view>
   </swiper-item>
-  <swiper-item><view class='swiper_con'>资产负债表</view></swiper-item>  
 </swiper>
 
