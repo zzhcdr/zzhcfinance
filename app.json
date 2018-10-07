@@ -13,7 +13,10 @@
     "pages/transaction/translist",
     "pages/subject/subjectadd",
     "pages/account/account_detail",
-    "pages/account/accountlist"
+    "pages/account/accountlist",
+    "pages/business/businesslist",
+    "pages/business/businessdetail",
+    "pages/business/businessadd"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -32,16 +35,16 @@
         "text": "账单"
       },
       {
-        "pagePath": "pages/config/config",
-        "text": "配置"
+        "pagePath": "pages/business/businesslist",
+        "text": "业务"
       },
       {
         "pagePath": "pages/account/account",
         "text": "账户"
       },
       {
-        "pagePath": "pages/stat/stat",
-        "text": "统计"
+        "pagePath": "pages/config/config",
+        "text": "配置"
       }
     ]
   },
