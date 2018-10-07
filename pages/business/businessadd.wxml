@@ -50,4 +50,4 @@
             </view>
         </view>
 
-        <button style='margin-top:5px' type='primary' bindtap='add' >添加</button>
+        <button style='margin-top:5px' type='primary' bindtap='add' >上报</button>
