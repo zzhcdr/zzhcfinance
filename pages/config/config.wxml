@@ -3,3 +3,4 @@
 <button  type='primary' bindtap='configsubject' style='margin-top:10px'>科目配置</button>
 <button  type='primary' bindtap='addaccount' style='margin-top:10px'>添加账户</button>
 <button  type='primary' bindtap='addrecord' style='margin-top:10px' >添加记录</button>
+<button  type='primary' bindtap='addBusiness' style='margin-top:10px' >上报业务</button>

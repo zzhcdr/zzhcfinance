@@ -85,4 +85,12 @@ Page({
       url: '../voucher/voucheradd',
     })
   },
+
+  addBusiness:function()
+  {
+    wx.navigateTo({
+      url: '../business/businessadd',
+    })
+  }
+
 })

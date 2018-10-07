@@ -1,15 +1,4 @@
         <view class="weui-cells weui-cells_after-title">
-
-            <view class="weui-cell weui-cell_input">
-                <view class="weui-cell__hd">
-                    <view class="weui-label">标题</view>
-                </view>
-                <view class="weui-cell__bd">
-                    <input class="weui-input" placeholder="请输入名称" bindinput='nameinput'/>
-                </view>
-            </view>
-
-            <template name="item">
             <view class="weui-cell weui-cell_input">
                 <view class="weui-cell__hd">
                     <view class="weui-label">借方</view>
@@ -23,7 +12,18 @@
 
             <view class="weui-cell weui-cell_input">
                 <view class="weui-cell__hd">
-                    <view class="weui-label">详细</view>
+                    <view class="weui-label">贷方</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <picker mode="multiSelector" bindchange='bindCreditMultiPickerChange' bindcolumnchange="bindCreditMultiPickerColumnChange" value="{{creditMultiIndex}}" range-key='name' range="{{objectMultiArray}}">
+     <text class="weui-input">{{selcreditsubject.name}} -- {{selcreditaccount.name}}</text>
+  </picker>
+                </view>
+            </view>
+
+            <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">标题</view>
                 </view>
                 <view class="weui-cell__bd">
                     <input class="weui-input" placeholder="请输入名称" bindinput='nameinput'/>
@@ -38,27 +38,13 @@
                     <input class="weui-input" placeholder="请输入金额" bindinput='balanceinput'/>
                 </view>
             </view>
-            </template>
-
+             
             <!--
-
-             <view class="weui-cell weui-cell_input">
-                <view class="weui-cell__hd">
-                    <view class="weui-label">贷方</view>
-                </view>
-                <view class="weui-cell__bd">
-                    <picker mode="multiSelector" bindchange='bindCreditMultiPickerChange' bindcolumnchange="bindCreditMultiPickerColumnChange" value="{{creditMultiIndex}}" range-key='name' range="{{objectMultiArray}}">
-     <text class="weui-input">{{selcreditsubject.name}} -- {{selcreditaccount.name}}</text>
-  </picker>
-                </view>
-            </view>
+            <template name="item">
+            </template>
+            <template is="item"/>
+            <template is="item"/>
             -->
-            
-            <template is="item"/>
-            <template is="item"/>
-
-
-
           <view class="weui-cell weui-cell_input">
                 <view class="weui-cell__hd">
                     <view class="weui-label">日期</view>

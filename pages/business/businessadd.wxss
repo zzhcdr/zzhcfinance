@@ -1,1 +1,10 @@
-/* pages/business/businessadd.wxss */
+textarea {
+  width: 500rpx;
+  padding: 25rpx 0;
+  padding-left:0;
+}
+
+.textarea-wrp {
+  padding: 0 25rpx;
+  padding-left:0;
+}
