@@ -16,7 +16,7 @@ Page({
     accountsubjectid:0,
     accountid: 0,
     accountname:"",
-    initBalanceVal:"",
+    initBalanceVal:0,
     accountinitbalance:0,
     accountbalance:0
   },
@@ -165,6 +165,10 @@ Page({
     var that = this;
     var paramData = that.data;
     paramData.accountinitbalance = Number.parseInt(paramData.initBalanceVal);
+    if (isNaN(paramData.accountinitbalance))
+    {
+      paramData.accountinitbalance = 0;
+    }
     appDao.modifyAccount({
       data:{
         id: paramData.accountid,
