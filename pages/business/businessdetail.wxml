@@ -1,2 +1,61 @@
-<!--pages/business/businessdetail.wxml-->
-<text>pages/business/businessdetail.wxml</text>
+<view class="weui-cells weui-cells_after-title">
+  <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">描述</view>
+                </view>
+                <view class="textarea-wrp">
+      <textarea  bindblur="bindTextAreaBlur" bindinput='nameinput' auto-height placeholder="请输入业务内容"/>
+    </view>
+  </view>
+
+  <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">上报人</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" disabled='true' placeholder="请输入名称" bindinput='nameinput'/>
+                </view>
+  </view>
+
+  <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">业务日期</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <picker mode="date" bindchange="datePickerChange" value="{{index}}" >
+                      <text class="weui-input">{{date}}</text>
+                    </picker>
+                </view>
+            </view>
+</view>
+
+        <view class="weui-cells">
+            <view class="weui-cell">
+                <view class="weui-cell__bd">
+                    <view class="weui-uploader">
+                        <view class="weui-uploader__bd">
+                            <view class="weui-uploader__files" id="uploaderFiles">
+                                <block wx:for="{{files}}" wx:key="*this">
+                                    <view class="weui-uploader__file" bindtap="previewImage" bindlongpress='onDeleteVoucher' id="{{item}}"  >
+                                        <image class="weui-uploader__img" src="{{item}}" mode="aspectFill" />
+                                    </view>
+                                </block>
+                            </view>
+                            <view class="weui-uploader__input-box">
+                                <view class="weui-uploader__input" bindtap="chooseImage"></view>
+                            </view>
+                        </view>
+                    </view>
+                </view>
+            </view>
+        </view>
+            <view class="page__bd">
+      <view class='weui-flex'>
+        <view class="weui-flex__item">
+          <button  type='primary' bindtap='onupdate' >更新</button>
+        </view>
+        <view class="weui-flex__item">
+          <button   bindtap='ondelete' >删除</button>
+        </view>
+      </view>
+    </view>
