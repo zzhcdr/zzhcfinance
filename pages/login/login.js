@@ -41,8 +41,7 @@ Page({
       data: params,
       callFun:function()
       {
-        app.currUser = new entity.userentity();
-        app.currUser.init(httpClient.responseData);
+        
         var loginresult = app.currUser.getloginresult();
         if (loginresult == "") {
           wx.reLaunch({

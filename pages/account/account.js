@@ -30,6 +30,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    
     var that = this;
     var appdao = new dao.AppDao();
     appdao.querySubjectType({
@@ -46,14 +47,14 @@ Page({
    * 生命周期函数--监听页面隐藏
    */
   onHide: function () {
-  
+    this.clearData();
   },
 
   /**
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-    
+    this.clearData();
   },
 
   /**
@@ -88,5 +89,12 @@ Page({
       url: 'accountlist?' + params,
     })
   },
+
+  clearData:function()
+  {
+    this.setData({
+      subjectTypes: []
+    });
+  }
 
 })

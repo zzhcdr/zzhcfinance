@@ -1,5 +1,7 @@
 var util = require("../utils/util.js")
+
 var isConnected = true;
+
 function HttpClient() 
 {
   this.host = "http://192.168.0.118:8080";
@@ -8,12 +10,13 @@ function HttpClient()
   this.method_post = "POST";
   this.serverCode = 0;
   this.responseData = {},
-  
   this.getServerHeartServ = "/getserverheartserv"
 }
 
-HttpClient.prototype.testConnection = function(isShowTip)
+HttpClient.prototype.testConnection = function()
 {
+  var dao = require("../dao.js")
+  var appDao = new dao.AppDao();
   var that = this;
   wx.request({
     url: that.host + that.getServerHeartServ,
@@ -24,29 +27,21 @@ HttpClient.prototype.testConnection = function(isShowTip)
     },
     fail: function (ex) {
       isConnected = false;
-      if(typeof(isShowTip) == "undefined" )
-      {
-        wx.showToast({
-          title: '连接服务器失败',
-        })
-      }
-    },
-    complete:function()
-    {
-      console.log(isConnected)
+      appDao.clearData();
     }
   })
 }
 
 HttpClient.prototype.request = function (metaData) 
 {
+  
   var that = this;
-  console.log(isConnected)
   if(!isConnected)
   {
     wx.showToast({
       title: '连接服务器失败',
     })
+    
     return;
   }
   

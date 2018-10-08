@@ -14,7 +14,6 @@ var addcapitalrecordserv = "/addcapitalrecordserv"
 var removevoucherserv = "/removevoucherserv"
 var modifyvoucherserv = "/modifyvoucherserv"
 var deletevoucherattachmentserv = "/deletevoucherattachmentserv"
-var modifysubjectstatusserv = "/modifysubjectstatusserv"
 
 
 function AppDao() {}
@@ -153,6 +152,8 @@ AppDao.prototype.login = function(params)
     method: httpClient.method_get,
     params: params.data,
     successFun: function () {
+      app.currUser = new entity.userentity();
+      app.currUser.init(httpClient.responseData);
       params.callFun();
     },
     failFun: function (res) {
@@ -376,16 +377,5 @@ AppDao.prototype.modifySubjectStatus = function(params)
   })
 }
 
-AppDao.prototype.getServerHeartServ = function()
-{
-  var that = this;
-  httpClient.request({
-    requestUrl: getServerHeartServ,
-    method: httpClient.method_get,
-    failFun: function (res) {
-      that.clearData();
-    },
-  })
-}
 
 module.exports.AppDao = AppDao;
