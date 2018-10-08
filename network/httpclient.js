@@ -1,3 +1,6 @@
+var util = require("../utils/util.js")
+
+var isConnected = true;
 
 function HttpClient() 
 {
@@ -7,18 +10,46 @@ function HttpClient()
   this.method_post = "POST";
   this.serverCode = 0;
   this.responseData = {},
-  this.loginserv = "/loginserv"
+  this.getServerHeartServ = "/getserverheartserv"
+}
+
+HttpClient.prototype.testConnection = function()
+{
+  var dao = require("../dao.js")
+  var appDao = new dao.AppDao();
+  var that = this;
+  wx.request({
+    url: that.host + that.getServerHeartServ,
+    data: {},
+    method: that.method_get,
+    success:function(){
+      isConnected = true;
+    },
+    fail: function (ex) {
+      isConnected = false;
+      appDao.clearData();
+    }
+  })
 }
 
 HttpClient.prototype.request = function (metaData) 
 {
-  var util = require("../utils/util.js")
+  
   var that = this;
+  if(!isConnected)
+  {
+    wx.showToast({
+      title: '连接服务器失败',
+    })
+    
+    return;
+  }
+  
   wx.showLoading({
     title: '数据请求中...',
     mask: true
   })
-  if (metaData.params == undefined)
+  if (typeof (metaData.params)  == "undefined")
   {
     metaData.params = {};
   }
@@ -35,13 +66,21 @@ HttpClient.prototype.request = function (metaData)
       var serverdata = res.data;
       that.serverCode = serverdata.servercode
       that.responseData = serverdata.data
-      metaData.successFun();
+      if(metaData.successFun)
+      {
+        metaData.successFun();
+      }
+      
     },
     fail: function (ex) {
+      console.log(ex)
       wx.showToast({
         title: '请求服务器失败',
       })
-      metaData.failFun(ex);
+      if (metaData.successFun)
+      {
+        metaData.failFun(ex);
+      }
     },
     complete: function () {
       wx.hideLoading();
