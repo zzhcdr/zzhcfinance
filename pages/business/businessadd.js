@@ -1,5 +1,8 @@
 // pages/business/businessadd.js
 var util = require("../../utils/util.js")
+var dao = require("../../dao.js")
+var app = getApp();
+var appDao = new dao.AppDao();
 Page({
 
   /**
@@ -8,6 +11,7 @@ Page({
   data: {
     date: '',
     files: [],
+    reporter:""
   },
 
   /**
@@ -17,7 +21,8 @@ Page({
     var that = this;
     var today = new Date();
     that.setData({
-      date: util.formatDate(today)
+      date: util.formatDate(today),
+      reporter: app.globalData.currUser.name
     });
   },
 
@@ -91,26 +96,19 @@ Page({
     })
   },
 
-  onDeleteVoucher: function (e) {
+  add:function()
+  {
     var that = this;
-    wx.showModal({
-      title: '系统提醒',
-      content: '是否删除凭据',
-      success: function (res) {
-        if (res.confirm) {
-          var itemid = e.currentTarget.id;
-          var deleteIndex = 0;
-          deleteIndex = that.data.files.indexOf(itemid);
-          that.data.files.splice(deleteIndex, 1);
-          that.setData({
-            files: that.data.files
-          });
+    appDao.addBusiness(
+      {
+        data:{
 
-        } else if (res.cancel) {
-          return false;
+        },
+        callFun:function()
+        {
+
         }
       }
-    })
-  },
-
+    );
+  }
 })

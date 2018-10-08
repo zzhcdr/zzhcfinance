@@ -14,6 +14,7 @@ var removevoucherserv = "/removevoucherserv"
 var modifyvoucherserv = "/modifyvoucherserv"
 var deletevoucherattachmentserv = "/deletevoucherattachmentserv"
 var modifysubjectstatusserv = "/modifysubjectstatusserv"
+var addbusinessserv = "/addbusinessserv"
 
 function AppDao() {}
 
@@ -351,6 +352,24 @@ AppDao.prototype.modifySubjectStatus = function(params)
     successFun: function () {
       var subject = that.getSubject(params.id);
       subject.isopen = !subject.isopen;
+      params.callFun();
+    },
+    failFun: function (res) {
+      console.log(res);
+    },
+  })
+},
+
+
+
+AppDao.prototype.addBusiness = function(params)
+{
+  var that = this;
+  httpClient.request({
+    requestUrl: addbusinessserv,
+    method: httpClient.method_get,
+    params: params.data,
+    successFun: function () {
       params.callFun();
     },
     failFun: function (res) {

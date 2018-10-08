@@ -42,9 +42,10 @@ Page({
       method: httpClient.method_get,
       params: params,
       successFun:  function() {
-        app.currUser = new entity.userentity();
-        app.currUser.init(httpClient.responseData);
-        var loginresult = app.currUser.getloginresult();
+        var currUser = new entity.userentity();
+        currUser.init(httpClient.responseData);
+        app.globalData.currUser = currUser;
+        var loginresult = currUser.getloginresult();
         if (loginresult == "") {
           wx.reLaunch({
             url: '../report/report',
