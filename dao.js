@@ -3,6 +3,7 @@ var entity = require("entity")
 var httpClient = new http.HttpClient();
 var app = getApp();
 
+var loginserv = "/loginserv"
 var getsubjecttypeserv = "/getsubjecttypeserv"
 var getaccountvoucherserv = "/getaccountvoucherserv"
 var getvoucherserv = "/getvoucherserv"
@@ -15,6 +16,7 @@ var modifyvoucherserv = "/modifyvoucherserv"
 var deletevoucherattachmentserv = "/deletevoucherattachmentserv"
 var modifysubjectstatusserv = "/modifysubjectstatusserv"
 
+
 function AppDao() {}
 
 AppDao.prototype.clearData = function()
@@ -25,7 +27,7 @@ AppDao.prototype.clearData = function()
 
 AppDao.prototype.setSubjectTypes = function(subjectTypes)
 {
-  if (subjectTypes == undefined)
+  if (typeof (subjectTypes)  == "undefined")
   {
     subjectTypes = [];
   }
@@ -40,7 +42,7 @@ AppDao.prototype.getSubjectTypes = function () {
 }
 
 AppDao.prototype.setVouchers = function (vouchers) {
-  if (vouchers == undefined) {
+  if (typeof(vouchers) == "undefined") {
     vouchers = [];
   }
   app.globalData.vouchers = vouchers;
@@ -57,7 +59,7 @@ AppDao.prototype.getSubjects = function(onlyOpened)
   subjectTypes.forEach(function(typeData){
     typeData.accountSubjectsById.forEach(function(subject)
     {
-      var isAdd = onlyOpened == undefined ? true : subject.isopen;
+      var isAdd = typeof (onlyOpened) == undefined ? true : subject.isopen;
       if(isAdd)
       {
         subjects.push(subject);
@@ -142,6 +144,21 @@ AppDao.prototype.getVoucherById = function (id) {
     }
   });
   return voucher;
+}
+
+AppDao.prototype.login = function(params)
+{
+  httpClient.request({
+    requestUrl: loginserv,
+    method: httpClient.method_get,
+    params: params.data,
+    successFun: function () {
+      params.callFun();
+    },
+    failFun: function (res) {
+      console.log(res);
+    },
+  })
 }
 
 AppDao.prototype.querySubjectType = function (params)
@@ -355,6 +372,18 @@ AppDao.prototype.modifySubjectStatus = function(params)
     },
     failFun: function (res) {
       console.log(res);
+    },
+  })
+}
+
+AppDao.prototype.getServerHeartServ = function()
+{
+  var that = this;
+  httpClient.request({
+    requestUrl: getServerHeartServ,
+    method: httpClient.method_get,
+    failFun: function (res) {
+      that.clearData();
     },
   })
 }

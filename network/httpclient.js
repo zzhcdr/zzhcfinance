@@ -1,24 +1,60 @@
-
+var util = require("../utils/util.js")
+var isConnected = true;
 function HttpClient() 
 {
-  //this.host = "http://127.0.0.1:8080";
-  this.host = "https://erp.zzhcdr.com";
+  this.host = "http://192.168.0.118:8080";
+  //this.host = "https://erp.zzhcdr.com";
   this.method_get = "GET";
   this.method_post = "POST";
   this.serverCode = 0;
   this.responseData = {},
-  this.loginserv = "/loginserv"
+  
+  this.getServerHeartServ = "/getserverheartserv"
+}
+
+HttpClient.prototype.testConnection = function(isShowTip)
+{
+  var that = this;
+  wx.request({
+    url: that.host + that.getServerHeartServ,
+    data: {},
+    method: that.method_get,
+    success:function(){
+      isConnected = true;
+    },
+    fail: function (ex) {
+      isConnected = false;
+      if(typeof(isShowTip) == "undefined" )
+      {
+        wx.showToast({
+          title: '连接服务器失败',
+        })
+      }
+    },
+    complete:function()
+    {
+      console.log(isConnected)
+    }
+  })
 }
 
 HttpClient.prototype.request = function (metaData) 
 {
-  var util = require("../utils/util.js")
   var that = this;
+  console.log(isConnected)
+  if(!isConnected)
+  {
+    wx.showToast({
+      title: '连接服务器失败',
+    })
+    return;
+  }
+  
   wx.showLoading({
     title: '数据请求中...',
     mask: true
   })
-  if (metaData.params == undefined)
+  if (typeof (metaData.params)  == "undefined")
   {
     metaData.params = {};
   }
@@ -35,13 +71,21 @@ HttpClient.prototype.request = function (metaData)
       var serverdata = res.data;
       that.serverCode = serverdata.servercode
       that.responseData = serverdata.data
-      metaData.successFun();
+      if(metaData.successFun)
+      {
+        metaData.successFun();
+      }
+      
     },
     fail: function (ex) {
+      console.log(ex)
       wx.showToast({
         title: '请求服务器失败',
       })
-      metaData.failFun(ex);
+      if (metaData.successFun)
+      {
+        metaData.failFun(ex);
+      }
     },
     complete: function () {
       wx.hideLoading();

@@ -1,7 +1,9 @@
 // pages/login/login.js
 var entity = require("../../entity.js");
 var http = require("../../network/httpclient.js")
+var dao = require("../../dao.js")
 var app = getApp()
+var appDao = new dao.AppDao();
 Page({
 
   /**
@@ -35,13 +37,10 @@ Page({
       password: this.data.inputpassword
     }
 
-    var httpClient = new http.HttpClient();
-
-    httpClient.request( {
-      requestUrl: httpClient.loginserv,
-      method: httpClient.method_get,
-      params: params,
-      successFun:  function() {
+    appDao.login({
+      data: params,
+      callFun:function()
+      {
         app.currUser = new entity.userentity();
         app.currUser.init(httpClient.responseData);
         var loginresult = app.currUser.getloginresult();
@@ -54,11 +53,8 @@ Page({
             title: loginresult,
           })
         }
-      },
-      failFun: function (res) {
-        console.log(res);
-      },
-    } )
+      }
+    })
   },
 
   /**
