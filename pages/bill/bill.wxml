@@ -1,0 +1,59 @@
+<view class='topTabSwiper'>
+    <view class='tab  {{currentData == 0 ? "tabBorer" : ""}}'  data-current = "0" bindtap='checkCurrent'>待处理</view>
+    <view class='tab  {{currentData == 1 ? "tabBorer" : ""}}'  data-current = "1" bindtap='checkCurrent'>已处理</view>
+    
+</view>
+<swiper current="{{currentData}}" class='swiper' style="height:500px;" duration="300" bindchange="bindchange">
+  <swiper-item>
+  
+  <view class="weui-panel__bd">
+      <view wx:for='{{businesslist}}' wx:key='{{item.id}}' data-id='{{item.id}}' class="weui-media-box weui-media-box_appmsg" >
+              <view class="weui-media-box__hd_in-appmsg" bindtap="previewNetworkImage" id="{{item.id}}" data-pics='{{item.attachmentPics}}'>
+                    <image class="weui-media-box__thumb"  src="{{item.attachmentPics[0]}}" />
+              </view>
+              
+                <navigator class="weui-media-box__bd_in-appmsg"  url="businessdetail?id={{item.id}}" hover-class="weui-cell_active">
+
+                        <view class="weui-media-box__title">
+                        {{item.note}}
+                        </view>
+                        <view class="weui-media-box__desc">
+                          上报人:{{item.user.name}}
+                        </view>
+                        <view class="weui-media-box__desc">
+                          {{item.createdate}}
+                        </view>
+                </navigator>
+                </view>
+  </view>
+  </swiper-item> 
+
+  <swiper-item>
+ <view class="weui-panel__bd">
+    <view wx:for='{{voucherlist}}' wx:key='{{item.id}}' data-id='{{item.id}}' class="weui-media-box weui-media-box_appmsg" >
+              <view class="weui-media-box__hd_in-appmsg" bindtap="previewNetworkImage" id="{{item.id}}" data-pics='{{item.attachmentPics}}'>
+                    <image class="weui-media-box__thumb"  src="{{item.attachmentPics[0]}}" />
+              </view>
+              
+                <navigator class="weui-media-box__bd_in-appmsg"  url="voucherdetail?id={{item.id}}" hover-class="weui-cell_active">
+
+                        <view class="weui-media-box__title">
+                        
+                        {{item.title}}
+                        </view>
+                        <view class="weui-media-box__desc">
+                        借方:{{item.capitalAccountByDebitid.name}}
+                        贷方:{{item.capitalAccountByCreditid.name}}
+                        </view>
+                        <view class="weui-media-box__desc">
+                          {{item.createdate}}
+                        </view>
+                </navigator>
+               <view class='voucherlist_money' >
+              {{1 ?item.money:-item.money}}
+            </view>
+  </view>
+  </view>
+  </swiper-item>
+</swiper>
+

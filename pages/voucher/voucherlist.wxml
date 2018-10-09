@@ -5,11 +5,6 @@
       <view wx:for='{{voucherlist}}' wx:key='{{item.id}}' data-id='{{item.id}}' class="weui-media-box weui-media-box_appmsg" >
               <view class="weui-media-box__hd_in-appmsg" bindtap="previewNetworkImage" id="{{item.id}}" data-pics='{{item.attachmentPics}}'>
                     <image class="weui-media-box__thumb"  src="{{item.attachmentPics[0]}}" />
-<!--
-                    <view wx:if="{{item.attachmentPics.length>0}}" class="weui-cell__hd" style="position: relative;margin-right: -5px;margin-top:-75px;"  >
-                      <view class="weui-badge" >{{item.attachmentPics.length}}</view>
-                    </view>
-                    -->
               </view>
               
                 <navigator class="weui-media-box__bd_in-appmsg"  url="voucherdetail?id={{item.id}}" hover-class="weui-cell_active">

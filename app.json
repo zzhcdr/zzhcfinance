@@ -16,7 +16,8 @@
     "pages/account/accountlist",
     "pages/business/businesslist",
     "pages/business/businessdetail",
-    "pages/business/businessadd"
+    "pages/business/businessadd",
+    "pages/bill/bill"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -31,20 +32,20 @@
         "text": "报表"
       },
       {
-        "pagePath": "pages/voucher/voucherlist",
+        "pagePath": "pages/bill/bill",
         "text": "账单"
-      },
-      {
-        "pagePath": "pages/business/businesslist",
-        "text": "业务"
-      },
-      {
-        "pagePath": "pages/account/account",
-        "text": "账户"
       },
       {
         "pagePath": "pages/config/config",
         "text": "配置"
+      },
+      {
+        "pagePath": "pages/stat/stat",
+        "text": "统计"
+      },
+      {
+        "pagePath": "pages/account/account",
+        "text": "账户"
       }
     ]
   },
