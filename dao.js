@@ -16,6 +16,7 @@ var modifyvoucherserv = "/modifyvoucherserv"
 var deletevoucherattachmentserv = "/deletevoucherattachmentserv"
 var modifysubjectstatusserv = "/modifysubjectstatusserv"
 var addbusinessserv = "/addbusinessserv"
+var getbusinesslistserv = "/getbusinesslistserv"
 
 function AppDao() {}
 
@@ -23,6 +24,7 @@ AppDao.prototype.clearData = function()
 {
   this.setSubjectTypes();
   this.setVouchers();
+  this.setBusiness();
 }
 
 AppDao.prototype.setSubjectTypes = function(subjectTypes)
@@ -50,6 +52,17 @@ AppDao.prototype.setVouchers = function (vouchers) {
 
 AppDao.prototype.getVouchers = function () {
   return app.globalData.vouchers;
+}
+
+AppDao.prototype.setBusiness = function (business) {
+  if (typeof (business) == "undefined") {
+    business = [];
+  }
+  app.globalData.business = business;
+}
+
+AppDao.prototype.getBusiness = function () {
+  return app.globalData.business;
 }
 
 AppDao.prototype.getSubjects = function(onlyOpened)
@@ -378,8 +391,6 @@ AppDao.prototype.modifySubjectStatus = function(params)
   })
 },
 
-
-
 AppDao.prototype.addBusiness = function(params)
 {
   var that = this;
@@ -388,13 +399,34 @@ AppDao.prototype.addBusiness = function(params)
     method: httpClient.method_get,
     params: params.data,
     successFun: function () {
-      params.callFun();
+      params.callFun(httpClient.responseData);
     },
     failFun: function (res) {
       console.log(res);
     },
   })
-}
+},
 
+AppDao.prototype.queryBusiness = function (params)
+{
+  var that = this;
+  var getBusiness = this.getBusiness()
+  if (getBusiness.length == 0) {
+    httpClient.request({
+      requestUrl: getbusinesslistserv,
+      method: httpClient.method_get,
+      successFun: function () {
+        params.callFun();
+      },
+      failFun: function (res) {
+        console.log(res);
+      },
+    })
+  }else
+  {
+    params.callFun();
+  }
+
+}
 
 module.exports.AppDao = AppDao;

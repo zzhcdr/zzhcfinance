@@ -6,7 +6,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    voucherlist: []
+    businesslist: []
   },
 
   /**
@@ -67,11 +67,11 @@ Page({
   loadBusiness: function () {
     var that = this;
     var appDao = new dao.AppDao();
-    appDao.queryVoucher({
+    appDao.queryBusiness({
       callFun: function () {
         that.setData(
           {
-            voucherlist: appDao.getVouchers()
+            businesslist: appDao.getBusiness()
           }
         );
       }

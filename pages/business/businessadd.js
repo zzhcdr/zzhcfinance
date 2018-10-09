@@ -9,9 +9,11 @@ Page({
    * 页面的初始数据
    */
   data: {
+    id:"",
+    note:"",
+    reporter: "",
     date: '',
     files: [],
-    reporter:""
   },
 
   /**
@@ -75,6 +77,13 @@ Page({
 
   },
 
+  onNoteInput:function(e)
+  {
+    this.setData({
+      note: e.detail.value
+    });
+  },
+
   chooseImage: function (e) {
     var that = this;
     wx.chooseImage({
@@ -96,19 +105,100 @@ Page({
     })
   },
 
+  onDeleteVoucher: function (e) {
+    var that = this;
+    wx.showModal({
+      title: '系统提醒',
+      content: '是否删除凭据',
+      success: function (res) {
+        if (res.confirm) {
+          var itemid = e.currentTarget.id;
+          var itemType = e.currentTarget.dataset.type;
+          var deleteIndex = 0;
+          var fileName = itemid;
+          
+          deleteIndex = that.data.files.indexOf(itemid);
+          that.data.files.splice(deleteIndex, 1);
+          that.setData({
+            files: that.data.files
+          });
+
+        } else if (res.cancel) {
+          return false;
+        }
+      }
+    })
+  },
+
+  onUploadVoucher: function () {
+
+    var that = this;
+    var httpClient = new http.HttpClient();
+    if (that.data.uploadindex < that.data.files.length) {
+      var tipTitle = '上传附件中 ' + (that.data.uploadindex + 1) + "/" + that.data.files.length
+      wx.showLoading({
+        title: tipTitle,
+      })
+      var file = that.data.files[that.data.uploadindex]
+      const uploadTask = wx.uploadFile({
+        url: httpClient.host + '/uploadvoucherserv', //仅为示例，非真实的接口地址
+        filePath: file,
+        header: util.getheader(),
+        name: that.data.id,
+        formData: {},
+        success: function (res) {
+          that.data.uploadindex++;
+          var data = res.data
+          wx.showToast({
+            title: '上传完成',
+          })
+        },
+        complete: function (res) {
+          wx.hideLoading();
+          that.onUploadVoucher();
+        }
+      })
+
+      uploadTask.onProgressUpdate((res) => {
+        console.log('上传进度', res.progress)
+      })
+    } else {
+      that.setData({
+        uploadedfiles: that.data.uploadedfiles.concat(that.data.files),
+        files: [],
+        uploadindex: 0,
+      });
+      wx.hideLoading();
+      wx.showToast({
+        title: '上报业务成功',
+      })
+    }
+  },
+
   add:function()
   {
     var that = this;
     appDao.addBusiness(
       {
         data:{
-
+          note:that.data.note,
+          date:that.data.date
         },
-        callFun:function()
+        callFun:function(res)
         {
-
+          console.log(res);
+          if (that.data.files.length > 0) {
+            that.onUploadVoucher();
+          } else {
+            wx.showToast({
+              title: '上报业务成功'
+            })
+          }
         }
       }
     );
-  }
+  },
+
+
+
 })

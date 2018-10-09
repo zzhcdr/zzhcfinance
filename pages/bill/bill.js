@@ -27,6 +27,20 @@ Page({
     })
   },
 
+  loadBusiness: function () {
+    var that = this;
+    var appDao = new dao.AppDao();
+    appDao.queryBusiness({
+      callFun: function () {
+        that.setData(
+          {
+            businesslist: appDao.getBusiness()
+          }
+        );
+      }
+    })
+  },
+
   /**
    * 生命周期函数--监听页面加载
    */
@@ -46,6 +60,7 @@ Page({
   onShow: function () {
     //console.log("voucherlist.onShow")
     this.loadVouche();
+    this.loadBusiness();
   },
 
   /**
