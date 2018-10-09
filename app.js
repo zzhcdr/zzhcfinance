@@ -11,10 +11,9 @@ App({
 
   globalData: {
     appname:"小金库记账本",
-    userInfo: null,
     currUser:{},
     subjectTypes:[],
-    vouchers:[]
-  }
-
+    vouchers:[],
+    business:[]
+  },
 })

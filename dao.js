@@ -14,7 +14,8 @@ var addcapitalrecordserv = "/addcapitalrecordserv"
 var removevoucherserv = "/removevoucherserv"
 var modifyvoucherserv = "/modifyvoucherserv"
 var deletevoucherattachmentserv = "/deletevoucherattachmentserv"
-
+var modifysubjectstatusserv = "/modifysubjectstatusserv"
+var addbusinessserv = "/addbusinessserv"
 
 function AppDao() {}
 
@@ -152,8 +153,8 @@ AppDao.prototype.login = function(params)
     method: httpClient.method_get,
     params: params.data,
     successFun: function () {
-      app.currUser = new entity.userentity();
-      app.currUser.init(httpClient.responseData);
+      app.globalData.currUser = new entity.userentity();
+      app.globalData.currUser.init(httpClient.responseData);
       params.callFun();
     },
     failFun: function (res) {
@@ -369,6 +370,24 @@ AppDao.prototype.modifySubjectStatus = function(params)
     successFun: function () {
       var subject = that.getSubject(params.id);
       subject.isopen = !subject.isopen;
+      params.callFun();
+    },
+    failFun: function (res) {
+      console.log(res);
+    },
+  })
+},
+
+
+
+AppDao.prototype.addBusiness = function(params)
+{
+  var that = this;
+  httpClient.request({
+    requestUrl: addbusinessserv,
+    method: httpClient.method_get,
+    params: params.data,
+    successFun: function () {
       params.callFun();
     },
     failFun: function (res) {

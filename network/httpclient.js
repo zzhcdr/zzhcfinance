@@ -4,7 +4,7 @@ var isConnected = true;
 
 function HttpClient() 
 {
-  this.host = "http://192.168.0.118:8080";
+  this.host = "http://127.0.0.1:8080";
   //this.host = "https://erp.zzhcdr.com";
   this.method_get = "GET";
   this.method_post = "POST";

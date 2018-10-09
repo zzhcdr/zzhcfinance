@@ -37,12 +37,12 @@ Page({
       password: this.data.inputpassword
     }
 
+
     appDao.login({
       data: params,
       callFun:function()
       {
-        
-        var loginresult = app.currUser.getloginresult();
+        var loginresult = app.globalData.currUser.getloginresult();
         if (loginresult == "") {
           wx.reLaunch({
             url: '../report/report',
