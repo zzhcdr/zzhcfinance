@@ -14,6 +14,9 @@ Page({
     reporter: "",
     date: '',
     files: [],
+    readers: [
+      { id: 'USA', name: '美国' },
+    ]
   },
 
   /**
@@ -103,6 +106,11 @@ Page({
       current: e.currentTarget.id, // 当前显示图片的http链接
       urls: this.data.files // 需要预览的图片http链接列表
     })
+  },
+
+  checkboxChange: function (e) {
+    console.log('checkbox发生change事件，携带value值为：')
+    console.log(e.detail.value)
   },
 
   onDeleteVoucher: function (e) {

@@ -400,6 +400,7 @@ AppDao.prototype.addBusiness = function(params)
     params: params.data,
     successFun: function () {
       params.callFun(httpClient.responseData);
+      that.setBusiness();
     },
     failFun: function (res) {
       console.log(res);
@@ -416,6 +417,14 @@ AppDao.prototype.queryBusiness = function (params)
       requestUrl: getbusinesslistserv,
       method: httpClient.method_get,
       successFun: function () {
+        var businessList = []
+        httpClient.responseData.forEach(function(businessData){
+          var business = new entity.BusinessEntity();
+          business.init(businessData)
+          businessList.push(business);
+        });
+        console.log(businessList);
+        that.setBusiness(businessList);
         params.callFun();
       },
       failFun: function (res) {

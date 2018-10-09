@@ -18,7 +18,7 @@
                         {{item.note}}
                         </view>
                         <view class="weui-media-box__desc">
-                          上报人:{{item.user.name}}
+                          上报人:{{item.usersByUid.name}}
                         </view>
                         <view class="weui-media-box__desc">
                           {{item.createdate}}

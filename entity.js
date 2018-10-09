@@ -281,6 +281,23 @@ voucherentity.prototype.init = function(data)
     this.attachmentPics = fileList;
 }
 
+function BusinessEntity() {
+  this.id = '';
+  this.note = '';
+  this.createdate = '';
+  this.attachment = '';
+  this.usersByUid = '';
+}
+
+BusinessEntity.prototype.init = function(data)
+{
+  for(var prop in data)
+  {
+    var propData = data[prop];
+    this[prop] = propData;
+  }
+}
+
 module.exports.resultentity = resultentity;
 module.exports.userentity = userentity;
 module.exports.SubjectTypeEntity = SubjectTypeEntity
@@ -288,3 +305,4 @@ module.exports.subjectentity = subjectentity
 module.exports.accountentity = accountentity
 module.exports.recordentity = recordentity
 module.exports.voucherentity = voucherentity
+module.exports.BusinessEntity = BusinessEntity
