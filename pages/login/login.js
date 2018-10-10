@@ -19,7 +19,7 @@ Page({
   login:function()
   {
     this.setData({
-      inputname:"lvch",
+      inputname:"18612565297",
       inputpassword: "880216"
     })
     if (this.data.inputname == "")

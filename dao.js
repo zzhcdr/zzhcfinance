@@ -17,6 +17,7 @@ var deletevoucherattachmentserv = "/deletevoucherattachmentserv"
 var modifysubjectstatusserv = "/modifysubjectstatusserv"
 var addbusinessserv = "/addbusinessserv"
 var getbusinesslistserv = "/getbusinesslistserv"
+var getUserListServ = "/getuserlistserv"
 
 function AppDao() {}
 
@@ -63,6 +64,19 @@ AppDao.prototype.setBusiness = function (business) {
 
 AppDao.prototype.getBusiness = function () {
   return app.globalData.business;
+}
+
+AppDao.prototype.setUsers = function(users)
+{
+  if (typeof (users) == "undefined") {
+    users = [];
+  }
+  app.globalData.users = users;
+}
+
+AppDao.prototype.getUsers = function()
+{
+  return app.globalData.users;
 }
 
 AppDao.prototype.getSubjects = function(onlyOpened)
@@ -435,7 +449,34 @@ AppDao.prototype.queryBusiness = function (params)
   {
     params.callFun();
   }
+}
 
+AppDao.prototype.queryUserList = function(params)
+{
+  var that = this;
+  var getUsers = this.getUsers()
+  if (getUsers.length == 0) {
+    httpClient.request({
+      requestUrl: getUserListServ,
+      method: httpClient.method_get,
+      successFun: function () {
+        var usersList = []
+        httpClient.responseData.forEach(function (userData) {
+          var user = new entity.userentity();
+          user.init(userData);
+          usersList.push(user)
+        });
+        console.log(usersList);
+        that.setUsers(usersList);
+        params.callFun();
+      },
+      failFun: function (res) {
+        console.log(res);
+      },
+    })
+  } else {
+    params.callFun();
+  }
 }
 
 module.exports.AppDao = AppDao;

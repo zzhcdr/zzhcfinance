@@ -14,9 +14,7 @@ Page({
     reporter: "",
     date: '',
     files: [],
-    readers: [
-      { id: 'USA', name: '美国' },
-    ]
+    readers: [],
   },
 
   /**
@@ -28,7 +26,17 @@ Page({
     that.setData({
       date: util.formatDate(today),
       reporter: app.globalData.currUser.name
+      
     });
+    appDao.queryUserList({
+      callFun:function()
+      {
+        that.setData({
+          readers: appDao.getUsers()
+        })
+      }
+    })
+
   },
 
   /**

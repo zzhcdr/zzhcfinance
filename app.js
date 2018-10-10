@@ -14,6 +14,7 @@ App({
     currUser:{},
     subjectTypes:[],
     vouchers:[],
-    business:[]
+    business:[],
+    users:[]
   },
 })
