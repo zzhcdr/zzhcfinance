@@ -250,9 +250,6 @@ Page({
 
   onupdate: function () {
     var that = this;
-    wx.showLoading({
-      title: '更新凭据信息中...',
-    })
 
     appDao.modifyVoucher(
       {
@@ -306,6 +303,7 @@ Page({
               appDao.deleteVoucherAttachment(
                 {
                   data:{
+                    moduleid: "2",
                     id: that.data.id,
                     fileName: fileName
                   },
@@ -352,11 +350,11 @@ Page({
       })
       var file = that.data.files[that.data.uploadindex]
       const uploadTask = wx.uploadFile({
-        url: httpClient.host + '/uploadvoucherserv', //仅为示例，非真实的接口地址
+        url: httpClient.host + '/uploadvoucherserv?moduleid=2', //仅为示例，非真实的接口地址
         filePath: file,
         header: util.getheader(),
-        name: that.data.id,
         formData: {},
+        name: that.data.id,
         success: function (res) {
           that.data.uploadindex++;
           var data = res.data

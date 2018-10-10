@@ -1,6 +1,7 @@
 var util = require("utils/util.js")
 var http = require("network/httpclient.js")
 
+var httpClient = new http.HttpClient();
 function resultentity() {
   this.servercode = '';
   this.data = {};
@@ -237,7 +238,7 @@ function voucherentity() {
 voucherentity.prototype.init = function(data)
 {
   var that = this;
-  var httpClient = new http.HttpClient();
+  
   for (var prop in data) {
     var propData = data[prop];
     if (prop == "capitalRecordsById")
@@ -287,15 +288,36 @@ function BusinessEntity() {
   this.createdate = '';
   this.attachment = '';
   this.usersByUid = '';
+  this.attachmentPics = [];
 }
 
 BusinessEntity.prototype.init = function(data)
 {
+  var that = this;
   for(var prop in data)
   {
     var propData = data[prop];
-    this[prop] = propData;
+    if (prop == "attachment") {
+      propData = propData == null ? "" : propData;
+      this.attachment = propData;
+      if (propData != "") {
+        if (propData.indexOf(",") == -1) {
+          this.attachmentPics.push(propData);
+        } else {
+          this.attachmentPics = propData.split(",");
+        }
+      }
+    }else
+    {
+      this[prop] = propData;
+    }
   }
+
+  var fileList = [];
+  this.attachmentPics.forEach(function (item) {
+    fileList.push(httpClient.host + "/voucher/" + that.id + '/' + item);
+  })
+  this.attachmentPics = fileList;
 }
 
 module.exports.resultentity = resultentity;

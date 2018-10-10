@@ -18,6 +18,7 @@ var modifysubjectstatusserv = "/modifysubjectstatusserv"
 var addbusinessserv = "/addbusinessserv"
 var getbusinesslistserv = "/getbusinesslistserv"
 var getUserListServ = "/getuserlistserv"
+var modifyBusinessServ = "/modifybusinessserv"
 
 function AppDao() {}
 
@@ -64,6 +65,20 @@ AppDao.prototype.setBusiness = function (business) {
 
 AppDao.prototype.getBusiness = function () {
   return app.globalData.business;
+}
+
+AppDao.prototype.getBusinessById = function(id)
+{
+  var businessList = this.getBusiness();
+  var business = {};
+
+  businessList.forEach(function(item){
+    if(item.id == id)
+    {
+      business = item;
+    }
+  });
+  return business;
 }
 
 AppDao.prototype.setUsers = function(users)
@@ -437,7 +452,6 @@ AppDao.prototype.queryBusiness = function (params)
           business.init(businessData)
           businessList.push(business);
         });
-        console.log(businessList);
         that.setBusiness(businessList);
         params.callFun();
       },
@@ -449,6 +463,23 @@ AppDao.prototype.queryBusiness = function (params)
   {
     params.callFun();
   }
+},
+
+AppDao.prototype.modifyBusiness = function (params)
+{
+  var that = this;
+  httpClient.request({
+    requestUrl: modifyBusinessServ,
+    method: httpClient.method_get,
+    params: params.data,
+    successFun: function () {
+      that.clearData();
+      params.callFun();
+    },
+    failFun: function (res) {
+      console.log(res);
+    },
+  })
 }
 
 AppDao.prototype.queryUserList = function(params)
@@ -466,7 +497,6 @@ AppDao.prototype.queryUserList = function(params)
           user.init(userData);
           usersList.push(user)
         });
-        console.log(usersList);
         that.setUsers(usersList);
         params.callFun();
       },

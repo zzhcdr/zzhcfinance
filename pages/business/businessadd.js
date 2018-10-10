@@ -147,7 +147,6 @@ Page({
   },
 
   onUploadVoucher: function () {
-
     var that = this;
     var httpClient = new http.HttpClient();
     if (that.data.uploadindex < that.data.files.length) {
@@ -157,11 +156,11 @@ Page({
       })
       var file = that.data.files[that.data.uploadindex]
       const uploadTask = wx.uploadFile({
-        url: httpClient.host + '/uploadvoucherserv', //仅为示例，非真实的接口地址
+        url: httpClient.host + '/uploadvoucherserv?moduleid=1', //仅为示例，非真实的接口地址
         filePath: file,
         header: util.getheader(),
-        name: that.data.id,
         formData: {},
+        name: that.data.id,
         success: function (res) {
           that.data.uploadindex++;
           var data = res.data
@@ -198,7 +197,8 @@ Page({
       {
         data:{
           note:that.data.note,
-          date:that.data.date
+          date:that.data.date,
+          reader:""
         },
         callFun:function(res)
         {

@@ -35,7 +35,7 @@
                     <image class="weui-media-box__thumb"  src="{{item.attachmentPics[0]}}" />
               </view>
               
-                <navigator class="weui-media-box__bd_in-appmsg"  url="voucherdetail?id={{item.id}}" hover-class="weui-cell_active">
+                <navigator class="weui-media-box__bd_in-appmsg"  url="../voucher/voucherdetail?id={{item.id}}" hover-class="weui-cell_active">
 
                         <view class="weui-media-box__title">
                         
