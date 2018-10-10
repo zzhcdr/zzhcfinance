@@ -19,6 +19,7 @@ var addbusinessserv = "/addbusinessserv"
 var getbusinesslistserv = "/getbusinesslistserv"
 var getUserListServ = "/getuserlistserv"
 var modifyBusinessServ = "/modifybusinessserv"
+var removeBusinessServ = "/removebusinessserv"
 
 function AppDao() {}
 
@@ -92,6 +93,20 @@ AppDao.prototype.setUsers = function(users)
 AppDao.prototype.getUsers = function()
 {
   return app.globalData.users;
+}
+
+AppDao.prototype.getUsersForReader = function()
+{
+  var readerList = [];
+  var userList = this.getUsers();
+  userList.forEach(function (user) {
+    var reader = new entity.userentity();
+    reader.uid = user.uid;
+    reader.name = user.name;
+    reader.checked = false;
+    readerList.push(reader);
+  });
+  return readerList;
 }
 
 AppDao.prototype.getSubjects = function(onlyOpened)
@@ -507,6 +522,26 @@ AppDao.prototype.queryUserList = function(params)
   } else {
     params.callFun();
   }
+}
+
+AppDao.prototype.RemoveBusiness = function(param)
+{
+  var that = this;
+  httpClient.request({
+    requestUrl: removeBusinessServ,
+    method: httpClient.method_get,
+    params: {
+      id:param.id
+    },
+    successFun: function () {
+      that.clearData();
+      param.callFun();
+    },
+    failFun: function (res) {
+      console.log(res);
+    },
+  })
+
 }
 
 module.exports.AppDao = AppDao;

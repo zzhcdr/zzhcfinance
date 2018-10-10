@@ -289,6 +289,7 @@ function BusinessEntity() {
   this.attachment = '';
   this.usersByUid = '';
   this.attachmentPics = [];
+  this.reader = '';
 }
 
 BusinessEntity.prototype.init = function(data)
@@ -307,7 +308,8 @@ BusinessEntity.prototype.init = function(data)
           this.attachmentPics = propData.split(",");
         }
       }
-    }else
+    }
+    else
     {
       this[prop] = propData;
     }
@@ -318,6 +320,7 @@ BusinessEntity.prototype.init = function(data)
     fileList.push(httpClient.host + "/voucher/" + that.id + '/' + item);
   })
   this.attachmentPics = fileList;
+  this.reader = this.reader == null ? "" : this.reader;
 }
 
 module.exports.resultentity = resultentity;

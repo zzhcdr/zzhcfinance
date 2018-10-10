@@ -2,6 +2,7 @@
 var dao = require("../../dao.js")
 var http = require("../../network/httpclient.js")
 var util = require("../../utils/util.js")
+var entity = require("../../entity.js")
 var app = getApp();
 var appDao = new dao.AppDao();
 
@@ -19,30 +20,15 @@ Page({
     note:"",
     reporter:{},
     createdate:"",
-    readers:[],
+    reader:"",
+    readerList:[]
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var that = this;
-    var id = options.id;
-    var businessDetail = appDao.getBusinessById(id);
-    appDao.queryUserList({
-      callFun: function () {
-        var isMine = app.globalData.currUser.uid == businessDetail.usersByUid.uid;
-        that.setData({
-          id: id,
-          isMyBusiness: isMine,
-          readers: appDao.getUsers(),
-          note:businessDetail.note,
-          reporter: businessDetail.usersByUid,
-          createdate: businessDetail.createdate,
-          uploadedfiles: businessDetail.attachmentPics,
-        })
-      }
-    })
+    this.data.id = options.id;
   },
 
   /**
@@ -56,7 +42,30 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
+    var that = this;
+    var id = this.data.id;
+    var businessDetail = appDao.getBusinessById(id);
+    appDao.queryUserList({
+      callFun: function () {
+        var isMine = app.globalData.currUser.uid == businessDetail.usersByUid.uid;
+        
+        var readerList = appDao.getUsersForReader()
+        readerList.forEach(function (reader) {
+          var isReader = businessDetail.reader.indexOf(reader.uid) >= 0;
+          reader.checked = isReader;
+        });
 
+        that.setData({
+          id: id,
+          isMyBusiness: isMine,
+          readerList: readerList,
+          note: businessDetail.note,
+          reporter: businessDetail.usersByUid,
+          createdate: businessDetail.createdate,
+          uploadedfiles: businessDetail.attachmentPics,
+        });
+      }
+    })
   },
 
   /**
@@ -94,6 +103,10 @@ Page({
 
   },
 
+  readerChange: function (e) {
+    this.data.reader = e.detail.value.join(",");
+  },
+
   chooseImage: function (e) {
     var that = this;
     wx.chooseImage({
@@ -119,6 +132,33 @@ Page({
     wx.previewImage({
       current: e.currentTarget.id, // 当前显示图片的http链接
       urls: this.data.files // 需要预览的图片http链接列表
+    })
+  },
+
+  onDelete:function()
+  {
+    var id = this.data.id;
+    wx.showModal({
+      title: '系统提醒',
+      content: '是否删除业务',
+      success: function (res) {
+        if (res.confirm) {
+          appDao.RemoveBusiness({
+            id: id,
+            callFun: function () {
+              wx.showToast({
+                title: '删除成功',
+                icon: "success",
+                complete: function () {
+                  setTimeout(function () {
+                    wx.navigateBack({});
+                  }, 1000);
+                }
+              })
+            }
+          })
+        }
+      }
     })
   },
 
@@ -227,14 +267,14 @@ Page({
         id: that.data.id,
         note: that.data.note,
         createdate: that.data.createdate,
-        reader: ""
+        reader: that.data.reader
       },
       callFun:function(){
         if (that.data.files.length > 0) {
           that.onUploadVoucher();
         } else {
           wx.showToast({
-            title: '更新凭据信息成功'
+            title: '更新业务成功'
           })
         }
       }

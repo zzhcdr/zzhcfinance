@@ -35,9 +35,9 @@
                 </view>
                 <view class="weui-cell__bd">
 
-                    <checkbox-group class="weui-input" bindchange="checkboxChange">
-  <label class="checkbox" wx:for="{{readers}}" wx:key="{{item.id}}" >
-    <checkbox value="{{item.id}}" checked="{{item.checked}}"/>{{item.name}}
+                    <checkbox-group class="weui-input" bindchange="readerChange">
+  <label class="checkbox" wx:for="{{readerList}}" wx:key="{{item.uid}}" >
+    <checkbox value="{{item.uid}}" checked="{{item.checked}}"/>{{item.name}}
   </label>
 </checkbox-group>
 
@@ -77,7 +77,7 @@
           <button  type='primary' bindtap='onUpdate' >更新</button>
         </view>
         <view class="weui-flex__item">
-          <button   bindtap='ondelete' >删除</button>
+          <button   bindtap='onDelete' >删除</button>
         </view>
       </view>
       </view>

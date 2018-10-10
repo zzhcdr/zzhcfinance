@@ -1,6 +1,7 @@
 // pages/business/businessadd.js
 var util = require("../../utils/util.js")
 var dao = require("../../dao.js")
+var http = require("../../network/httpclient.js")
 var app = getApp();
 var appDao = new dao.AppDao();
 Page({
@@ -13,8 +14,10 @@ Page({
     note:"",
     reporter: "",
     date: '',
+    reader:"",
     files: [],
     readers: [],
+    uploadindex: 0,
   },
 
   /**
@@ -26,16 +29,8 @@ Page({
     that.setData({
       date: util.formatDate(today),
       reporter: app.globalData.currUser.name
-      
     });
-    appDao.queryUserList({
-      callFun:function()
-      {
-        that.setData({
-          readers: appDao.getUsers()
-        })
-      }
-    })
+    
 
   },
 
@@ -50,7 +45,14 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    var that = this;
+    appDao.queryUserList({
+      callFun: function () {
+        that.setData({
+          readers: appDao.getUsersForReader()
+        })
+      }
+    })
   },
 
   /**
@@ -116,9 +118,8 @@ Page({
     })
   },
 
-  checkboxChange: function (e) {
-    console.log('checkbox发生change事件，携带value值为：')
-    console.log(e.detail.value)
+  readerChange: function (e) {
+    this.data.reader = e.detail.value.join(",");
   },
 
   onDeleteVoucher: function (e) {
@@ -173,19 +174,15 @@ Page({
           that.onUploadVoucher();
         }
       })
-
-      uploadTask.onProgressUpdate((res) => {
-        console.log('上传进度', res.progress)
-      })
     } else {
-      that.setData({
-        uploadedfiles: that.data.uploadedfiles.concat(that.data.files),
-        files: [],
-        uploadindex: 0,
-      });
       wx.hideLoading();
       wx.showToast({
         title: '上报业务成功',
+        complete: function () {
+          setTimeout(function () {
+            wx.navigateBack({});
+          }, 1000);
+        }
       })
     }
   },
@@ -198,16 +195,21 @@ Page({
         data:{
           note:that.data.note,
           date:that.data.date,
-          reader:""
+          reader:that.data.reader
         },
         callFun:function(res)
         {
-          console.log(res);
+          that.data.id = res;
           if (that.data.files.length > 0) {
             that.onUploadVoucher();
           } else {
             wx.showToast({
-              title: '上报业务成功'
+              title: '上报业务成功',
+              complete: function () {
+                setTimeout(function () {
+                  wx.navigateBack({});
+                }, 1000);
+              }
             })
           }
         }
