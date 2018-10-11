@@ -5,8 +5,7 @@ var app = getApp();
 
 var loginserv = "/loginserv"
 var getsubjecttypeserv = "/getsubjecttypeserv"
-var getaccountvoucherserv = "/getaccountvoucherserv"
-var getvoucherserv = "/getvoucherserv"
+var getvoucherlistserv = "/getvoucherlistserv"
 var addcapitalaccountserv = "/addcapitalaccountserv"
 var removecapitalaccountserv = "/removecapitalaccountserv"
 var modifycapitalaccountserv = "/modifycapitalaccountserv"
@@ -264,7 +263,7 @@ AppDao.prototype.queryVoucher = function (params) {
   if(vouchers.length == 0)
   {
     httpClient.request({
-      requestUrl: getaccountvoucherserv,
+      requestUrl: getvoucherlistserv,
       method: httpClient.method_get,
       successFun: function () {
         var serverdata = httpClient.responseData;

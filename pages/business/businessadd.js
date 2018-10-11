@@ -31,6 +31,13 @@ Page({
       reporter: app.globalData.currUser.name
     });
     
+    appDao.queryUserList({
+      callFun: function () {
+        that.setData({
+          readers: appDao.getUsersForReader()
+        })
+      }
+    })
 
   },
 
@@ -45,14 +52,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    var that = this;
-    appDao.queryUserList({
-      callFun: function () {
-        that.setData({
-          readers: appDao.getUsersForReader()
-        })
-      }
-    })
+    
   },
 
   /**

@@ -29,7 +29,30 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    this.data.id = options.id;
+    var that = this;
+    var id = options.id;
+    this.data.id = id;
+    var businessDetail = appDao.getBusinessById(id);
+    appDao.queryUserList({
+      callFun: function () {
+        var readerList = appDao.getUsersForReader()
+        var currUser = appDao.getCurrUser();
+        var readerNameList = [currUser.name]
+        readerList.forEach(function (reader) {
+          var isReader = businessDetail.reader.indexOf(reader.uid) >= 0;
+          reader.checked = isReader;
+          if (isReader) {
+            readerNameList.push(reader.name);
+          }
+        });
+
+        that.setData({
+          readerList: readerList,
+          readerNames: readerNameList.join(",")
+        });
+
+      }
+    });
   },
 
   /**
@@ -46,33 +69,15 @@ Page({
     var that = this;
     var id = this.data.id;
     var businessDetail = appDao.getBusinessById(id);
-    appDao.queryUserList({
-      callFun: function () {
-        var isMine = app.globalData.currUser.uid == businessDetail.usersByUid.uid;
-        
-        var readerList = appDao.getUsersForReader()
-        var currUser = appDao.getCurrUser();
-        var readerNameList = [currUser.name]
-        readerList.forEach(function (reader) {
-          var isReader = businessDetail.reader.indexOf(reader.uid) >= 0;
-          reader.checked = isReader;
-          if(isReader)
-          {
-            readerNameList.push(reader.name);
-          }
-        });
-        that.setData({
-          id: id,
-          isMyBusiness: isMine,
-          readerList: readerList,
-          note: businessDetail.note,
-          reporter: businessDetail.usersByUid,
-          createdate: businessDetail.createdate,
-          uploadedfiles: businessDetail.attachmentPics,
-          readerNames: readerNameList.join(",")
-        });
-      }
-    })
+    var isMine = app.globalData.currUser.uid == businessDetail.usersByUid.uid;
+
+    that.setData({
+      isMyBusiness: isMine,
+      note: businessDetail.note,
+      reporter: businessDetail.usersByUid,
+      createdate: businessDetail.createdate,
+      uploadedfiles: businessDetail.attachmentPics,
+    });
   },
 
   /**
@@ -248,10 +253,6 @@ Page({
           wx.hideLoading();
           that.onUploadVoucher();
         }
-      })
-
-      uploadTask.onProgressUpdate((res) => {
-        console.log('上传进度', res.progress)
       })
     } else {
       that.setData({

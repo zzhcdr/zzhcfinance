@@ -10,8 +10,8 @@ Page({
    * 页面的初始数据
    */
   data: {
+    currentData:0,
     todaydate: '',
-    subjects:[],
     vouchers:[]
   },
 
@@ -29,7 +29,6 @@ Page({
   {
     var data = {
       todaydate: '',
-      subjects: [],
       vouchers: []
     };
     this.setData(data);
