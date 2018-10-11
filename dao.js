@@ -95,16 +95,24 @@ AppDao.prototype.getUsers = function()
   return app.globalData.users;
 }
 
+AppDao.prototype.getCurrUser = function()
+{
+  return app.globalData.currUser;
+}
+
 AppDao.prototype.getUsersForReader = function()
 {
   var readerList = [];
   var userList = this.getUsers();
   userList.forEach(function (user) {
-    var reader = new entity.userentity();
-    reader.uid = user.uid;
-    reader.name = user.name;
-    reader.checked = false;
-    readerList.push(reader);
+    if (user.uid != app.globalData.currUser.uid)
+    {
+      var reader = new entity.userentity();
+      reader.uid = user.uid;
+      reader.name = user.name;
+      reader.checked = false;
+      readerList.push(reader);
+    }
   });
   return readerList;
 }

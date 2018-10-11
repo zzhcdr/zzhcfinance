@@ -21,7 +21,8 @@ Page({
     reporter:{},
     createdate:"",
     reader:"",
-    readerList:[]
+    readerList:[],
+    readerNames:""
   },
 
   /**
@@ -50,11 +51,16 @@ Page({
         var isMine = app.globalData.currUser.uid == businessDetail.usersByUid.uid;
         
         var readerList = appDao.getUsersForReader()
+        var currUser = appDao.getCurrUser();
+        var readerNameList = [currUser.name]
         readerList.forEach(function (reader) {
           var isReader = businessDetail.reader.indexOf(reader.uid) >= 0;
           reader.checked = isReader;
+          if(isReader)
+          {
+            readerNameList.push(reader.name);
+          }
         });
-
         that.setData({
           id: id,
           isMyBusiness: isMine,
@@ -63,6 +69,7 @@ Page({
           reporter: businessDetail.usersByUid,
           createdate: businessDetail.createdate,
           uploadedfiles: businessDetail.attachmentPics,
+          readerNames: readerNameList.join(",")
         });
       }
     })
