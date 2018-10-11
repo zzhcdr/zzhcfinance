@@ -3,7 +3,7 @@
     <view class='tab  {{currentData == 1 ? "tabBorer" : ""}}'  data-current = "1" bindtap='checkCurrent'>已处理</view>
     
 </view>
-<swiper current="{{currentData}}" class='swiper' style="height:500px;" duration="300" bindchange="bindchange">
+<swiper current="{{currentData}}" class='swiper' style="height:{{100* (businesslist.length > voucherlist.length?businesslist.length:voucherlist.length ) }}px;" duration="300" bindchange="bindchange">
   <swiper-item>
   
   <view class="weui-panel__bd">
@@ -39,7 +39,7 @@
 
                         <view class="weui-media-box__title">
                         
-                        {{item.title}}
+                        {{item.title}} 
                         </view>
                         <view class="weui-media-box__desc">
                         借方:{{item.capitalAccountByDebitid.name}}

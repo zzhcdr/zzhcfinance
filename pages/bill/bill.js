@@ -10,7 +10,7 @@ Page({
   data: {
     currentData:0,
     businesslist:[],
-    voucherlist: []
+    voucherlist: [],
   },
 
   loadVouche: function () {
