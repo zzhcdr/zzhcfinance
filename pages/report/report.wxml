@@ -3,7 +3,7 @@
     <view class='tab  {{currentData == 1 ? "tabBorer" : ""}}'  data-current = "1" bindtap='checkCurrent'>收支月报表</view>
     
 </view>
-<swiper current="{{currentData}}" class='swiper' style="height:500px;" duration="300" bindchange="bindchange">
+<swiper current="{{currentData}}" class='swiper' style="height:{{100 * vouchers.length + 40 }}px;" duration="300" bindchange="bindchange">
   <swiper-item>
   <view class='swiper_con' >
 
@@ -12,16 +12,51 @@
                     <view class="weui-label">日期选择:</view>
                 </view>
                 <view class="weui-cell__bd">
-                    <picker mode="date" bindchange="datePickerChange" value="{{index}}" >
-                      <text class="weui-input">{{todaydate}}</text>
+                    <picker mode="date" bindchange="dailyPickerChange" value="{{index}}" >
+                      <text class="weui-input">{{queryDaily}}</text>
                     </picker>
                 </view>
             </view>
+
+          <view class="weui-panel__bd">
+    <view wx:for='{{vouchers}}' wx:key='{{item.id}}' data-id='{{item.id}}' class="weui-media-box weui-media-box_appmsg" >
+              <view class="weui-media-box__hd_in-appmsg" bindtap="previewNetworkImage" id="{{item.id}}" data-pics='{{item.attachmentPics}}'>
+                    <image class="weui-media-box__thumb"  src="{{item.attachmentPics[0]}}" />
+              </view>
+              
+                <navigator class="weui-media-box__bd_in-appmsg"  url="../voucher/voucherdetail?id={{item.id}}" hover-class="weui-cell_active">
+
+                        <view class="weui-media-box__title">
+                        
+                        {{item.title}} 
+                        </view>
+                        <view class="weui-media-box__desc">
+                        借方:{{item.capitalAccountByDebitid.name}}
+                        贷方:{{item.capitalAccountByCreditid.name}}
+                        </view>
+                        <view class="weui-media-box__desc">
+                          {{item.createdate}}
+                        </view>
+                </navigator>
+               <view class='voucherlist_money' >
+              {{1 ?item.money:-item.money}}
+            </view>
+  </view>
+  </view>
   </view>
   </swiper-item> 
   <swiper-item>
   <view class='swiper_con'>
-  收支月报表
+  <view class="weui-cell weui-cell_input weui-cells weui-cells_after-title">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">日期选择:</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <picker mode="date" bindchange="monthPickerChange" value="{{index}}" >
+                      <text class="weui-input">{{queryMonth}}</text>
+                    </picker>
+                </view>
+            </view>
   </view>
   </swiper-item>
 </swiper>

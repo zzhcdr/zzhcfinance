@@ -115,6 +115,12 @@ Page({
 
   },
 
+  onNoteInput: function (e) {
+    this.setData({
+      note: e.detail.value
+    });
+  },
+
   readerChange: function (e) {
     this.data.reader = e.detail.value.join(",");
   },
@@ -145,6 +151,12 @@ Page({
       current: e.currentTarget.id, // 当前显示图片的http链接
       urls: this.data.files // 需要预览的图片http链接列表
     })
+  },
+
+  datePickerChange: function (e) {
+    this.setData({
+      createdate: e.detail.value
+    });
   },
 
   onDelete:function()

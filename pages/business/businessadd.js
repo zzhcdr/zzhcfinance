@@ -122,6 +122,12 @@ Page({
     this.data.reader = e.detail.value.join(",");
   },
 
+  datePickerChange: function (e) {
+    this.setData({
+      date: e.detail.value
+    });
+  },
+
   onDeleteVoucher: function (e) {
     var that = this;
     wx.showModal({

@@ -265,6 +265,9 @@ AppDao.prototype.queryVoucher = function (params) {
     httpClient.request({
       requestUrl: getvoucherlistserv,
       method: httpClient.method_get,
+      params: {
+        date:params.date
+      },
       successFun: function () {
         var serverdata = httpClient.responseData;
         var vouchers = [];

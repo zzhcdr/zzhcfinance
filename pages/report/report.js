@@ -11,7 +11,8 @@ Page({
    */
   data: {
     currentData:0,
-    todaydate: '',
+    queryDaily: '',
+    queryMonth:'',
     vouchers:[]
   },
 
@@ -21,14 +22,15 @@ Page({
   onLoad: function (options) {
     var today = new Date();
     this.setData({
-      todaydate: util.formatDate(today)
+      queryDaily: util.formatDate(today),
+      queryMonth: util.formatDate(today)
     });
   },
 
   clearData : function()
   {
     var data = {
-      todaydate: '',
+      queryDaily: '',
       vouchers: []
     };
     this.setData(data);
@@ -47,11 +49,12 @@ Page({
   onShow: function () {
     var that = this;
     var appdao = new dao.AppDao();
-    appdao.querySubjectType({
+    appdao.queryVoucher({
+      date: that.data.queryDaily,
       callFun:function()
       {
         that.setData({
-          subjects: appdao.getSubjects()
+          vouchers: appdao.getVouchers()
         });
       }
     })
@@ -114,10 +117,20 @@ Page({
       })
     }
   },
-  datePickerChange: function (e) {
+
+  dailyPickerChange: function (e) {
     this.setData({
-      todaydate: e.detail.value
+      queryDaily: e.detail.value
     });
+  },
+  
+  monthPickerChange: function (e) {
+    this.setData({
+      queryDaily: e.detail.value
+    });
+
+
+
   }
 
 })
