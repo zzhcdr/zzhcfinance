@@ -27,25 +27,34 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    
     this.data.accountid = options.id;
+
     this.showAccount();    
+
   },
 
   showAccount:function()
   {
-    var account = appDao.getAccount(this.data.accountid);
-    var subjects = appDao.getSubjects();
-    var subjectid = account.subjectid;
-    var selsubject = appDao.getSubject(subjectid);
+    var that = this
+    appDao.querySubjectType({
+      callFun:function()
+      {
+        var account = appDao.getAccount(that.data.accountid);
+        var subjects = appDao.getSubjects();
+        var subjectid = account.subjectid;
+        var selsubject = appDao.getSubject(subjectid);
 
-    this.setData({
-      subjects: subjects,
-      selsubject: selsubject,
-      accountsubjectid: subjectid,
-      accountid: account.id,
-      accountname: account.name,
-      accountinitbalance: account.initbalance,
-      accountbalance: account.balance
+        that.setData({
+          subjects: subjects,
+          selsubject: selsubject,
+          accountsubjectid: subjectid,
+          accountid: account.id,
+          accountname: account.name,
+          accountinitbalance: account.initbalance,
+          accountbalance: account.balance
+        })
+      }
     })
   },
 
