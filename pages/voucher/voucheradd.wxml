@@ -4,7 +4,7 @@
                     <view class="weui-label">借方</view>
                 </view>
                 <view class="weui-cell__bd">
-                    <picker mode="multiSelector" bindchange='bindDebitMultiPickerChange' bindcolumnchange="bindDebitMultiPickerColumnChange" value="{{debitMultiIndex}}" range-key='name' range="{{objectMultiArray}}">
+                    <picker mode="multiSelector" bindchange='bindDebitMultiPickerChange' bindcolumnchange="bindDebitMultiPickerColumnChange" value="{{debitMultiIndex}}" range-key='name' range="{{debitMultiArray}}">
     <text class="weui-input">{{seldebitsubject.name}} -- {{seldebitaccount.name}}</text>
   </picker>
                 </view>
@@ -15,7 +15,7 @@
                     <view class="weui-label">贷方</view>
                 </view>
                 <view class="weui-cell__bd">
-                    <picker mode="multiSelector" bindchange='bindCreditMultiPickerChange' bindcolumnchange="bindCreditMultiPickerColumnChange" value="{{creditMultiIndex}}" range-key='name' range="{{objectMultiArray}}">
+                    <picker mode="multiSelector" bindchange='bindCreditMultiPickerChange' bindcolumnchange="bindCreditMultiPickerColumnChange" value="{{creditMultiIndex}}" range-key='name' range="{{creditMultiArray}}">
      <text class="weui-input">{{selcreditsubject.name}} -- {{selcreditaccount.name}}</text>
   </picker>
                 </view>

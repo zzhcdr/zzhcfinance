@@ -19,7 +19,8 @@ Page({
     date:'',
     debitMultiIndex: [0,0,0],
     creditMultiIndex: [4,0,0],
-    objectMultiArray: [[]],
+    debitMultiArray: [[]],
+    creditMultiArray: [[]],
   },
 
   /**
@@ -34,12 +35,21 @@ Page({
     appDao.querySubjectType({
       callFun: function () {
         subjectTypes = appDao.getSubjectTypes();
+        var creditMultiIndex = that.data.creditMultiIndex;
+
         var data = {
-          objectMultiArray: [[]]
+          debitMultiArray: [[]],
+          creditMultiArray: [[]],
         };
-        data.objectMultiArray[0] = subjectTypes;
-        data.objectMultiArray[1] = subjectTypes[0].accountSubjectsById;
-        data.objectMultiArray[2] = subjectTypes[0].accountSubjectsById[0].capitalAccountsById;
+
+        data.debitMultiArray[0] = subjectTypes;
+        data.debitMultiArray[1] = subjectTypes[0].accountSubjectsById;
+        data.debitMultiArray[2] = subjectTypes[0].accountSubjectsById[0].capitalAccountsById;
+
+        data.creditMultiArray[0] = subjectTypes;
+        data.creditMultiArray[1] = subjectTypes[creditMultiIndex[0]].accountSubjectsById;
+        data.creditMultiArray[2] = data.creditMultiArray[1][creditMultiIndex[1]].capitalAccountsById;
+
         that.setData(data);
         that.showDebitAccount();
         that.showCreditAccount();
@@ -191,17 +201,17 @@ Page({
     var columnVal = e.detail.value;
     var data = {
       debitMultiIndex: this.data.debitMultiIndex,
-      objectMultiArray: this.data.objectMultiArray,
+      debitMultiArray: this.data.debitMultiArray,
     };
     data.debitMultiIndex[column] = columnVal;
     switch(column)
     {
       case 0:
-        data.objectMultiArray[1] = subjectTypes[data.debitMultiIndex[0]].accountSubjectsById;
-        data.objectMultiArray[2] = data.objectMultiArray[1][data.debitMultiIndex[1]]._capitalAccountsById;
+        data.debitMultiArray[1] = subjectTypes[data.debitMultiIndex[0]].accountSubjectsById;
+        data.debitMultiArray[2] = data.debitMultiArray[1][data.debitMultiIndex[1]]._capitalAccountsById;
       break;
       case 1:
-        data.objectMultiArray[2] = data.objectMultiArray[1][data.debitMultiIndex[1]]._capitalAccountsById;
+        data.debitMultiArray[2] = data.debitMultiArray[1][data.debitMultiIndex[1]]._capitalAccountsById;
       break;
     }
 
@@ -222,17 +232,17 @@ Page({
     //console.log('修改的列为', column, '，值为', columnVal);
     var data = {
       creditMultiIndex: this.data.creditMultiIndex,
-      objectMultiArray: this.data.objectMultiArray
+      creditMultiArray: this.data.creditMultiArray
     };
     data.creditMultiIndex[column] = columnVal;
 
     switch (column) {
       case 0:
-        data.objectMultiArray[1] = subjectTypes[data.creditMultiIndex[0]].accountSubjectsById;
-        data.objectMultiArray[2] = data.objectMultiArray[1][data.creditMultiIndex[1]]._capitalAccountsById;
+        data.creditMultiArray[1] = subjectTypes[data.creditMultiIndex[0]].accountSubjectsById;
+        data.creditMultiArray[2] = data.creditMultiArray[1][data.creditMultiIndex[1]]._capitalAccountsById;
         break;
       case 1:
-        data.objectMultiArray[2] = data.objectMultiArray[1][data.creditMultiIndex[1]]._capitalAccountsById;
+        data.creditMultiArray[2] = data.creditMultiArray[1][data.creditMultiIndex[1]]._capitalAccountsById;
         break;
     }
     this.setData(data);
